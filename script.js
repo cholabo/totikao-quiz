@@ -1,6 +1,6 @@
 let questions = [];
 let wrongList = JSON.parse(localStorage.getItem("wrongList") || "[]");
-let usedQuestions = [];
+let usedQuestions = JSON.parse(localStorage.getItem("usedQuestions") || "[]");
 let currentQuestion = null;
 let cycleCount = parseInt(localStorage.getItem("cycleCount") || "1");
 let lastCopiedWrong = JSON.parse(localStorage.getItem("lastCopiedWrong") || "[]");
@@ -23,13 +23,15 @@ function newQuestion() {
     localStorage.setItem("cycleCount", cycleCount);
     usedQuestions = [];
     wrongList = [];
-    localStorage.setItem("wrongList", "[]");
+    localStorage.setItem("usedQuestions", JSON.stringify(usedQuestions));
+    localStorage.setItem("wrongList", JSON.stringify(wrongList));
     newQuestion();
     return;
   }
 
   currentQuestion = available[Math.floor(Math.random() * available.length)];
   usedQuestions.push(currentQuestion.id);
+  localStorage.setItem("usedQuestions", JSON.stringify(usedQuestions));
 
   document.getElementById("question-number").textContent =
     "【" + currentQuestion.label + "】";
@@ -69,7 +71,6 @@ document.getElementById("copy-btn").addEventListener("click", () => {
 
   navigator.clipboard.writeText(copyText).then(() => {
     alert(`${newWrong.length}件の問題をコピーしました。`);
-    // コピー済みとして記録
     lastCopiedWrong = [...new Set([...lastCopiedWrong, ...newWrong])];
     localStorage.setItem("lastCopiedWrong", JSON.stringify(lastCopiedWrong));
   });
