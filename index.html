@@ -1,53 +1,104 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C34PHRSJN4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-C34PHRSJN4");
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>土地家屋調査士過去問アプリ｜無料クイズアプリ</title>
-
-  <!-- 🔹 検索・SNS向け -->
-  <meta name="description" content="土地家屋調査士試験の過去問を無料でトレーニングできるクイズアプリ。スマホ対応・ランダム出題・誤答復習機能付き。">
-  <meta name="keywords" content="土地家屋調査士, 過去問, クイズ, 試験対策, 記述, 不動産登記法, 民法, 予備校, 無料, Webアプリ">
-
-  <!-- 🔹 SNSカード設定（Twitter/X, LINE, Discord対応） -->
-  <meta property="og:title" content="土地家屋調査士過去問アプリ｜無料クイズアプリ" />
-  <meta property="og:description" content="スマホ対応・ランダム出題・誤答復習機能付き。土地家屋調査士試験の過去問を無料でトレーニングできます。" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://あなたのドメイン.example/" />
-  <meta property="og:image" content="https://あなたのドメイン.example/ogimage.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <link rel="stylesheet" href="style.css" />
+  <title>土地家屋調査士 過去問アプリ</title>
+  <meta name="description" content="土地家屋調査士試験の過去問を年度順、復習、タイムアタックで学習できるクイズアプリです。" />
+  <link rel="stylesheet" href="style.css?v=1.2">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
   <main class="title-page">
-    <h1>土地家屋調査士過去問アプリ</h1>
-    <p class="subtitle">Ver.β（2025.11.7）令和元年～令和6年</p>
+    <h1>土地家屋調査士<br>過去問アプリ</h1>
+    <p class="subtitle">年度順・復習・タイムアタック</p>
 
-    <button id="start-btn">はじめる</button>
+    <div id="top-progress-info" class="progress-panel">進捗を読み込み中...</div>
+
+    <div id="mode-select">
+      <button id="start-normal-btn" class="mode-btn normal-mode">年度順モード</button>
+      <button id="start-review-btn" class="mode-btn review-mode">復習モード</button>
+      <button id="start-timeattack-btn" class="mode-btn ta-mode">タイムアタック（5分）</button>
+    </div>
 
     <footer>
       <p style="text-align: left; line-height: 1.6;">
-        解説は表示されないので[間違えた問題をコピー]ボタンを利用して、後で復習をしてください<br>
-      教授会話、図解や表の記載のある問題は出題されません<br>
-      誤字・誤答・質問・ご意見などはお気軽に：</p>
+        年度順モードは、未回答の問題だけを順番に出題します。<br>
+        復習モードは、間違えた問題と「？」で保留した問題だけをランダムに出題します。<br>
+        タイムアタックは、間違えると残り時間が20秒減ります。
+      </p>
       <p>
         <a href="https://x.com/ryota_totikao" target="_blank">@ryota_totikao</a>
       </p>
-       <p style="text-align: left; line-height: 1.6;">
-本アプリに掲載されている過去問題は、法務省（法務局）実施の「土地家屋調査士試験」の過去問をもとに作成しています。<br>
-問題文の著作権は法務省（法務局）に帰属します。<br>
-本サイトは個人の学習支援を目的とした非公式なものであり、法務省・法務局その他の公的機関とは一切関係ありません。<br>
-</p>
-
+      <p style="text-align: left; line-height: 1.6; font-size: 0.8em; margin-top: 20px;">
+        本アプリの過去問は、法務省「土地家屋調査士試験」に基づきます。<br>
+        問題文の著作権は法務省に帰属します。<br>
+        本サイトは個人の学習支援を目的とした非公式なものです。
+      </p>
     </footer>
   </main>
 
   <script>
-    document.getElementById("start-btn").addEventListener("click", () => {
+    const LEARNING_STATE_KEY = "learningStateByLabel";
+
+    function loadLearningState() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(LEARNING_STATE_KEY) || "{}");
+        return parsed && typeof parsed === "object" ? parsed : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function getProgress(questions) {
+      const state = loadLearningState();
+      const getResult = q => state[q.label]?.lastResult || null;
+      return {
+        total: questions.length,
+        unanswered: questions.filter(q => !["correct", "wrong", "unknown"].includes(getResult(q))).length,
+        review: questions.filter(q => ["wrong", "unknown"].includes(getResult(q))).length,
+        unknown: questions.filter(q => getResult(q) === "unknown").length,
+        completed: questions.filter(q => getResult(q) === "correct").length
+      };
+    }
+
+    function updateTopProgress() {
+      const area = document.getElementById("top-progress-info");
+      fetch("questions.json")
+        .then(res => res.json())
+        .then(questions => {
+          const p = getProgress(questions.filter(q => q.label));
+          area.textContent = `全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 保留${p.unknown}問 / 完了${p.completed}問`;
+        })
+        .catch(() => {
+          area.textContent = "進捗を読み込めませんでした。";
+        });
+    }
+
+    document.getElementById("start-normal-btn").addEventListener("click", () => {
+      localStorage.setItem("quizMode", "year");
       window.location.href = "quiz.html";
     });
+
+    document.getElementById("start-review-btn").addEventListener("click", () => {
+      localStorage.setItem("quizMode", "review");
+      window.location.href = "quiz.html";
+    });
+
+    document.getElementById("start-timeattack-btn").addEventListener("click", () => {
+      localStorage.setItem("quizMode", "timeattack");
+      window.location.href = "quiz.html";
+    });
+
+    updateTopProgress();
   </script>
 </body>
 </html>

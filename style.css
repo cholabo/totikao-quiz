@@ -1,168 +1,245 @@
 /* ================================
-   土地家屋調査士クイズアプリ Ver.3.2
-   - 可読性重視・左寄せ文章
-   - 統一カラー: #0070A8（ベース）
+   土地家屋調査士クイズアプリ Ver.4.0
+   - 実用性重視・リッチなシンプルデザイン
+   - ベースカラー: #0070A8
 ================================= */
 
 body {
-  font-family: "Hiragino Sans", "Meiryo", sans-serif;
-  background: #f7f9fc;
-  color: #222;
+  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+  background: #eef2f6;
+  color: #333;
   margin: 0;
-  padding: 0;
+  padding: 15px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
-/* メインカード */
 main {
   background: #fff;
-  margin-top: 40px;
-  padding: 30px 25px 50px;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  width: 90%;
-  max-width: 480px;
+  margin-top: 20px;
+  padding: 30px 25px 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
 }
 
-/* 問題エリア */
-#question-area {
-  text-align: left;
+/* ---- トップ画面 ---- */
+.title-page {
+  text-align: center;
+  margin-top: 10vh;
+}
+.title-page h1 {
+  font-size: 1.8em;
+  color: #0070A8;
+  margin-bottom: 10px;
+}
+.subtitle {
+  color: #666;
+  margin-bottom: 40px;
+}
+
+/* モード選択ボタン */
+#mode-select {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+}
+
+.mode-btn {
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 18px 0;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 95%;
+  color: white;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s;
+}
+.mode-btn:active { transform: translateY(3px); box-shadow: none; }
+
+.normal-mode { background: linear-gradient(135deg, #0070A8 0%, #005885 100%); }
+.review-mode { background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); }
+.ta-mode { background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%); }
+
+.progress-panel {
+  background: #f4f8fb;
+  border: 1px solid #d9e6ef;
+  border-radius: 10px;
+  color: #24546d;
+  font-size: 0.95em;
+  line-height: 1.6;
+  margin: 0 0 24px;
+  padding: 12px 14px;
+}
+
+/* ---- クイズ画面 ---- */
+#timer-bar {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #d32f2f;
+  text-align: center;
+  margin-bottom: 25px;
+  padding: 10px;
+  background-color: #ffebee;
+  border-radius: 10px;
+  border: 2px solid #ffcdd2;
+}
+
+/* ペナルティ演出 */
+.penalty-flash { animation: flashRed 0.3s ease; }
+@keyframes flashRed {
+  0% { background-color: #ff0000; color: white; }
+  100% { background-color: #ffebee; color: #d32f2f; }
 }
 
 #question-number {
   font-weight: bold;
   color: #0070A8;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  font-size: 1.1em;
 }
 
 #question-text {
   white-space: pre-wrap;
-  line-height: 1.7;
+  line-height: 1.8;
+  margin-bottom: 40px;
+  color: #222;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+/* 選択肢 */
+#choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
   margin-bottom: 25px;
-  color: #333;
-  text-align: left;
 }
 
-/* 選択肢・ボタン */
-#choices, #controls {
-  text-align: center;
-  margin-top: 10px;
+.choice {
+  font-size: 2.2em;
+  font-weight: bold;
+  padding: 15px 0;
+  border: 3px solid #0070A8;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #0070A8;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #005F8A;
+  transition: all 0.1s;
+  -webkit-tap-highlight-color: transparent;
 }
+.choice:active { transform: translateY(3px); box-shadow: 0 2px 0 #005F8A; }
 
-.choice,
-#unknown-btn,
-#next-btn,
-#copy-btn {
+#unknown-btn {
+  grid-column: 1 / span 2;
   font-size: 1.1em;
-  padding: 10px 25px;
-  margin: 5px;
+  padding: 14px;
   border: none;
   border-radius: 10px;
-  background-color: #0070A8;
-  color: white;
+  background-color: #e0e0e0;
+  color: #555;
+  font-weight: bold;
+  box-shadow: 0 4px 0 #bbb;
   cursor: pointer;
-  transition: 0.2s ease;
+}
+#unknown-btn:active { transform: translateY(3px); box-shadow: none; }
+
+/* コントロール */
+#controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
 }
 
-.choice:hover,
-#unknown-btn:hover,
-#next-btn:hover,
-#copy-btn:hover {
-  background-color: #005F8A;
+#next-btn, #copy-btn {
+  width: 100%;
+  font-size: 1.1em;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #0070A8, #005F8A);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 95, 138, 0.3);
 }
+#next-btn:active, #copy-btn:active { transform: translateY(2px); box-shadow: none; }
 
-/* 結果表示 */
+#home-btn {
+  width: 100%;
+  font-size: 1em;
+  padding: 14px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #666;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #ddd;
+}
+#home-btn:active { transform: translateY(2px); box-shadow: none; background: #f9f9f9; }
+
 #result {
-  font-size: 1.2em;
-  margin-top: 20px;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 20px 0;
   height: 1.5em;
   text-align: center;
 }
 
-/* 進捗情報 */
 #progress-info {
-  margin-top: 25px;
-  font-weight: bold;
-  text-align: right;
-  color: #444;
-}
-
-/* 汎用 */
-.hidden {
-  display: none;
-}
-
-/* スマホ最適化 */
-@media (max-width: 480px) {
-  main {
-    margin-top: 20px;
-    padding: 20px 15px 40px;
-  }
-  .choice,
-  #unknown-btn,
-  #next-btn,
-  #copy-btn {
-    font-size: 1em;
-    padding: 10px 20px;
-    margin: 4px;
-  }
-  #question-text {
-    font-size: 0.95em;
-    line-height: 1.6;
-  }
-}
-/* ---- 表紙ページ ---- */
-.title-page {
+  margin-top: 30px;
+  font-size: 0.9em;
   text-align: center;
-  margin-top: 25vh;
-  background: #f7f9fc;
-  color: #222;
+  color: #888;
+  line-height: 1.6;
 }
 
-.title-page h1 {
-  font-size: 1.8em;
-  color: #0070A8;
-  margin-bottom: 10px;
-  line-height: 1.4;
-}
-
-.subtitle {
-  color: #555;
-  font-size: 1em;
+/* ---- リザルト画面 ---- */
+#final-result-area { text-align: center; padding-top: 20px; }
+.ta-title { color: #d32f2f; font-size: 2em; margin-bottom: 30px; }
+.result-stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
   margin-bottom: 40px;
 }
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stat-label { font-size: 1em; color: #666; }
+.stat-value { font-size: 2.5em; font-weight: bold; color: #333; }
 
-#start-btn {
-  font-size: 1.2em;
-  background: #0070A8;
-  color: white;
-  padding: 12px 36px;
+#ta-controls { display: flex; flex-direction: column; gap: 15px; }
+.control-btn {
+  font-size: 1.1em;
+  padding: 15px;
   border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.2s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#start-btn:hover {
-  background: #005F8A;
-}
-
-footer {
-  margin-top: 60px;
-  color: #777;
-  font-size: 0.9em;
-}
-
-footer a {
-  color: #0070A8;
-  text-decoration: none;
+  border-radius: 10px;
+  color: white;
   font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
+.control-btn:active { transform: translateY(2px); box-shadow: none; }
+.blue-btn { background: #0070A8; }
+.black-btn { background: #000; }
+.gray-btn { background: #888; }
 
-footer a:hover {
-  text-decoration: underline;
-}
+.hidden { display: none !important; }
+
+footer { margin-top: 50px; color: #888; font-size: 0.85em; border-top: 1px solid #eee; padding-top: 20px; }
+footer a { color: #0070A8; text-decoration: none; }
