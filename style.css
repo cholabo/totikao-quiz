@@ -1,9 +1,3 @@
-/* ================================
-   土地家屋調査士クイズアプリ Ver.4.0
-   - 実用性重視・リッチなシンプルデザイン
-   - ベースカラー: #0070A8
-================================= */
-
 body {
   font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
   background: #eef2f6;
@@ -28,22 +22,22 @@ main {
   box-sizing: border-box;
 }
 
-/* ---- トップ画面 ---- */
 .title-page {
   text-align: center;
   margin-top: 10vh;
 }
+
 .title-page h1 {
   font-size: 1.8em;
   color: #0070A8;
   margin-bottom: 10px;
 }
+
 .subtitle {
   color: #666;
   margin-bottom: 40px;
 }
 
-/* モード選択ボタン */
 #mode-select {
   display: flex;
   flex-direction: column;
@@ -64,7 +58,11 @@ main {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.1s;
 }
-.mode-btn:active { transform: translateY(3px); box-shadow: none; }
+
+.mode-btn:active {
+  transform: translateY(3px);
+  box-shadow: none;
+}
 
 .normal-mode { background: linear-gradient(135deg, #0070A8 0%, #005885 100%); }
 .review-mode { background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); }
@@ -81,7 +79,6 @@ main {
   padding: 12px 14px;
 }
 
-/* ---- クイズ画面 ---- */
 #timer-bar {
   font-size: 1.8em;
   font-weight: bold;
@@ -94,8 +91,8 @@ main {
   border: 2px solid #ffcdd2;
 }
 
-/* ペナルティ演出 */
 .penalty-flash { animation: flashRed 0.3s ease; }
+
 @keyframes flashRed {
   0% { background-color: #ff0000; color: white; }
   100% { background-color: #ffebee; color: #d32f2f; }
@@ -117,7 +114,6 @@ main {
   font-weight: 500;
 }
 
-/* 選択肢 */
 #choices {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -138,7 +134,11 @@ main {
   transition: all 0.1s;
   -webkit-tap-highlight-color: transparent;
 }
-.choice:active { transform: translateY(3px); box-shadow: 0 2px 0 #005F8A; }
+
+.choice:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #005F8A;
+}
 
 #unknown-btn {
   grid-column: 1 / span 2;
@@ -152,9 +152,12 @@ main {
   box-shadow: 0 4px 0 #bbb;
   cursor: pointer;
 }
-#unknown-btn:active { transform: translateY(3px); box-shadow: none; }
 
-/* コントロール */
+#unknown-btn:active {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+
 #controls {
   display: flex;
   flex-direction: column;
@@ -162,7 +165,8 @@ main {
   margin-top: 30px;
 }
 
-#next-btn, #copy-btn {
+#next-btn,
+#copy-btn {
   width: 100%;
   font-size: 1.1em;
   padding: 14px;
@@ -174,7 +178,12 @@ main {
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 95, 138, 0.3);
 }
-#next-btn:active, #copy-btn:active { transform: translateY(2px); box-shadow: none; }
+
+#next-btn:active,
+#copy-btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
 
 #home-btn {
   width: 100%;
@@ -188,7 +197,12 @@ main {
   cursor: pointer;
   box-shadow: 0 3px 0 #ddd;
 }
-#home-btn:active { transform: translateY(2px); box-shadow: none; background: #f9f9f9; }
+
+#home-btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+  background: #f9f9f9;
+}
 
 #result {
   font-size: 1.5em;
@@ -206,24 +220,47 @@ main {
   line-height: 1.6;
 }
 
-/* ---- リザルト画面 ---- */
-#final-result-area { text-align: center; padding-top: 20px; }
-.ta-title { color: #d32f2f; font-size: 2em; margin-bottom: 30px; }
+#final-result-area {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.ta-title {
+  color: #d32f2f;
+  font-size: 2em;
+  margin-bottom: 30px;
+}
+
 .result-stats {
   display: flex;
   justify-content: center;
   gap: 30px;
   margin-bottom: 40px;
 }
+
 .stat-box {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.stat-label { font-size: 1em; color: #666; }
-.stat-value { font-size: 2.5em; font-weight: bold; color: #333; }
 
-#ta-controls { display: flex; flex-direction: column; gap: 15px; }
+.stat-label {
+  font-size: 1em;
+  color: #666;
+}
+
+.stat-value {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #333;
+}
+
+#ta-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .control-btn {
   font-size: 1.1em;
   padding: 15px;
@@ -234,12 +271,27 @@ main {
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
-.control-btn:active { transform: translateY(2px); box-shadow: none; }
+
+.control-btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
 .blue-btn { background: #0070A8; }
 .black-btn { background: #000; }
 .gray-btn { background: #888; }
 
 .hidden { display: none !important; }
 
-footer { margin-top: 50px; color: #888; font-size: 0.85em; border-top: 1px solid #eee; padding-top: 20px; }
-footer a { color: #0070A8; text-decoration: none; }
+footer {
+  margin-top: 50px;
+  color: #888;
+  font-size: 0.85em;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+footer a {
+  color: #0070A8;
+  text-decoration: none;
+}
