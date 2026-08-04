@@ -3,9 +3,11 @@ let usedQuestions = [];
 let currentQuestion = null;
 
 const LEARNING_STATE_KEY = "learningStateByLabel";
+const YEAR_MODE_START_KEY = "yearModeStartLabel";
 let learningState = loadLearningState();
 
 let currentMode = localStorage.getItem("quizMode") || "year";
+let yearModeFromSelection = false;
 let isTimeAttack = false;
 let timeLeft = 300;
 let timerInterval = null;
@@ -13,7 +15,7 @@ let taCorrectCount = 0;
 let taWrongCount = 0;
 let taSessionWrongList = [];
 
-fetch("questions.json")
+fetch("questions.json", { cache: "no-store" })
   .then(res => res.json())
   .then(data => {
     questions = data.map(normalizeQuestion).filter(q => q.label);
@@ -68,7 +70,8 @@ function getDefaultState() {
     correctCount: 0,
     wrongCount: 0,
     lastResult: null,
-    lastAnsweredAt: ""
+    lastAnsweredAt: "",
+    reviewCorrectStreak: 0
   };
 }
 
@@ -84,14 +87,37 @@ function setQuestionResult(question, result) {
     correctCount: current.correctCount || 0,
     wrongCount: current.wrongCount || 0,
     lastResult: result,
-    lastAnsweredAt: new Date().toISOString()
+    lastAnsweredAt: new Date().toISOString(),
+    reviewCorrectStreak: current.reviewCorrectStreak || 0
   };
 
-  if (result === "correct") next.correctCount += 1;
-  if (result === "wrong") next.wrongCount += 1;
+  if (result === "correct") {
+    next.correctCount += 1;
+
+    if (["wrong", "unknown"].includes(current.lastResult) || next.reviewCorrectStreak > 0) {
+      next.reviewCorrectStreak += 1;
+      if (next.reviewCorrectStreak < 3) {
+        next.lastResult = "wrong";
+      } else {
+        next.lastResult = "correct";
+        next.reviewCorrectStreak = 0;
+      }
+    }
+  }
+
+  if (result === "wrong") {
+    next.wrongCount += 1;
+    next.reviewCorrectStreak = 0;
+  }
+
+  if (result === "unknown") {
+    next.lastResult = "wrong";
+    next.reviewCorrectStreak = 0;
+  }
 
   learningState[key] = next;
   saveLearningState();
+  return next;
 }
 
 function isAnswered(question) {
@@ -106,9 +132,8 @@ function getProgress() {
   const total = questions.length;
   const unanswered = questions.filter(q => !isAnswered(q)).length;
   const review = questions.filter(isReviewTarget).length;
-  const unknown = questions.filter(q => getQuestionState(q).lastResult === "unknown").length;
   const completed = questions.filter(q => getQuestionState(q).lastResult === "correct").length;
-  return { total, unanswered, review, unknown, completed };
+  return { total, unanswered, review, completed };
 }
 
 function updateProgress() {
@@ -118,18 +143,20 @@ function updateProgress() {
   const p = getProgress();
   const modeName = currentMode === "review" ? "復習モード" : "年度順モード";
   progressInfo.textContent =
-    `${modeName}｜全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 保留${p.unknown}問 / 完了${p.completed}問`;
+    `${modeName}｜全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 完了${p.completed}問`;
 }
 
 function initStudyMode(mode) {
   isTimeAttack = false;
   currentMode = mode === "review" ? "review" : "year";
+  yearModeFromSelection = currentMode === "year" && Boolean(localStorage.getItem(YEAR_MODE_START_KEY));
   usedQuestions = [];
 
   document.getElementById("timer-bar").classList.add("hidden");
   document.getElementById("unknown-btn").classList.remove("hidden");
   document.getElementById("controls").classList.remove("hidden");
   document.getElementById("progress-info").classList.remove("hidden");
+  document.getElementById("list-btn").classList.toggle("hidden", currentMode !== "year");
 
   newQuestion();
 }
@@ -174,7 +201,7 @@ function newQuestion() {
 
   const available = currentMode === "review"
     ? shuffle(questions.filter(isReviewTarget))
-    : questions.filter(q => !isAnswered(q)).sort(compareQuestions);
+    : getYearModeQuestions();
 
   if (available.length === 0) {
     const message = currentMode === "review"
@@ -186,8 +213,29 @@ function newQuestion() {
   }
 
   currentQuestion = available[0];
+  if (currentMode === "year" && yearModeFromSelection) {
+    usedQuestions.push(getQuestionKey(currentQuestion));
+  }
   renderQuestion(currentQuestion);
   updateProgress();
+}
+
+function getYearModeQuestions() {
+  const sorted = [...questions].sort(compareQuestions);
+  const startLabel = localStorage.getItem(YEAR_MODE_START_KEY);
+  if (!startLabel) return sorted.filter(q => !isAnswered(q));
+
+  const startQuestion = questions.find(q => q.label === startLabel);
+  if (!startQuestion) {
+    localStorage.removeItem(YEAR_MODE_START_KEY);
+    yearModeFromSelection = false;
+    return sorted.filter(q => !isAnswered(q));
+  }
+
+  return sorted.filter(question =>
+    compareQuestions(question, startQuestion) >= 0 &&
+    !usedQuestions.includes(getQuestionKey(question))
+  );
 }
 
 function showTimeAttackQuestion() {
@@ -302,15 +350,21 @@ function handleAnswer(userChoice) {
   const correctAnswer = normalizeAnswer(currentQuestion.answer);
   const result = selected === correctAnswer ? "correct" : "wrong";
 
-  setQuestionResult(currentQuestion, result);
+  const nextState = setQuestionResult(currentQuestion, result);
 
   if (isTimeAttack) {
     handleTimeAttackResult(result);
     return;
   }
 
-  document.getElementById("result").textContent =
-    result === "correct" ? "◯ 正解" : "✕ 不正解";
+  if (result === "correct" && nextState.lastResult === "wrong") {
+    const remaining = 3 - nextState.reviewCorrectStreak;
+    document.getElementById("result").textContent =
+      `◯ 正解（復習完了まであと${remaining}回）`;
+  } else {
+    document.getElementById("result").textContent =
+      result === "correct" ? "◯ 正解" : "✕ 不正解（連続正解数をリセット）";
+  }
   document.getElementById("next-btn").classList.remove("hidden");
   updateProgress();
 }
@@ -319,7 +373,7 @@ function handleUnknown() {
   if (!currentQuestion || isTimeAttack) return;
 
   setQuestionResult(currentQuestion, "unknown");
-  document.getElementById("result").textContent = "？ 保留しました";
+  document.getElementById("result").textContent = "？ 復習対象にしました";
   document.getElementById("next-btn").classList.remove("hidden");
   updateProgress();
 }
@@ -363,20 +417,12 @@ function finishTimeAttack() {
 
 document.getElementById("next-btn").addEventListener("click", newQuestion);
 
-document.getElementById("copy-btn").addEventListener("click", () => {
-  const reviewLabels = questions.filter(isReviewTarget).map(q => q.label);
-  if (reviewLabels.length === 0) {
-    alert("復習対象の問題はありません。");
-    return;
-  }
-
-  navigator.clipboard.writeText(reviewLabels.join("\n")).then(() => {
-    alert(`${reviewLabels.length}件の復習対象ラベルをコピーしました。`);
-  });
-});
-
 document.getElementById("home-btn").addEventListener("click", () => {
   window.location.href = "index.html";
+});
+
+document.getElementById("list-btn").addEventListener("click", () => {
+  window.location.href = "question-list.html";
 });
 
 document.getElementById("ta-home-btn").addEventListener("click", () => {

@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>土地家屋調査士 過去問アプリ</title>
   <meta name="description" content="土地家屋調査士試験の過去問を年度順、復習、タイムアタックで学習できるクイズアプリです。" />
-  <link rel="stylesheet" href="style.css?v=1.2">
+  <link rel="stylesheet" href="style.css?v=1.4">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
@@ -31,8 +31,7 @@
 
     <footer>
       <p style="text-align: left; line-height: 1.6;">
-        年度順モードは、未回答の問題だけを順番に出題します。<br>
-        復習モードは、間違えた問題と「？」で保留した問題だけをランダムに出題します。<br>
+        復習モードは、復習対象の問題だけをランダムに出題します。3回連続で正解すると復習完了です。<br>
         タイムアタックは、間違えると残り時間が20秒減ります。
       </p>
       <p>
@@ -65,7 +64,6 @@
         total: questions.length,
         unanswered: questions.filter(q => !["correct", "wrong", "unknown"].includes(getResult(q))).length,
         review: questions.filter(q => ["wrong", "unknown"].includes(getResult(q))).length,
-        unknown: questions.filter(q => getResult(q) === "unknown").length,
         completed: questions.filter(q => getResult(q) === "correct").length
       };
     }
@@ -76,7 +74,7 @@
         .then(res => res.json())
         .then(questions => {
           const p = getProgress(questions.filter(q => q.label));
-          area.textContent = `全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 保留${p.unknown}問 / 完了${p.completed}問`;
+          area.textContent = `全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 完了${p.completed}問`;
         })
         .catch(() => {
           area.textContent = "進捗を読み込めませんでした。";
@@ -85,7 +83,7 @@
 
     document.getElementById("start-normal-btn").addEventListener("click", () => {
       localStorage.setItem("quizMode", "year");
-      window.location.href = "quiz.html";
+      window.location.href = "question-list.html";
     });
 
     document.getElementById("start-review-btn").addEventListener("click", () => {

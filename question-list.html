@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>問題一覧｜土地家屋調査士 過去問アプリ</title>
+  <meta name="description" content="土地家屋調査士試験の過去問を年度・問番号から選んで開始できます。">
+  <link rel="stylesheet" href="style.css?v=1.4">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <main class="list-page">
+    <header class="list-header">
+      <h1>年度順モード</h1>
+      <p>年度を開き、始めたい肢を選んでください。その位置から順番に出題します。</p>
+    </header>
+
+    <div id="list-progress-info" class="progress-panel">進捗を読み込み中...</div>
+
+    <div class="list-actions">
+      <button id="list-home-btn" class="list-action-btn list-action-secondary">トップに戻る</button>
+    </div>
+
+    <div class="status-legend" aria-label="学習状態の色分け">
+      <span class="legend-item"><span class="legend-dot status-unanswered"></span>未回答</span>
+      <span class="legend-item"><span class="legend-dot status-correct"></span>正解済み</span>
+      <span class="legend-item"><span class="legend-dot status-wrong"></span>復習</span>
+    </div>
+
+    <div id="question-list" aria-live="polite"></div>
+  </main>
+
+  <script src="question-list.js?v=1.6"></script>
+</body>
+</html>
