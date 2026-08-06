@@ -8,6 +8,8 @@ let learningState = loadLearningState();
 
 let currentMode = localStorage.getItem("quizMode") || "year";
 let yearModeFromSelection = false;
+let reviewSessionQuestions = [];
+let reviewSessionIndex = 0;
 let isTimeAttack = false;
 let timeLeft = 300;
 let timerInterval = null;
@@ -151,6 +153,10 @@ function initStudyMode(mode) {
   currentMode = mode === "review" ? "review" : "year";
   yearModeFromSelection = currentMode === "year" && Boolean(localStorage.getItem(YEAR_MODE_START_KEY));
   usedQuestions = [];
+  reviewSessionQuestions = currentMode === "review"
+    ? questions.filter(isReviewTarget).sort(compareQuestions)
+    : [];
+  reviewSessionIndex = 0;
 
   document.getElementById("timer-bar").classList.add("hidden");
   document.getElementById("unknown-btn").classList.remove("hidden");
@@ -199,15 +205,15 @@ function newQuestion() {
     return;
   }
 
-  const available = currentMode === "review"
-    ? shuffle(questions.filter(isReviewTarget))
-    : getYearModeQuestions();
+  if (currentMode === "review") {
+    showReviewQuestion();
+    return;
+  }
+
+  const available = getYearModeQuestions();
 
   if (available.length === 0) {
-    const message = currentMode === "review"
-      ? "復習対象の問題はありません。"
-      : "年度順モードの未回答問題はありません。";
-    showNoQuestionMessage(message);
+    showNoQuestionMessage("年度順モードの未回答問題はありません。");
     updateProgress();
     return;
   }
@@ -216,6 +222,24 @@ function newQuestion() {
   if (currentMode === "year" && yearModeFromSelection) {
     usedQuestions.push(getQuestionKey(currentQuestion));
   }
+  renderQuestion(currentQuestion);
+  updateProgress();
+}
+
+function showReviewQuestion() {
+  if (reviewSessionQuestions.length === 0) {
+    showNoQuestionMessage("復習対象の問題はありません。");
+    updateProgress();
+    return;
+  }
+
+  if (reviewSessionIndex >= reviewSessionQuestions.length) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  currentQuestion = reviewSessionQuestions[reviewSessionIndex];
+  reviewSessionIndex += 1;
   renderQuestion(currentQuestion);
   updateProgress();
 }
@@ -259,7 +283,11 @@ function renderQuestion(question) {
   document.getElementById("choices").classList.remove("hidden");
 
   if (!isTimeAttack) {
-    document.getElementById("next-btn").classList.add("hidden");
+    const nextButton = document.getElementById("next-btn");
+    nextButton.textContent = currentMode === "review" && reviewSessionIndex >= reviewSessionQuestions.length
+      ? "トップに戻る"
+      : "次の問題へ";
+    nextButton.classList.add("hidden");
   }
 }
 
