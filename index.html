@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>土地家屋調査士 過去問アプリ</title>
   <meta name="description" content="土地家屋調査士試験の過去問を年度順、復習、タイムアタックで学習できるクイズアプリです。" />
-  <link rel="stylesheet" href="style.css?v=1.4">
+  <link rel="stylesheet" href="style.css?v=1.5">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
@@ -25,6 +25,7 @@
 
     <div id="mode-select">
       <button id="start-normal-btn" class="mode-btn normal-mode">年度順モード</button>
+      <button id="resume-year-btn" class="mode-btn resume-mode hidden">続きから</button>
       <button id="start-review-btn" class="mode-btn review-mode">復習モード</button>
       <button id="start-timeattack-btn" class="mode-btn ta-mode">タイムアタック（5分）</button>
     </div>
@@ -47,6 +48,8 @@
 
   <script>
     const LEARNING_STATE_KEY = "learningStateByLabel";
+    const YEAR_MODE_START_KEY = "yearModeStartLabel";
+    const YEAR_MODE_RESUME_KEY = "yearModeResumeLabel";
 
     function loadLearningState() {
       try {
@@ -70,15 +73,32 @@
 
     function updateTopProgress() {
       const area = document.getElementById("top-progress-info");
-      fetch("questions.json")
+      fetch("questions.json", { cache: "no-store" })
         .then(res => res.json())
         .then(questions => {
-          const p = getProgress(questions.filter(q => q.label));
+          const validQuestions = questions.filter(q => q.label);
+          const p = getProgress(validQuestions);
           area.textContent = `全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 完了${p.completed}問`;
+          updateResumeButton(validQuestions);
         })
         .catch(() => {
           area.textContent = "進捗を読み込めませんでした。";
         });
+    }
+
+    function updateResumeButton(questions) {
+      const button = document.getElementById("resume-year-btn");
+      const resumeLabel = localStorage.getItem(YEAR_MODE_RESUME_KEY);
+      const resumeExists = questions.some(question => question.label === resumeLabel);
+
+      if (!resumeExists) {
+        if (resumeLabel) localStorage.removeItem(YEAR_MODE_RESUME_KEY);
+        button.classList.add("hidden");
+        return;
+      }
+
+      button.textContent = `続きから（${resumeLabel}）`;
+      button.classList.remove("hidden");
     }
 
     document.getElementById("start-normal-btn").addEventListener("click", () => {
@@ -88,6 +108,14 @@
 
     document.getElementById("start-review-btn").addEventListener("click", () => {
       localStorage.setItem("quizMode", "review");
+      window.location.href = "quiz.html";
+    });
+
+    document.getElementById("resume-year-btn").addEventListener("click", () => {
+      const resumeLabel = localStorage.getItem(YEAR_MODE_RESUME_KEY);
+      if (!resumeLabel) return;
+      localStorage.setItem("quizMode", "year");
+      localStorage.setItem(YEAR_MODE_START_KEY, resumeLabel);
       window.location.href = "quiz.html";
     });
 

@@ -69,6 +69,11 @@ main {
 }
 
 .normal-mode { background: linear-gradient(135deg, #0070A8 0%, #005885 100%); }
+.resume-mode {
+  background: #fff;
+  border: 2px solid #0070A8;
+  color: #005f8a;
+}
 .review-mode { background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); }
 .ta-mode { background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%); }
 
@@ -336,6 +341,10 @@ main {
 .status-unanswered { background: #fff; color: #24546d; }
 .status-correct { background: #dff2e2; border-color: #7db386; color: #24602c; }
 .status-wrong { background: #fde2e2; border-color: #d58b8b; color: #9b2424; }
+
+.resume-position {
+  box-shadow: 0 0 0 3px #f0b429;
+}
 
 .list-error {
   color: #a02727;
