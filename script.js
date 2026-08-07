@@ -4,6 +4,7 @@ let currentQuestion = null;
 
 const LEARNING_STATE_KEY = "learningStateByLabel";
 const YEAR_MODE_START_KEY = "yearModeStartLabel";
+const YEAR_MODE_RESUME_KEY = "yearModeResumeLabel";
 let learningState = loadLearningState();
 
 let currentMode = localStorage.getItem("quizMode") || "year";
@@ -213,6 +214,13 @@ function newQuestion() {
   const available = getYearModeQuestions();
 
   if (available.length === 0) {
+    if (yearModeFromSelection) {
+      localStorage.removeItem(YEAR_MODE_START_KEY);
+      localStorage.removeItem(YEAR_MODE_RESUME_KEY);
+      window.location.href = "index.html";
+      return;
+    }
+
     showNoQuestionMessage("年度順モードの未回答問題はありません。");
     updateProgress();
     return;
@@ -221,6 +229,7 @@ function newQuestion() {
   currentQuestion = available[0];
   if (currentMode === "year" && yearModeFromSelection) {
     usedQuestions.push(getQuestionKey(currentQuestion));
+    localStorage.setItem(YEAR_MODE_RESUME_KEY, getQuestionKey(currentQuestion));
   }
   renderQuestion(currentQuestion);
   updateProgress();
@@ -284,10 +293,27 @@ function renderQuestion(question) {
 
   if (!isTimeAttack) {
     const nextButton = document.getElementById("next-btn");
-    nextButton.textContent = currentMode === "review" && reviewSessionIndex >= reviewSessionQuestions.length
-      ? "トップに戻る"
-      : "次の問題へ";
+    const isReviewEnd = currentMode === "review" && reviewSessionIndex >= reviewSessionQuestions.length;
+    const isYearEnd = currentMode === "year" && yearModeFromSelection && !getNextYearQuestion(question);
+    nextButton.textContent = isReviewEnd || isYearEnd ? "トップに戻る" : "次の問題へ";
     nextButton.classList.add("hidden");
+  }
+}
+
+function getNextYearQuestion(question) {
+  const sorted = [...questions].sort(compareQuestions);
+  const currentIndex = sorted.findIndex(item => getQuestionKey(item) === getQuestionKey(question));
+  return currentIndex >= 0 ? sorted[currentIndex + 1] || null : null;
+}
+
+function advanceYearModeResume(question) {
+  if (currentMode !== "year" || !yearModeFromSelection) return;
+
+  const nextQuestion = getNextYearQuestion(question);
+  if (nextQuestion) {
+    localStorage.setItem(YEAR_MODE_RESUME_KEY, getQuestionKey(nextQuestion));
+  } else {
+    localStorage.removeItem(YEAR_MODE_RESUME_KEY);
   }
 }
 
@@ -385,6 +411,8 @@ function handleAnswer(userChoice) {
     return;
   }
 
+  advanceYearModeResume(currentQuestion);
+
   if (result === "correct" && nextState.lastResult === "wrong") {
     const remaining = 3 - nextState.reviewCorrectStreak;
     document.getElementById("result").textContent =
@@ -401,6 +429,7 @@ function handleUnknown() {
   if (!currentQuestion || isTimeAttack) return;
 
   setQuestionResult(currentQuestion, "unknown");
+  advanceYearModeResume(currentQuestion);
   document.getElementById("result").textContent = "？ 復習対象にしました";
   document.getElementById("next-btn").classList.remove("hidden");
   updateProgress();

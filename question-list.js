@@ -1,5 +1,6 @@
 const LEARNING_STATE_KEY = "learningStateByLabel";
 const YEAR_MODE_START_KEY = "yearModeStartLabel";
+const YEAR_MODE_RESUME_KEY = "yearModeResumeLabel";
 
 let questions = [];
 let learningState = loadLearningState();
@@ -12,6 +13,7 @@ fetch("questions.json", { cache: "no-store" })
   .then(data => {
     questions = data.filter(question => question.label).sort(compareQuestions);
     renderProgress();
+    renderResumeAction();
     renderQuestionList();
   })
   .catch(() => {
@@ -103,6 +105,9 @@ function createQuestionButton(question) {
   const button = document.createElement("button");
   button.type = "button";
   button.className = `question-link status-${result}`;
+  if (question.label === localStorage.getItem(YEAR_MODE_RESUME_KEY)) {
+    button.classList.add("resume-position");
+  }
   button.textContent = question.choice || extractChoice(question.label) || question.label;
   button.title = `${question.label}（${statusText}）から始める`;
   button.setAttribute("aria-label", button.title);
@@ -114,10 +119,27 @@ function startYearMode(label) {
   localStorage.setItem("quizMode", "year");
   if (label) {
     localStorage.setItem(YEAR_MODE_START_KEY, label);
+    localStorage.setItem(YEAR_MODE_RESUME_KEY, label);
   } else {
     localStorage.removeItem(YEAR_MODE_START_KEY);
   }
   window.location.href = "quiz.html";
+}
+
+function renderResumeAction() {
+  const button = document.getElementById("list-resume-btn");
+  const resumeLabel = localStorage.getItem(YEAR_MODE_RESUME_KEY);
+  const resumeExists = questions.some(question => question.label === resumeLabel);
+
+  if (!resumeExists) {
+    if (resumeLabel) localStorage.removeItem(YEAR_MODE_RESUME_KEY);
+    button.classList.add("hidden");
+    return;
+  }
+
+  button.textContent = `続きから（${resumeLabel}）`;
+  button.classList.remove("hidden");
+  button.addEventListener("click", () => startYearMode(resumeLabel), { once: true });
 }
 
 function groupBy(items, getKey) {
