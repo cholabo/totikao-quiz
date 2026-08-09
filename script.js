@@ -152,7 +152,9 @@ function updateProgress() {
 function initStudyMode(mode) {
   isTimeAttack = false;
   currentMode = mode === "review" ? "review" : "year";
-  yearModeFromSelection = currentMode === "year" && Boolean(localStorage.getItem(YEAR_MODE_START_KEY));
+  yearModeFromSelection = currentMode === "year" && Boolean(
+    localStorage.getItem(YEAR_MODE_RESUME_KEY) || localStorage.getItem(YEAR_MODE_START_KEY)
+  );
   usedQuestions = [];
   reviewSessionQuestions = currentMode === "review"
     ? questions.filter(isReviewTarget).sort(compareQuestions)
@@ -255,7 +257,8 @@ function showReviewQuestion() {
 
 function getYearModeQuestions() {
   const sorted = [...questions].sort(compareQuestions);
-  const startLabel = localStorage.getItem(YEAR_MODE_START_KEY);
+  const startLabel = localStorage.getItem(YEAR_MODE_RESUME_KEY)
+    || localStorage.getItem(YEAR_MODE_START_KEY);
   if (!startLabel) return sorted.filter(q => !isAnswered(q));
 
   const startQuestion = questions.find(q => q.label === startLabel);
