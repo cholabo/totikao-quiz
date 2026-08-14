@@ -5,6 +5,8 @@ let currentQuestion = null;
 const LEARNING_STATE_KEY = "learningStateByLabel";
 const YEAR_MODE_START_KEY = "yearModeStartLabel";
 const YEAR_MODE_RESUME_KEY = "yearModeResumeLabel";
+const MAX_RESPONSE_TIME_MS = 60 * 60 * 1000;
+const requestedStartLabel = new URLSearchParams(window.location.search).get("start");
 let learningState = loadLearningState();
 
 let currentMode = localStorage.getItem("quizMode") || "year";
@@ -17,11 +19,22 @@ let timerInterval = null;
 let taCorrectCount = 0;
 let taWrongCount = 0;
 let taSessionWrongList = [];
+let questionShownAt = 0;
+let sessionQuestionIndex = 0;
+let currentSessionQuestionIndex = 0;
+let isAnswerLocked = true;
 
 fetch("questions.json", { cache: "no-store" })
   .then(res => res.json())
   .then(data => {
     questions = data.map(normalizeQuestion).filter(q => q.label);
+
+    if (requestedStartLabel && questions.some(question => question.label === requestedStartLabel)) {
+      currentMode = "year";
+      localStorage.setItem("quizMode", "year");
+      localStorage.setItem(YEAR_MODE_START_KEY, requestedStartLabel);
+      localStorage.setItem(YEAR_MODE_RESUME_KEY, requestedStartLabel);
+    }
 
     if (currentMode === "timeattack") {
       initTimeAttack();
@@ -121,6 +134,70 @@ function setQuestionResult(question, result) {
   learningState[key] = next;
   saveLearningState();
   return next;
+}
+
+function getNowMilliseconds() {
+  try {
+    if (window.performance && typeof window.performance.now === "function") {
+      const value = window.performance.now();
+      if (Number.isFinite(value)) return value;
+    }
+  } catch {
+    // 計測用時計が利用できない場合は現在時刻へフォールバックする。
+  }
+  return Date.now();
+}
+
+function startQuestionMeasurement() {
+  questionShownAt = getNowMilliseconds();
+  sessionQuestionIndex += 1;
+  currentSessionQuestionIndex = sessionQuestionIndex;
+}
+
+function getSafeResponseTime() {
+  const elapsed = Math.round(getNowMilliseconds() - questionShownAt);
+  if (!Number.isFinite(elapsed)) return 0;
+  return Math.min(MAX_RESPONSE_TIME_MS, Math.max(0, elapsed));
+}
+
+function setAnswerControlsDisabled(disabled) {
+  document.querySelectorAll(".choice").forEach(button => {
+    button.disabled = disabled;
+  });
+  document.getElementById("unknown-btn").disabled = disabled;
+}
+
+function sendQuizAnswerEvent(question, result, selectedAnswer, previousState, nextState) {
+  const previousAttempts = Math.max(0, Number(previousState.attempts) || 0);
+  const parameters = {
+    question_label: String(question.label || ""),
+    year: String(question.year || String(question.label || "").split("-")[0] || ""),
+    question_no: String(question.questionNo || extractQuestionNo(question.label) || ""),
+    choice: String(question.choice || extractChoice(question.label) || ""),
+    answer_result: result,
+    selected_answer: selectedAnswer,
+    quiz_mode: currentMode,
+    attempt_number: Number(nextState.attempts) || previousAttempts + 1,
+    is_first_attempt: previousAttempts === 0 ? 1 : 0,
+    review_correct_streak: Math.max(0, Number(nextState.reviewCorrectStreak) || 0),
+    response_time_ms: getSafeResponseTime(),
+    session_question_index: currentSessionQuestionIndex
+  };
+
+  try {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "quiz_answer", parameters);
+    }
+  } catch {
+    // Analyticsの失敗はクイズの回答・保存処理へ影響させない。
+  }
+}
+
+function recordQuestionAnswer(question, result, selectedAnswer) {
+  const previousState = getQuestionState(question);
+  const nextState = setQuestionResult(question, result);
+  sendQuizAnswerEvent(question, result, selectedAnswer, previousState, nextState);
+  return nextState;
 }
 
 function isAnswered(question) {
@@ -293,6 +370,9 @@ function renderQuestion(question) {
     question.context ? `${question.context}\n\n${question.text}` : question.text;
   document.getElementById("result").textContent = "";
   document.getElementById("choices").classList.remove("hidden");
+  isAnswerLocked = false;
+  setAnswerControlsDisabled(false);
+  startQuestionMeasurement();
 
   if (!isTimeAttack) {
     const nextButton = document.getElementById("next-btn");
@@ -322,6 +402,8 @@ function advanceYearModeResume(question) {
 
 function showNoQuestionMessage(message) {
   currentQuestion = null;
+  isAnswerLocked = true;
+  setAnswerControlsDisabled(true);
   document.getElementById("question-number").textContent = "";
   document.getElementById("question-text").textContent = message;
   document.getElementById("choices").classList.add("hidden");
@@ -401,13 +483,17 @@ document.getElementById("unknown-btn").addEventListener("click", () => {
 });
 
 function handleAnswer(userChoice) {
-  if (!currentQuestion) return;
+  if (!currentQuestion || isAnswerLocked) return;
+
+  isAnswerLocked = true;
+  setAnswerControlsDisabled(true);
 
   const selected = normalizeAnswer(userChoice);
   const correctAnswer = normalizeAnswer(currentQuestion.answer);
   const result = selected === correctAnswer ? "correct" : "wrong";
+  const selectedAnswer = selected === "◯" ? "circle" : "cross";
 
-  const nextState = setQuestionResult(currentQuestion, result);
+  const nextState = recordQuestionAnswer(currentQuestion, result, selectedAnswer);
 
   if (isTimeAttack) {
     handleTimeAttackResult(result);
@@ -429,9 +515,11 @@ function handleAnswer(userChoice) {
 }
 
 function handleUnknown() {
-  if (!currentQuestion || isTimeAttack) return;
+  if (!currentQuestion || isTimeAttack || isAnswerLocked) return;
 
-  setQuestionResult(currentQuestion, "unknown");
+  isAnswerLocked = true;
+  setAnswerControlsDisabled(true);
+  recordQuestionAnswer(currentQuestion, "unknown", "unknown");
   advanceYearModeResume(currentQuestion);
   document.getElementById("result").textContent = "？ 復習対象にしました";
   document.getElementById("next-btn").classList.remove("hidden");
@@ -457,11 +545,15 @@ function handleTimeAttackResult(result) {
     }
   }
 
-  newQuestion();
+  setTimeout(() => {
+    if (isTimeAttack && timeLeft > 0) newQuestion();
+  }, 0);
 }
 
 function finishTimeAttack() {
   clearInterval(timerInterval);
+  isAnswerLocked = true;
+  setAnswerControlsDisabled(true);
   timeLeft = 0;
   updateTimerDisplay();
 
