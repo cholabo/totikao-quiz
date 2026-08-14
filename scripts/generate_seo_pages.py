@@ -88,7 +88,6 @@ def page_shell(
     canonical: str,
     css_href: str,
     favicon_href: str,
-    privacy_href: str,
     breadcrumbs: list[tuple[str, str, str]],
     breadcrumb_ld: list[tuple[str, str]],
     content: str,
@@ -122,7 +121,6 @@ def page_shell(
     <footer class="seo-footer">
       <p>掲載している過去問は、法務省「土地家屋調査士試験」の試験問題に基づきます。問題文の著作権は法務省に帰属します。</p>
       <p>本サイトは個人の学習支援を目的とした非公式サイトであり、法務省その他の公的機関とは関係ありません。</p>
-      <p><a href="{esc(privacy_href)}">アクセス解析とプライバシーについて</a></p>
     </footer>
   </main>
 </body>
@@ -177,7 +175,6 @@ def render_archive_index(site_url: str, grouped: dict[str, dict[int, list[dict]]
         canonical=canonical,
         css_href="../style.css",
         favicon_href="../favicon.ico",
-        privacy_href="../privacy.html",
         breadcrumbs=breadcrumbs,
         breadcrumb_ld=[(name, url) for name, _href, url in breadcrumbs],
         content=content,
@@ -223,7 +220,6 @@ def render_year_page(site_url: str, year: str, questions: dict[int, list[dict]])
         canonical=canonical,
         css_href="../../style.css",
         favicon_href="../../favicon.ico",
-        privacy_href="../../privacy.html",
         breadcrumbs=breadcrumbs,
         breadcrumb_ld=[(name, url) for name, _href, url in breadcrumbs],
         content=content,
@@ -307,7 +303,6 @@ def render_question_page(
         canonical=canonical,
         css_href="../../../style.css",
         favicon_href="../../../favicon.ico",
-        privacy_href="../../../privacy.html",
         breadcrumbs=breadcrumbs,
         breadcrumb_ld=[(name, url) for name, _href, url in breadcrumbs],
         content=content,

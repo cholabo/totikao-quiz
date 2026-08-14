@@ -564,7 +564,13 @@ footer a {
   display: grid;
   gap: 12px;
   list-style: none;
+  min-width: 0;
   padding: 0;
+}
+
+.seo-question-list li,
+.seo-question-list a {
+  min-width: 0;
 }
 
 .seo-year-grid {
@@ -600,8 +606,14 @@ footer a {
 .seo-question-preview {
   color: #44545c;
   flex: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.seo-choice-count {
+  flex: 0 0 auto;
   white-space: nowrap;
 }
 
@@ -717,11 +729,18 @@ footer a {
   }
 
   .seo-question-list a {
-    flex-wrap: wrap;
+    align-items: start;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    padding: 12px;
   }
 
   .seo-question-preview {
-    flex-basis: calc(100% - 60px);
+    display: -webkit-box;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .seo-choice-card {
