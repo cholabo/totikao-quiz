@@ -6,6 +6,7 @@ const LEARNING_STATE_KEY = "learningStateByLabel";
 const YEAR_MODE_START_KEY = "yearModeStartLabel";
 const YEAR_MODE_RESUME_KEY = "yearModeResumeLabel";
 const MAX_RESPONSE_TIME_MS = 60 * 60 * 1000;
+const QUIZ_FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbykTsPoM-VFHtSWZUmS-TTqZyi7gtJd637B94mw5i_rDgeNtd6_XCRLLTQQ7Z6Fj_x9/exec";
 const requestedStartLabel = new URLSearchParams(window.location.search).get("start");
 let learningState = loadLearningState();
 
@@ -23,6 +24,7 @@ let questionShownAt = 0;
 let sessionQuestionIndex = 0;
 let currentSessionQuestionIndex = 0;
 let isAnswerLocked = true;
+const feedbackSentLabels = new Set();
 
 fetch("questions.json", { cache: "no-store" })
   .then(res => res.json())
@@ -369,6 +371,8 @@ function renderQuestion(question) {
   document.getElementById("question-text").textContent =
     question.context ? `${question.context}\n\n${question.text}` : question.text;
   document.getElementById("result").textContent = "";
+  resetFeedbackArea();
+  showFeedbackArea();
   document.getElementById("choices").classList.remove("hidden");
   isAnswerLocked = false;
   setAnswerControlsDisabled(false);
@@ -408,7 +412,97 @@ function showNoQuestionMessage(message) {
   document.getElementById("question-text").textContent = message;
   document.getElementById("choices").classList.add("hidden");
   document.getElementById("result").textContent = "";
+  resetFeedbackArea();
   document.getElementById("next-btn").classList.add("hidden");
+}
+
+function resetFeedbackArea() {
+  const area = document.getElementById("feedback-area");
+  const form = document.getElementById("feedback-form");
+  const openButton = document.getElementById("feedback-open-btn");
+  const comment = document.getElementById("feedback-comment");
+  const status = document.getElementById("feedback-status");
+  if (!area || !form || !openButton || !comment || !status) return;
+
+  area.classList.add("hidden");
+  form.classList.add("hidden");
+  openButton.classList.remove("hidden");
+  openButton.disabled = false;
+  comment.value = "";
+  status.textContent = "";
+}
+
+function showFeedbackArea() {
+  if (currentMode !== "year" || isTimeAttack || !currentQuestion) return;
+  const area = document.getElementById("feedback-area");
+  const openButton = document.getElementById("feedback-open-btn");
+  const status = document.getElementById("feedback-status");
+  if (!area || !openButton || !status) return;
+
+  area.classList.remove("hidden");
+  if (feedbackSentLabels.has(currentQuestion.label)) {
+    openButton.classList.add("hidden");
+    status.textContent = "この問題は報告済みです。";
+  }
+}
+
+function openFeedbackForm() {
+  const form = document.getElementById("feedback-form");
+  const openButton = document.getElementById("feedback-open-btn");
+  const comment = document.getElementById("feedback-comment");
+  if (!form || !openButton || !comment) return;
+  openButton.classList.add("hidden");
+  form.classList.remove("hidden");
+  comment.focus();
+}
+
+function closeFeedbackForm() {
+  const form = document.getElementById("feedback-form");
+  const openButton = document.getElementById("feedback-open-btn");
+  const comment = document.getElementById("feedback-comment");
+  if (!form || !openButton || !comment) return;
+  form.classList.add("hidden");
+  openButton.classList.remove("hidden");
+  comment.value = "";
+}
+
+async function submitQuestionFeedback(event) {
+  event.preventDefault();
+  if (!currentQuestion || currentMode !== "year" || isTimeAttack) return;
+
+  const submitButton = document.getElementById("feedback-submit-btn");
+  const form = document.getElementById("feedback-form");
+  const openButton = document.getElementById("feedback-open-btn");
+  const comment = document.getElementById("feedback-comment");
+  const status = document.getElementById("feedback-status");
+  if (!submitButton || !form || !openButton || !comment || !status) return;
+
+  const questionId = String(currentQuestion.label || "").slice(0, 80);
+  if (!questionId || !QUIZ_FEEDBACK_ENDPOINT) {
+    status.textContent = "報告先を準備中です。";
+    return;
+  }
+
+  submitButton.disabled = true;
+  status.textContent = "送信中…";
+
+  try {
+    await fetch(QUIZ_FEEDBACK_ENDPOINT, {
+      method: "POST",
+      mode: "no-cors",
+      body: new URLSearchParams({
+        questionId,
+        comment: String(comment.value || "").trim().slice(0, 500)
+      })
+    });
+    feedbackSentLabels.add(questionId);
+    form.classList.add("hidden");
+    openButton.classList.add("hidden");
+    status.textContent = "報告しました。ありがとうございます。";
+  } catch {
+    status.textContent = "送信できませんでした。通信状態を確認して、もう一度お試しください。";
+    submitButton.disabled = false;
+  }
 }
 
 function compareQuestions(a, b) {
@@ -496,7 +590,7 @@ function handleAnswer(userChoice) {
   const nextState = recordQuestionAnswer(currentQuestion, result, selectedAnswer);
 
   if (isTimeAttack) {
-    handleTimeAttackResult(result);
+    handleTimeAttackResult(result, selected);
     return;
   }
 
@@ -511,6 +605,7 @@ function handleAnswer(userChoice) {
       result === "correct" ? "◯ 正解" : "✕ 不正解（連続正解数をリセット）";
   }
   document.getElementById("next-btn").classList.remove("hidden");
+  showFeedbackArea();
   updateProgress();
 }
 
@@ -523,15 +618,26 @@ function handleUnknown() {
   advanceYearModeResume(currentQuestion);
   document.getElementById("result").textContent = "？ 復習対象にしました";
   document.getElementById("next-btn").classList.remove("hidden");
+  showFeedbackArea();
   updateProgress();
 }
 
-function handleTimeAttackResult(result) {
+document.getElementById("feedback-open-btn")?.addEventListener("click", openFeedbackForm);
+document.getElementById("feedback-cancel-btn")?.addEventListener("click", closeFeedbackForm);
+document.getElementById("feedback-form")?.addEventListener("submit", submitQuestionFeedback);
+
+function handleTimeAttackResult(result, selectedAnswer) {
   if (result === "correct") {
     taCorrectCount++;
   } else {
     taWrongCount++;
-    taSessionWrongList.push(getQuestionKey(currentQuestion));
+    taSessionWrongList.push({
+      label: getQuestionKey(currentQuestion),
+      context: currentQuestion.context || "",
+      text: currentQuestion.text || "",
+      correctAnswer: normalizeAnswer(currentQuestion.answer),
+      selectedAnswer: normalizeAnswer(selectedAnswer)
+    });
     timeLeft -= 20;
     updateTimerDisplay();
 
@@ -565,6 +671,42 @@ function finishTimeAttack() {
 
   document.getElementById("score-correct").textContent = taCorrectCount;
   document.getElementById("score-wrong").textContent = taWrongCount;
+  renderTimeAttackWrongReview();
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function renderTimeAttackWrongReview() {
+  const reviewList = document.getElementById("ta-wrong-review-list");
+  const copyButton = document.getElementById("copy-ta-wrong-btn");
+  if (!reviewList || !copyButton) return;
+
+  if (taSessionWrongList.length === 0) {
+    reviewList.innerHTML = '<p class="ta-all-correct">間違えた問題はありません。全問正解です！</p>';
+    copyButton.classList.add("hidden");
+    return;
+  }
+
+  copyButton.classList.remove("hidden");
+  reviewList.innerHTML = taSessionWrongList.map(item => {
+    const questionText = item.context ? `${item.context}\n\n${item.text}` : item.text;
+    return `
+      <article class="ta-wrong-card">
+        <h4>${escapeHtml(item.label)}</h4>
+        <p class="ta-wrong-question">${escapeHtml(questionText)}</p>
+        <dl class="ta-wrong-answers">
+          <div><dt>正解</dt><dd>${escapeHtml(item.correctAnswer)}</dd></div>
+          <div><dt>あなたの解答</dt><dd>${escapeHtml(item.selectedAnswer)}</dd></div>
+        </dl>
+      </article>`;
+  }).join("");
 }
 
 document.getElementById("next-btn").addEventListener("click", newQuestion);
@@ -582,14 +724,14 @@ document.getElementById("ta-home-btn").addEventListener("click", () => {
 });
 
 document.getElementById("copy-ta-wrong-btn").addEventListener("click", () => {
-  const uniqueLabels = [...new Set(taSessionWrongList)];
+  const uniqueLabels = [...new Set(taSessionWrongList.map(item => item.label))];
   if (uniqueLabels.length === 0) {
     alert("タイムアタックで間違えた問題はありません。");
     return;
   }
 
   navigator.clipboard.writeText(uniqueLabels.join("\n")).then(() => {
-    alert("今回の誤答リストをコピーしました。");
+    alert("間違えた問題番号をコピーしました。");
   });
 });
 
