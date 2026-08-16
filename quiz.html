@@ -12,7 +12,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>土地家屋調査士クイズ</title>
-  <link rel="stylesheet" href="style.css?v=1.7">
+  <link rel="stylesheet" href="style.css?v=1.8">
 </head>
 <body>
   <main>
@@ -39,6 +39,19 @@
         <button id="list-btn" class="secondary-btn hidden">問題一覧へ戻る</button>
         <button id="home-btn">トップに戻る</button>
       </div>
+
+      <section id="feedback-area" class="feedback-area hidden" aria-label="問題の違和感を報告">
+        <button id="feedback-open-btn" type="button" class="feedback-open-btn">問題内容の違和感を報告</button>
+        <form id="feedback-form" class="feedback-form hidden">
+          <label for="feedback-comment">コメント（任意）</label>
+          <textarea id="feedback-comment" maxlength="500" rows="3" placeholder="どこが気になったか、書きたい場合だけ入力してください"></textarea>
+          <div class="feedback-actions">
+            <button id="feedback-submit-btn" type="submit">違和感ありとして送信</button>
+            <button id="feedback-cancel-btn" type="button" class="secondary-btn">キャンセル</button>
+          </div>
+        </form>
+        <p id="feedback-status" class="feedback-status" aria-live="polite"></p>
+      </section>
     </div>
 
     <div id="final-result-area" class="hidden">
@@ -54,8 +67,13 @@
         </div>
       </div>
 
+      <section id="ta-wrong-review" class="ta-wrong-review" aria-labelledby="ta-wrong-review-title">
+        <h3 id="ta-wrong-review-title">間違えた問題</h3>
+        <div id="ta-wrong-review-list" class="ta-wrong-review-list"></div>
+      </section>
+
       <div id="ta-controls">
-        <button id="copy-ta-wrong-btn" class="control-btn blue-btn">間違えた問題をコピー</button>
+        <button id="copy-ta-wrong-btn" class="control-btn blue-btn">問題番号をコピー</button>
         <button id="share-x-btn" class="control-btn black-btn">X用の結果をコピー</button>
         <button id="ta-home-btn" class="control-btn gray-btn">トップに戻る</button>
       </div>
@@ -63,6 +81,6 @@
 
     <div id="progress-info"></div>
   </main>
-  <script src="script.js?v=1.12"></script>
+  <script src="script.js?v=1.13"></script>
 </body>
 </html>
