@@ -163,6 +163,7 @@ def render_archive_index(site_url: str, grouped: dict[str, dict[int, list[dict]]
     </section>
     <div class="seo-cta-row">
       <a class="seo-primary-link" href="../question-list.html">クイズ形式で学習する</a>
+      <a class="seo-secondary-link" href="all-questions.html">全問題を一ページで見る</a>
       <a class="seo-secondary-link" href="../index.html">アプリのトップへ</a>
     </div>"""
     breadcrumbs = [
@@ -180,6 +181,55 @@ def render_archive_index(site_url: str, grouped: dict[str, dict[int, list[dict]]
         content=content,
     )
     (OUTPUT_DIR / "index.html").write_text(output, encoding="utf-8", newline="\n")
+
+
+def render_all_questions_page(site_url: str, grouped: dict[str, dict[int, list[dict]]]) -> None:
+    canonical = absolute_url(site_url, "kakomon/all-questions.html")
+    sections = []
+    total_questions = 0
+    for year in sorted(grouped, key=year_order, reverse=True):
+        slug = year_slug(year)
+        links = []
+        for number in sorted(grouped[year]):
+            items = sorted(grouped[year][number], key=question_sort_key)
+            preview = items[0].get("context") or items[0].get("text") or ""
+            links.append(
+                f'<li><a href="{slug}/q{number}/"><span class="seo-question-number">問{number}</span>'
+                f'<span class="seo-question-preview">{esc(truncate(preview, 72))}</span>'
+                f'<span class="seo-choice-count">全{len(items)}肢</span></a></li>'
+            )
+            total_questions += 1
+        sections.append(f"""    <section aria-labelledby="{slug}-heading">
+      <h2 id="{slug}-heading"><a href="{slug}/">{esc(year_name(year))}</a></h2>
+      <ul class="seo-question-list">{''.join(links)}</ul>
+    </section>""")
+
+    content = f"""    <header class="seo-header">
+      <p class="seo-eyebrow">検索エンジンと学習者向けの全問索引</p>
+      <h1>土地家屋調査士 過去問 全問題一覧</h1>
+      <p>平成17年度から令和7年度までの全{total_questions}問を一ページにまとめています。年度と問題番号から、問題文・各肢・○×解答のページへ直接移動できます。</p>
+    </header>
+{chr(10).join(sections)}
+    <div class="seo-cta-row">
+      <a class="seo-primary-link" href="./">年度別過去問へ戻る</a>
+      <a class="seo-secondary-link" href="../index.html">アプリのトップへ</a>
+    </div>"""
+    breadcrumbs = [
+        ("トップ", "../index.html", absolute_url(site_url, "")),
+        ("年度別過去問", "./", absolute_url(site_url, "kakomon/")),
+        ("全問題一覧", "", canonical),
+    ]
+    output = page_shell(
+        title="土地家屋調査士 過去問 全問題一覧【無料】",
+        description=f"土地家屋調査士試験の過去問全{total_questions}問を年度・問題番号別に一覧掲載。各問題の全肢と○×解答へ直接移動できます。",
+        canonical=canonical,
+        css_href="../style.css",
+        favicon_href="../favicon.ico",
+        breadcrumbs=breadcrumbs,
+        breadcrumb_ld=[(name, url) for name, _href, url in breadcrumbs],
+        content=content,
+    )
+    (OUTPUT_DIR / "all-questions.html").write_text(output, encoding="utf-8", newline="\n")
 
 
 def render_year_page(site_url: str, year: str, questions: dict[int, list[dict]]) -> None:
@@ -313,7 +363,7 @@ def render_question_page(
 
 
 def render_discovery_files(site_url: str, grouped: dict[str, dict[int, list[dict]]]) -> None:
-    paths = ["", "privacy.html", "kakomon/"]
+    paths = ["", "privacy.html", "kakomon/", "kakomon/all-questions.html"]
     for year in sorted(grouped, key=year_order):
         slug = year_slug(year)
         paths.append(f"kakomon/{slug}/")
@@ -344,6 +394,7 @@ def generate(site_url: str) -> tuple[int, int]:
     OUTPUT_DIR.mkdir(parents=True)
 
     render_archive_index(site_url, grouped)
+    render_all_questions_page(site_url, grouped)
     question_page_count = 0
     for year in sorted(grouped, key=year_order):
         questions = grouped[year]

@@ -89,7 +89,8 @@ def main() -> None:
     if len(question_pages) != len(grouped):
         fail(errors, f"問題ページ数が不一致: {len(question_pages)}")
 
-    html_pages = [OUTPUT_DIR / "index.html"] + sorted(OUTPUT_DIR.glob("*/index.html")) + question_pages
+    all_questions_page = OUTPUT_DIR / "all-questions.html"
+    html_pages = [OUTPUT_DIR / "index.html", all_questions_page] + sorted(OUTPUT_DIR.glob("*/index.html")) + question_pages
     titles: set[str] = set()
     descriptions: set[str] = set()
     canonicals: set[str] = set()
@@ -148,7 +149,7 @@ def main() -> None:
 
     sitemap_root = ET.parse(APP_DIR / "sitemap.xml").getroot()
     sitemap_urls = sitemap_root.findall("{http://www.sitemaps.org/schemas/sitemap/0.9}url")
-    expected_sitemap_count = 3 + len(year_dirs) + len(question_pages)
+    expected_sitemap_count = 4 + len(year_dirs) + len(question_pages)
     if len(sitemap_urls) != expected_sitemap_count:
         fail(errors, f"sitemap URL数が不一致: {len(sitemap_urls)} != {expected_sitemap_count}")
     robots = (APP_DIR / "robots.txt").read_text(encoding="utf-8")
