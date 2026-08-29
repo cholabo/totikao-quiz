@@ -118,6 +118,8 @@ def page_shell(
         else f'<li aria-current="page">{esc(name)}</li>'
         for index, (name, href, _url) in enumerate(breadcrumbs)
     )
+    # フッターから about.html / privacy.html へ戻る相対パス。css_href と同じ深さ
+    prefix = css_href[: -len("style.css")] if css_href.endswith("style.css") else ""
     og_image = absolute_url(site_url, "ogimage.png")
     extra = f'\n  <script type="application/ld+json">{extra_ld}</script>' if extra_ld else ""
     return f"""<!DOCTYPE html>
@@ -152,7 +154,7 @@ def page_shell(
 {content}
     <footer class="seo-footer">
       <p>掲載している過去問は、法務省「土地家屋調査士試験」の試験問題に基づきます。問題文の著作権は法務省に帰属します。</p>
-      <p>本サイトは個人の学習支援を目的とした非公式サイトであり、法務省その他の公的機関とは関係ありません。</p>
+      <p>本サイトは個人の学習支援を目的とした非公式サイトであり、法務省その他の公的機関とは関係ありません。<br><a href="{prefix}about.html">このサイトについて・免責事項</a>　/　<a href="{prefix}privacy.html">プライバシー</a></p>
     </footer>
   </main>
 </body>
