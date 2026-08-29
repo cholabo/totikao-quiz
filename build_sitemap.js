@@ -26,6 +26,8 @@ const pages = [];
       continue;
     }
     if (!entry.name.endsWith('.html') || entry.name.startsWith('_')) continue;
+    // Search Console の所有権確認ファイル。中身は1行で、読むものが無い
+    if (/^google[0-9a-f]+\.html$/.test(entry.name)) continue;
 
     const rel = path.relative(ROOT, full).split(path.sep).join('/');
     if (EXCLUDE.has(rel)) continue;
