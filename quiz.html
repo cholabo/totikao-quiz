@@ -11,31 +11,65 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>土地家屋調査士クイズ</title>
-  <link rel="stylesheet" href="style.css?v=1.8">
+  <title>問題を解く｜土地家屋調査士 過去問アプリ</title>
+  <meta name="description" content="土地家屋調査士試験の過去問を1肢ずつ◯✕で解きます。解答すると根拠の条文カードが開けます。">
+  <link rel="canonical" href="https://cholabo.jp/quiz.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="土地家屋調査士 過去問アプリ">
+  <meta property="og:title" content="問題を解く｜土地家屋調査士 過去問アプリ">
+  <meta property="og:description" content="土地家屋調査士試験の過去問を1肢ずつ◯✕で解きます。解答すると根拠の条文カードが開けます。">
+  <meta property="og:url" content="https://cholabo.jp/quiz.html">
+  <meta property="og:image" content="https://cholabo.jp/ogimage.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
+  <link rel="stylesheet" href="style.css?v=6.6">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#eff3f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f171c" media="(prefers-color-scheme: dark)">
 </head>
 <body>
-  <main>
+  <main class="quiz-page">
     <div id="timer-bar" class="hidden">
       残り時間: <span id="timer-display">05:00</span>
     </div>
 
     <div id="quiz-container">
-      <div id="question-area">
-        <div id="question-number"></div>
-        <div id="question-text"></div>
+      <div class="quiz-meta">
+        <span id="question-number"></span>
+        <span id="topic-chip" class="topic-chip hidden"></span>
       </div>
 
-      <div id="choices">
-        <button class="choice" data-choice="◯">◯</button>
-        <button class="choice" data-choice="✕">✕</button>
-        <button id="unknown-btn">？</button>
-      </div>
+      <div class="q-card">
+        <div id="question-area">
+          <p id="q-context" class="q-context hidden"></p>
+          <div id="question-text"></div>
+          <!-- 現行法に合わせて語句を直した肢の断り。原文のままだと誤解されないように、
+               解説を開かなくても問題文のすぐ下で見えるところに置く -->
+          <p id="q-edited" class="q-edited hidden">出題文のうち、法改正で呼び名が変わった語を現行の言い方に置き換えています。解答すると、どこを直したか解説に出ます。</p>
+        </div>
 
-      <div id="result"></div>
+        <!-- 解答したら「？」があった場所がそのまま「次の問題へ」になる。親指を動かさずに進めるため。 -->
+        <div id="choices">
+          <button class="choice" data-choice="◯">◯</button>
+          <button class="choice" data-choice="✕">✕</button>
+          <button id="unknown-btn">？</button>
+          <button id="next-btn" class="hidden">次の問題へ</button>
+        </div>
+
+        <div id="verdict" class="verdict hidden">
+          <div id="stamp" class="stamp" aria-hidden="true"></div>
+          <div id="result" class="verdict-text"></div>
+        </div>
+
+        <button id="exp-toggle" class="exp-toggle hidden" type="button" aria-expanded="false" aria-controls="explanation">解説を見る</button>
+
+        <section id="explanation" class="explanation hidden" aria-label="解説" aria-live="polite"></section>
+      </div>
 
       <div id="controls">
-        <button id="next-btn" class="hidden">次の問題へ</button>
         <button id="list-btn" class="secondary-btn hidden">問題一覧へ戻る</button>
         <button id="home-btn">トップに戻る</button>
       </div>
@@ -73,14 +107,44 @@
       </section>
 
       <div id="ta-controls">
-        <button id="copy-ta-wrong-btn" class="control-btn blue-btn">問題番号をコピー</button>
         <button id="share-x-btn" class="control-btn black-btn">X用の結果をコピー</button>
         <button id="ta-home-btn" class="control-btn gray-btn">トップに戻る</button>
       </div>
     </div>
 
     <div id="progress-info"></div>
+
+    <!-- 問題文を実際に出す画面なので、出どころはここにも置く -->
+    <footer class="page-credit">
+      <p>問題文は法務省「土地家屋調査士試験」によります。著作権は法務省に帰属します。
+      本サイトは個人の学習支援を目的とした非公式なものです。</p>
+      <p><a href="privacy.html">アクセス解析とプライバシー</a>　/　<a href="index.html">トップ</a></p>
+    </footer>
+    <!-- 解説の中身。解答直後の欄と、タイムアタックの振り返りの二か所で同じ形を使う -->
+    <template id="exp-template">
+      <p class="exp-core"></p>
+      <div class="exp-norule hidden">
+        <p class="exp-norule-claim"></p>
+      </div>
+      <p class="exp-doctrine hidden"></p>
+      <p class="exp-body"></p>
+      <p class="exp-review hidden"></p>
+      <p class="exp-superseded hidden"></p>
+      <!-- 条文と、規定が無いことを確かめた範囲は畳んでおく。まず結論を読み、
+           気になったときだけ開いて原文と裏取りに当たれるように -->
+      <details class="exp-cards hidden">
+        <summary></summary>
+        <div class="exp-cards-body">
+          <div class="exp-cards-list"></div>
+        </div>
+      </details>
+      <div class="exp-refs hidden">
+        <span class="exp-refs-label">関連法令</span>
+        <ul class="exp-refs-list"></ul>
+      </div>
+    </template>
   </main>
-  <script src="script.js?v=1.13"></script>
+  <script src="common.js?v=1.2"></script>
+  <script src="script.js?v=4.3"></script>
 </body>
 </html>

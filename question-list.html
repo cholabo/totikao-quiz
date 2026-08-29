@@ -5,8 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>問題一覧｜土地家屋調査士 過去問アプリ</title>
   <meta name="description" content="土地家屋調査士試験の過去問を年度・問番号から選んで開始できます。">
-  <link rel="stylesheet" href="style.css?v=1.7">
+  <link rel="canonical" href="https://cholabo.jp/question-list.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="土地家屋調査士 過去問アプリ">
+  <meta property="og:title" content="問題一覧｜土地家屋調査士 過去問アプリ">
+  <meta property="og:description" content="土地家屋調査士試験の過去問を年度・問番号から選んで開始できます。">
+  <meta property="og:url" content="https://cholabo.jp/question-list.html">
+  <meta property="og:image" content="https://cholabo.jp/ogimage.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
+  <link rel="stylesheet" href="style.css?v=6.6">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#eff3f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f171c" media="(prefers-color-scheme: dark)">
 </head>
 <body>
   <main class="list-page">
@@ -17,10 +31,10 @@
 
     <div id="list-progress-info" class="progress-panel">進捗を読み込み中...</div>
 
-    <div class="list-actions">
-      <button id="list-resume-btn" class="list-action-btn list-action-primary hidden">続きから</button>
-      <button id="list-home-btn" class="list-action-btn list-action-secondary">トップに戻る</button>
-    </div>
+    <section id="topic-panel" class="topic-panel hidden" aria-label="分野別の進み具合">
+      <h2 class="topic-panel-title">分野別の進み具合</h2>
+      <div id="topic-rows"></div>
+    </section>
 
     <div class="status-legend" aria-label="学習状態の色分け">
       <span class="legend-item"><span class="legend-dot status-unanswered"></span>未回答</span>
@@ -29,8 +43,15 @@
     </div>
 
     <div id="question-list" aria-live="polite"></div>
+
+    <footer class="page-credit">
+      <p>問題文は法務省「土地家屋調査士試験」によります。著作権は法務省に帰属します。
+      本サイトは個人の学習支援を目的とした非公式なものです。</p>
+      <p><a href="privacy.html">アクセス解析とプライバシー</a>　/　<a href="index.html">トップ</a></p>
+    </footer>
   </main>
 
-  <script src="question-list.js?v=1.7"></script>
+  <script src="common.js?v=1.2"></script>
+  <script src="question-list.js?v=2.1"></script>
 </body>
 </html>

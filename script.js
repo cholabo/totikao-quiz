@@ -2,16 +2,54 @@ let questions = [];
 let usedQuestions = [];
 let currentQuestion = null;
 
-const LEARNING_STATE_KEY = "learningStateByLabel";
-const YEAR_MODE_START_KEY = "yearModeStartLabel";
-const YEAR_MODE_RESUME_KEY = "yearModeResumeLabel";
+// 解説は年度ごとに分けてあり、出題中の年度の分だけ取りに行く。
+// 全年度をまとめると1.4MBあり、questions.json と合わせると初回が重くなるため。
+const explanationCache = new Map();
+
+function loadExplanations(year) {
+  if (!year) return Promise.resolve(null);
+  if (!explanationCache.has(year)) {
+    explanationCache.set(year, fetch(`data/exp-${year}.json`)
+      .then(res => (res.ok ? res.json() : null))
+      .catch(() => null));
+  }
+  return explanationCache.get(year);
+}
+
+function getExplanation(question) {
+  if (!question) return Promise.resolve(null);
+  return loadExplanations(question.year).then(map => (map ? map[question.label] || null : null));
+}
+
+// 分野は肢番号の右に小さく出すだけ。取れなくても出題は止めない。
+let topicMap = null;
+fetch("data/topics.json")
+  .then(res => (res.ok ? res.json() : null))
+  .then(map => {
+    topicMap = map;
+    if (currentQuestion) updateTopicChip(currentQuestion);
+  })
+  .catch(() => {});
+
+function updateTopicChip(question) {
+  const chip = document.getElementById("topic-chip");
+  if (!chip) return;
+  const topic = topicMap && question ? topicMap[question.label] : null;
+  chip.textContent = topic || "";
+  chip.classList.toggle("hidden", !topic);
+}
+
+// 学習状態のキー・並び順・進捗の集計は common.js にある。
 const MAX_RESPONSE_TIME_MS = 60 * 60 * 1000;
 const QUIZ_FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbykTsPoM-VFHtSWZUmS-TTqZyi7gtJd637B94mw5i_rDgeNtd6_XCRLLTQQ7Z6Fj_x9/exec";
-const requestedStartLabel = new URLSearchParams(window.location.search).get("start");
+const searchParams = new URLSearchParams(window.location.search);
+const requestedStartLabel = searchParams.get("start");
+const requestedMode = searchParams.get("mode");
 let learningState = loadLearningState();
 
-let currentMode = localStorage.getItem("quizMode") || "year";
+let currentMode = requestedMode || localStorage.getItem("quizMode") || "year";
 let yearModeFromSelection = false;
+let yearPassJustFinished = false;
 let reviewSessionQuestions = [];
 let reviewSessionIndex = 0;
 let isTimeAttack = false;
@@ -26,10 +64,12 @@ let currentSessionQuestionIndex = 0;
 let isAnswerLocked = true;
 const feedbackSentLabels = new Set();
 
-fetch("questions.json", { cache: "no-store" })
+fetch(QUESTIONS_URL)
   .then(res => res.json())
   .then(data => {
     questions = data.map(normalizeQuestion).filter(q => q.label);
+
+    if (requestedMode) localStorage.setItem("quizMode", requestedMode);
 
     if (requestedStartLabel && questions.some(question => question.label === requestedStartLabel)) {
       currentMode = "year";
@@ -63,15 +103,6 @@ function normalizeAnswer(value) {
   if (["◯", "○", "〇", "笳ｯ"].includes(answer)) return "◯";
   if (["✕", "×", "X", "x", "笨・"].includes(answer)) return "✕";
   return answer;
-}
-
-function loadLearningState() {
-  try {
-    const parsed = JSON.parse(localStorage.getItem(LEARNING_STATE_KEY) || "{}");
-    return parsed && typeof parsed === "object" ? parsed : {};
-  } catch {
-    return {};
-  }
 }
 
 function saveLearningState() {
@@ -210,22 +241,15 @@ function isReviewTarget(question) {
   return ["wrong", "unknown"].includes(getQuestionState(question).lastResult);
 }
 
-function getProgress() {
-  const total = questions.length;
-  const unanswered = questions.filter(q => !isAnswered(q)).length;
-  const review = questions.filter(isReviewTarget).length;
-  const completed = questions.filter(q => getQuestionState(q).lastResult === "correct").length;
-  return { total, unanswered, review, completed };
-}
-
 function updateProgress() {
   const progressInfo = document.getElementById("progress-info");
   if (!progressInfo || isTimeAttack) return;
 
-  const p = getProgress();
+  const p = summarizeProgress(questions, learningState);
   const modeName = currentMode === "review" ? "復習モード" : "年度順モード";
-  progressInfo.textContent =
-    `${modeName}｜全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 完了${p.completed}問`;
+  const pass = getPassCount();
+  progressInfo.textContent = `${modeName}${pass > 0 ? `（${pass + 1}周目）` : ""}`
+    + `｜全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 完了${p.completed}問`;
 }
 
 function initStudyMode(mode) {
@@ -292,16 +316,15 @@ function newQuestion() {
     return;
   }
 
+  // 最後の肢まで解き終えた。次の周の先頭は残してあるので、トップから1タップで入れる。
+  if (yearPassJustFinished) {
+    window.location.href = "index.html";
+    return;
+  }
+
   const available = getYearModeQuestions();
 
   if (available.length === 0) {
-    if (yearModeFromSelection) {
-      localStorage.removeItem(YEAR_MODE_START_KEY);
-      localStorage.removeItem(YEAR_MODE_RESUME_KEY);
-      window.location.href = "index.html";
-      return;
-    }
-
     showNoQuestionMessage("年度順モードの未回答問題はありません。");
     updateProgress();
     return;
@@ -367,28 +390,69 @@ function showTimeAttackQuestion() {
 }
 
 function renderQuestion(question) {
-  document.getElementById("question-number").textContent = `【${question.label}】`;
-  document.getElementById("question-text").textContent =
-    question.context ? `${question.context}\n\n${question.text}` : question.text;
-  document.getElementById("result").textContent = "";
+  document.getElementById("question-number").textContent = question.label;
+  updateTopicChip(question);
+  const context = document.getElementById("q-context");
+  context.textContent = question.context || "";
+  context.classList.toggle("hidden", !question.context);
+  document.getElementById("question-text").textContent = question.text;
+  // 語句を直した肢は、解く前から断っておく
+  document.getElementById("q-edited").classList.toggle("hidden", !question.edited);
+  hideVerdict();
+  hideExplanation();
   resetFeedbackArea();
   showFeedbackArea();
   document.getElementById("choices").classList.remove("hidden");
+  document.querySelectorAll(".choice").forEach(button => {
+    button.classList.remove("is-answer", "is-miss");
+  });
+  document.getElementById("next-btn").classList.add("hidden");
+  document.getElementById("unknown-btn").classList.toggle("hidden", isTimeAttack);
   isAnswerLocked = false;
   setAnswerControlsDisabled(false);
   startQuestionMeasurement();
+  if (!isTimeAttack) loadExplanations(question.year);   // 解答した瞬間に出せるよう先に取っておく
 
   if (!isTimeAttack) {
     const nextButton = document.getElementById("next-btn");
     const isReviewEnd = currentMode === "review" && reviewSessionIndex >= reviewSessionQuestions.length;
     const isYearEnd = currentMode === "year" && yearModeFromSelection && !getNextYearQuestion(question);
     nextButton.textContent = isReviewEnd || isYearEnd ? "トップに戻る" : "次の問題へ";
-    nextButton.classList.add("hidden");
   }
 }
 
+// 解答したら「？」を「次の問題へ」に差し替える。位置が変わらないので親指が動かない。
+function showNextButton(question) {
+  document.getElementById("unknown-btn").classList.add("hidden");
+  document.getElementById("next-btn").classList.remove("hidden");
+
+  const correctAnswer = normalizeAnswer(question.answer);
+  document.querySelectorAll(".choice").forEach(button => {
+    if (normalizeAnswer(button.dataset.choice) === correctAnswer) button.classList.add("is-answer");
+  });
+}
+
+// 判定は印で押す。kind: correct | wrong | unknown
+function showVerdict(kind, mark, message) {
+  const verdict = document.getElementById("verdict");
+  verdict.classList.remove("hidden", "is-correct", "is-wrong");
+  verdict.classList.add(kind === "correct" ? "is-correct" : "is-wrong");
+  const stamp = document.getElementById("stamp");
+  stamp.textContent = mark;
+  // 同じ印を続けて押しても毎回動くように、アニメーションを掛け直す
+  stamp.style.animation = "none";
+  void stamp.offsetWidth;
+  stamp.style.animation = "";
+  document.getElementById("result").textContent = message;
+}
+
+function hideVerdict() {
+  const verdict = document.getElementById("verdict");
+  if (verdict) verdict.classList.add("hidden");
+}
+
 function getNextYearQuestion(question) {
-  const sorted = [...questions].sort(compareQuestions);
+  const sorted = sortQuestions(questions);
   const currentIndex = sorted.findIndex(item => getQuestionKey(item) === getQuestionKey(question));
   return currentIndex >= 0 ? sorted[currentIndex + 1] || null : null;
 }
@@ -399,6 +463,17 @@ function advanceYearModeResume(question) {
   const nextQuestion = getNextYearQuestion(question);
   if (nextQuestion) {
     localStorage.setItem(YEAR_MODE_RESUME_KEY, getQuestionKey(nextQuestion));
+    return;
+  }
+
+  // 最後の肢を解き終えた。次の周の先頭へ巻き戻しておく。
+  // ここで消してしまうと、2周目を始めるのに一覧から肢を探すことになる。
+  const firstLabel = getFirstLabel(questions);
+  yearPassJustFinished = true;
+  setPassCount(getPassCount() + 1);
+  if (firstLabel) {
+    localStorage.setItem(YEAR_MODE_RESUME_KEY, firstLabel);
+    localStorage.setItem(YEAR_MODE_START_KEY, firstLabel);
   } else {
     localStorage.removeItem(YEAR_MODE_RESUME_KEY);
   }
@@ -409,11 +484,232 @@ function showNoQuestionMessage(message) {
   isAnswerLocked = true;
   setAnswerControlsDisabled(true);
   document.getElementById("question-number").textContent = "";
+  updateTopicChip(null);
+  document.getElementById("q-context").classList.add("hidden");
+  document.getElementById("q-edited").classList.add("hidden");
   document.getElementById("question-text").textContent = message;
   document.getElementById("choices").classList.add("hidden");
-  document.getElementById("result").textContent = "";
+  hideVerdict();
+  hideExplanation();
   resetFeedbackArea();
   document.getElementById("next-btn").classList.add("hidden");
+}
+
+function hideExplanation() {
+  const area = document.getElementById("explanation");
+  const toggle = document.getElementById("exp-toggle");
+  if (toggle) {
+    toggle.classList.add("hidden");
+    toggle.setAttribute("aria-expanded", "false");
+  }
+  if (!area) return;
+  area.classList.add("hidden");
+  area.dataset.label = "";
+}
+
+function openExplanation() {
+  const area = document.getElementById("explanation");
+  const toggle = document.getElementById("exp-toggle");
+  if (!area || !area.dataset.label) return;
+  area.classList.remove("hidden");
+  toggle.classList.add("hidden");
+  toggle.setAttribute("aria-expanded", "true");
+}
+
+// 条文カードを組み立てる。
+// 本文は条文が隣にある前提で書かれているので、原文はここで出す。ただし畳んでおく。
+// 見出しは条文ページ（アプリ内DB）へのリンクにして、そこから全文と e-Gov に行ける。
+function buildCard(c) {
+  const fig = document.createElement("figure");
+  fig.className = "law" + (c.k === "dir" ? " dir" : c.k === "case" ? " case" : "") + (c.g ? " gist" : "");
+
+  const cap = document.createElement("figcaption");
+  const href = c.u || (c.s ? `sources.html${c.h ? "?p=" + encodeURIComponent(c.h) : ""}#${c.s}` : null);
+  if (href) {
+    const a = document.createElement("a");
+    a.href = href;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.textContent = c.t;
+    cap.appendChild(a);
+  } else {
+    cap.appendChild(document.createTextNode(c.t));
+  }
+  // 原文に当たれていないものだけ、その場で分かるようにしておく。
+  // 「文章化」（要約であること）は枠を破線にして示す。どの資料で裏を取ったかは
+  // こちらの作業記録なので出さない。
+  if (c.uv) {
+    const s = document.createElement("span");
+    s.className = "law-chip law-uv";
+    s.textContent = "原文未確認";
+    cap.appendChild(s);
+  }
+  fig.appendChild(cap);
+
+  for (const l of c.l || []) {
+    const p = document.createElement("p");
+    p.className = "law-lead";
+    p.textContent = (l.k ? l.k + " ── " : "") + l.t;
+    fig.appendChild(p);
+  }
+  if (c.li) {
+    // 号の下の枝は「ア　…」と自前で番号を持っているので、こちらでは振らない
+    const list = document.createElement(c.br ? "ul" : "ol");
+    if (c.br) list.className = "law-branch";
+    for (const t of c.li) {
+      const li = document.createElement("li");
+      li.textContent = t;
+      list.appendChild(li);
+    }
+    fig.appendChild(list);
+  } else {
+    const p = document.createElement("p");
+    p.className = "law-text";
+    p.textContent = c.b || "";
+    fig.appendChild(p);
+  }
+  return fig;
+}
+
+// 解説の中身は quiz.html の <template> に一つだけ置いてある。
+// 解答直後の欄と、タイムアタックの振り返りで同じ形を使う。
+function newExplanationBody() {
+  const tpl = document.getElementById("exp-template");
+  return tpl ? tpl.content.cloneNode(true) : null;
+}
+
+// area は exp-template を写した中身を持つ要素。
+// 一言・解説・条文カード・関連法令をそこに埋める。
+// 問題文と条文の対比欄は、解説の中で同じことが言えているので置いていない。
+function fillExplanation(area, exp) {
+    area.querySelector(".exp-core").textContent = exp.c || "";
+    area.querySelector(".exp-body").textContent = exp.a || "";
+
+    // 「〜という規定はない」で解く肢。
+    // どこを探して無かったかは negative_rules.json に残してあり、ここには出さない。
+    const norule = area.querySelector(".exp-norule");
+    if (exp.n) {
+      area.querySelector(".exp-norule-claim").textContent = exp.n.c || "";
+      norule.classList.remove("hidden");
+    } else {
+      norule.classList.add("hidden");
+    }
+
+    // 条文・通達・判例のどれにも根拠が無く、講学上そう説明されているだけのもの
+    const doctrine = area.querySelector(".exp-doctrine");
+    if (exp.dc) {
+      doctrine.textContent = exp.dc;
+      doctrine.classList.remove("hidden");
+    } else {
+      doctrine.classList.add("hidden");
+    }
+
+    // 原典に当たれていないもの。作業のいきさつを書いたメモは内側に置いてあり、
+    // ここでは「当たれていない」という事実だけを一定の文言で伝える。
+    const review = area.querySelector(".exp-review");
+    if (exp.rn) {
+      review.textContent = "根拠にした通達・先例の原文には、当たれていない部分があります。";
+      review.classList.remove("hidden");
+    } else {
+      review.classList.add("hidden");
+    }
+
+    const cards = area.querySelector(".exp-cards");
+    const cardList = area.querySelector(".exp-cards-list");
+    const nCards = (exp.k || []).length;
+    cardList.textContent = "";
+    if (nCards) {
+      cards.open = false;
+      cards.querySelector("summary").textContent =
+        nCards > 1 ? `条文を見る（${nCards}件）` : "条文を見る";
+      exp.k.forEach(c => cardList.appendChild(buildCard(c)));
+      cards.classList.remove("hidden");
+    } else {
+      cards.classList.add("hidden");
+    }
+
+    // 出題当時と今とで扱いが違うもの。答えが逆になる肢は出題当時の解答を先に置く。
+    // 答えは変わらないが問題文の文言を直した肢もここに来るので、そのときは注記だけ出す。
+    const superseded = area.querySelector(".exp-superseded");
+    if (exp.s) {
+      superseded.textContent = exp.s.a && exp.s.a !== exp.v
+        ? `出題当時の解答は${exp.s.a}。${exp.s.n}`
+        : exp.s.n;
+      superseded.classList.remove("hidden");
+    } else {
+      superseded.classList.add("hidden");
+    }
+
+    const refsBox = area.querySelector(".exp-refs");
+    const list = area.querySelector(".exp-refs-list");
+    list.textContent = "";
+    if (exp.r && exp.r.length) {
+      exp.r.forEach(ref => {
+        const li = document.createElement("li");
+        // e-Gov にある条文は条・項を指定して直接飛ばす。
+        // 準則・通達・別表は e-Gov に無い（別表は項ごとの位置指定ができない）ので、アプリ内の資料へ。
+        // 資料は条まるごとを載せているので、指している項を p で渡して目立たせる
+        const inApp = ref.s
+          ? `sources.html${ref.h ? "?p=" + encodeURIComponent(ref.h) : ""}#${ref.s}`
+          : null;
+        const href = ref.u || inApp;
+        if (href) {
+          const a = document.createElement("a");
+          a.href = href;
+          a.target = "_blank";
+          a.rel = "noopener";
+          a.textContent = ref.t;
+          li.appendChild(a);
+        } else {
+          const span = document.createElement("span");
+          span.className = "exp-ref-plain";
+          span.textContent = ref.t;
+          li.appendChild(span);
+        }
+        if (ref.k) {
+          const chip = document.createElement("span");
+          chip.className = "exp-chip";
+          chip.textContent = ref.k;
+          li.appendChild(chip);
+        }
+        list.appendChild(li);
+      });
+      refsBox.classList.remove("hidden");
+    } else if (exp.uv) {
+      // 根拠なし解説：正直にその旨を示す
+      const li = document.createElement("li");
+      const span = document.createElement("span");
+      span.className = "exp-ref-plain exp-unverified";
+      span.textContent = "明確な根拠となる条文・先例は見つけられませんでした（実務・学説上の取扱い）";
+      li.appendChild(span);
+      list.appendChild(li);
+      refsBox.classList.remove("hidden");
+    } else {
+      refsBox.classList.add("hidden");
+    }
+}
+
+// 正解したときは閉じておく。周回を重ねると、知っている解説を毎回読まされるのが摩擦になるため。
+function showExplanation(question, shouldOpen) {
+  const area = document.getElementById("explanation");
+  if (!area || !question) return;
+  const label = question.label;
+
+  getExplanation(question).then(exp => {
+    // 待っている間に次の問題へ進んでいたら出さない
+    if (!exp || !currentQuestion || currentQuestion.label !== label) return;
+
+    area.textContent = "";
+    area.appendChild(newExplanationBody());
+    fillExplanation(area, exp);
+
+    area.dataset.label = label;
+    if (shouldOpen) {
+      area.classList.remove("hidden");
+    } else {
+      document.getElementById("exp-toggle").classList.remove("hidden");
+    }
+  });
 }
 
 function resetFeedbackArea() {
@@ -505,68 +801,7 @@ async function submitQuestionFeedback(event) {
   }
 }
 
-function compareQuestions(a, b) {
-  const ay = getYearOrder(a.year || a.label);
-  const by = getYearOrder(b.year || b.label);
-  if (ay !== by) return ay - by;
-
-  const aq = Number(a.questionNo || extractQuestionNo(a.label) || 0);
-  const bq = Number(b.questionNo || extractQuestionNo(b.label) || 0);
-  if (aq !== bq) return aq - bq;
-
-  const ac = getChoiceOrder(a.choice || extractChoice(a.label));
-  const bc = getChoiceOrder(b.choice || extractChoice(b.label));
-  if (ac !== bc) return ac - bc;
-
-  return a.label.localeCompare(b.label, "ja");
-}
-
-function getYearOrder(value) {
-  const text = String(value || "");
-  const h = text.match(/H(\d+)/i);
-  if (h) return Number(h[1]);
-  const r = text.match(/R(\d+)/i);
-  if (r) return 100 + Number(r[1]);
-  return 999;
-}
-
-function extractQuestionNo(label) {
-  const match = String(label || "").match(/^[HR]\d+-(\d+)/i);
-  return match ? Number(match[1]) : 0;
-}
-
-function extractChoice(label) {
-  const parts = String(label || "").split("-");
-  return parts[2] || "";
-}
-
-function getChoiceOrder(choice) {
-  const order = ["ア", "イ", "ウ", "エ", "オ", "1", "2", "3", "4", "5", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩"];
-  const normalized = normalizeChoice(choice);
-  const index = order.indexOf(normalized);
-  return index >= 0 ? index : 999;
-}
-
-function normalizeChoice(choice) {
-  const text = String(choice || "").trim();
-  const mojibakeMap = {
-    "繧｢": "ア",
-    "繧､": "イ",
-    "繧ｦ": "ウ",
-    "繧ｨ": "エ",
-    "繧ｪ": "オ"
-  };
-  return mojibakeMap[text] || text;
-}
-
-function shuffle(items) {
-  const copied = [...items];
-  for (let i = copied.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copied[i], copied[j]] = [copied[j], copied[i]];
-  }
-  return copied;
-}
+document.getElementById("exp-toggle")?.addEventListener("click", openExplanation);
 
 document.querySelectorAll(".choice").forEach(btn => {
   btn.addEventListener("click", () => handleAnswer(btn.dataset.choice));
@@ -598,13 +833,19 @@ function handleAnswer(userChoice) {
 
   if (result === "correct" && nextState.lastResult === "wrong") {
     const remaining = 3 - nextState.reviewCorrectStreak;
-    document.getElementById("result").textContent =
-      `◯ 正解（復習完了まであと${remaining}回）`;
+    showVerdict("correct", "◯", `正解（復習完了まであと${remaining}回）`);
+  } else if (result === "correct") {
+    showVerdict("correct", "◯", "正解");
   } else {
-    document.getElementById("result").textContent =
-      result === "correct" ? "◯ 正解" : "✕ 不正解（連続正解数をリセット）";
+    showVerdict("wrong", "✕", "不正解（連続正解数をリセット）");
   }
-  document.getElementById("next-btn").classList.remove("hidden");
+  if (result === "wrong") {
+    document.querySelectorAll(".choice").forEach(button => {
+      if (normalizeAnswer(button.dataset.choice) === selected) button.classList.add("is-miss");
+    });
+  }
+  showNextButton(currentQuestion);
+  showExplanation(currentQuestion, result === "wrong");
   showFeedbackArea();
   updateProgress();
 }
@@ -616,8 +857,10 @@ function handleUnknown() {
   setAnswerControlsDisabled(true);
   recordQuestionAnswer(currentQuestion, "unknown", "unknown");
   advanceYearModeResume(currentQuestion);
-  document.getElementById("result").textContent = "？ 復習対象にしました";
-  document.getElementById("next-btn").classList.remove("hidden");
+  // 印は正解の側を押して見せる。答えを確かめたい場面なので。
+  showVerdict("unknown", normalizeAnswer(currentQuestion.answer), "復習対象にしました");
+  showNextButton(currentQuestion);
+  showExplanation(currentQuestion, true);
   showFeedbackArea();
   updateProgress();
 }
@@ -633,6 +876,7 @@ function handleTimeAttackResult(result, selectedAnswer) {
     taWrongCount++;
     taSessionWrongList.push({
       label: getQuestionKey(currentQuestion),
+      year: currentQuestion.year,
       context: currentQuestion.context || "",
       text: currentQuestion.text || "",
       correctAnswer: normalizeAnswer(currentQuestion.answer),
@@ -674,39 +918,68 @@ function finishTimeAttack() {
   renderTimeAttackWrongReview();
 }
 
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
+// 間違えた肢の振り返り。問題文と解説を並べて置く。
+// 出題中はテンポを優先して条文を畳むが、ここは腰を据えて読む場なので
+// 長くなっても構わない。条文だけは同じように畳んでおく。
 function renderTimeAttackWrongReview() {
   const reviewList = document.getElementById("ta-wrong-review-list");
-  const copyButton = document.getElementById("copy-ta-wrong-btn");
-  if (!reviewList || !copyButton) return;
+  if (!reviewList) return;
+  reviewList.textContent = "";
 
   if (taSessionWrongList.length === 0) {
     reviewList.innerHTML = '<p class="ta-all-correct">間違えた問題はありません。全問正解です！</p>';
-    copyButton.classList.add("hidden");
     return;
   }
 
-  copyButton.classList.remove("hidden");
-  reviewList.innerHTML = taSessionWrongList.map(item => {
-    const questionText = item.context ? `${item.context}\n\n${item.text}` : item.text;
-    return `
-      <article class="ta-wrong-card">
-        <h4>${escapeHtml(item.label)}</h4>
-        <p class="ta-wrong-question">${escapeHtml(questionText)}</p>
-        <dl class="ta-wrong-answers">
-          <div><dt>正解</dt><dd>${escapeHtml(item.correctAnswer)}</dd></div>
-          <div><dt>あなたの解答</dt><dd>${escapeHtml(item.selectedAnswer)}</dd></div>
-        </dl>
-      </article>`;
-  }).join("");
+  for (const item of taSessionWrongList) {
+    const card = document.createElement("article");
+    card.className = "ta-wrong-card";
+
+    const head = document.createElement("h4");
+    head.textContent = item.label;
+    card.appendChild(head);
+
+    // 前提文と問題文。出題中の画面と同じ並びで置く
+    if (item.context) {
+      const ctx = document.createElement("p");
+      ctx.className = "ta-wrong-context";
+      ctx.textContent = item.context;
+      card.appendChild(ctx);
+    }
+    const question = document.createElement("p");
+    question.className = "ta-wrong-question";
+    question.textContent = item.text;
+    card.appendChild(question);
+
+    const dl = document.createElement("dl");
+    dl.className = "ta-wrong-answers";
+    for (const [term, value] of [["正解", item.correctAnswer], ["あなたの解答", item.selectedAnswer]]) {
+      const box = document.createElement("div");
+      const dt = document.createElement("dt");
+      dt.textContent = term;
+      const dd = document.createElement("dd");
+      dd.textContent = value;
+      box.append(dt, dd);
+      dl.appendChild(box);
+    }
+    card.appendChild(dl);
+
+    // 解説は年度ごとのファイルから取るので、カードを先に並べて後から埋める
+    const area = document.createElement("div");
+    area.className = "explanation ta-exp";
+    card.appendChild(area);
+    reviewList.appendChild(card);
+
+    getExplanation(item).then(exp => {
+      const body = exp && newExplanationBody();
+      if (!body) {
+        area.remove();
+        return;
+      }
+      area.appendChild(body);
+      fillExplanation(area, exp);
+    });
+  }
 }
 
 document.getElementById("next-btn").addEventListener("click", newQuestion);
@@ -721,18 +994,6 @@ document.getElementById("list-btn").addEventListener("click", () => {
 
 document.getElementById("ta-home-btn").addEventListener("click", () => {
   window.location.href = "index.html";
-});
-
-document.getElementById("copy-ta-wrong-btn").addEventListener("click", () => {
-  const uniqueLabels = [...new Set(taSessionWrongList.map(item => item.label))];
-  if (uniqueLabels.length === 0) {
-    alert("タイムアタックで間違えた問題はありません。");
-    return;
-  }
-
-  navigator.clipboard.writeText(uniqueLabels.join("\n")).then(() => {
-    alert("間違えた問題番号をコピーしました。");
-  });
 });
 
 document.getElementById("share-x-btn").addEventListener("click", () => {

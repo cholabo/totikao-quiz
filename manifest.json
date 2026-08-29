@@ -1,0 +1,21 @@
+{
+  "name": "土地家屋調査士 過去問アプリ",
+  "short_name": "調査士過去問",
+  "description": "土地家屋調査士試験の過去問を肢別に解く学習アプリ。年度順・復習・タイムアタック。",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#eff3f4",
+  "theme_color": "#eff3f4",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "復習モード", "url": "./quiz.html?mode=review" },
+    { "name": "タイムアタック", "url": "./quiz.html?mode=timeattack" }
+  ]
+}

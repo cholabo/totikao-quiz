@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import html
 import json
+import re
 import sys
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
@@ -108,15 +109,20 @@ def main() -> None:
             fail(errors, f"descriptionが不正: {relative}")
         if len(parser.canonicals) != 1 or not parser.canonicals[0].startswith("https://"):
             fail(errors, f"canonicalが不正: {relative}")
-        if len(parser.json_ld) != 1:
-            fail(errors, f"BreadcrumbListがない: {relative}")
-        else:
+        # JSON-LD は複数置く。問題ページは BreadcrumbList に加えて Quiz を持つ。
+        types = []
+        for block in parser.json_ld:
             try:
-                structured = json.loads(parser.json_ld[0])
-                if structured.get("@type") != "BreadcrumbList":
-                    fail(errors, f"BreadcrumbList形式が不正: {relative}")
+                types.append(json.loads(block).get("@type"))
             except json.JSONDecodeError:
                 fail(errors, f"JSON-LDが不正: {relative}")
+        if "BreadcrumbList" not in types:
+            fail(errors, f"BreadcrumbListがない: {relative}")
+
+        # SNS に共有したときのカード。全ページに要る
+        for prop in ('property="og:title"', 'property="og:image"', 'name="twitter:card"'):
+            if prop not in source:
+                fail(errors, f"{prop} がない: {relative}")
 
         title_start = source.find("<title>") + len("<title>")
         title_end = source.find("</title>", title_start)
@@ -147,14 +153,39 @@ def main() -> None:
                 if expected not in source:
                     fail(errors, f"{field}が本文にない: {year} 問{number} / {item.get('label')}")
 
+    # sitemap は build_sitemap.js が全ページ（判例・条文・分野別も含む）から作るので、
+    # 数を決め打ちで比べない。各ページの canonical が載っているかで確かめる。
     sitemap_root = ET.parse(APP_DIR / "sitemap.xml").getroot()
-    sitemap_urls = sitemap_root.findall("{http://www.sitemaps.org/schemas/sitemap/0.9}url")
-    expected_sitemap_count = 4 + len(year_dirs) + len(question_pages)
-    if len(sitemap_urls) != expected_sitemap_count:
-        fail(errors, f"sitemap URL数が不一致: {len(sitemap_urls)} != {expected_sitemap_count}")
+    ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
+    sitemap_urls = sitemap_root.findall(f"{ns}url")
+    listed = {url.findtext(f"{ns}loc") for url in sitemap_urls}
+    for page in html_pages:
+        source = page.read_text(encoding="utf-8")
+        match = re.search(r'<link rel="canonical" href="([^"]+)"', source)
+        if match and match.group(1) not in listed:
+            fail(errors, f"sitemapに載っていない: {page.relative_to(APP_DIR).as_posix()}")
     robots = (APP_DIR / "robots.txt").read_text(encoding="utf-8")
     if "Sitemap: https://" not in robots:
         fail(errors, "robots.txtにsitemap URLがない")
+
+    # 解説が問題ページに載っているか（載せるために生成器を書き換えたので、抜けたら気づきたい）
+    explanations: dict[str, dict] = {}
+    index_path = APP_DIR / "data" / "exp-index.json"
+    if index_path.exists():
+        for year in json.loads(index_path.read_text(encoding="utf-8")).get("years", []):
+            path = APP_DIR / "data" / f"exp-{year}.json"
+            if path.exists():
+                explanations.update(json.loads(path.read_text(encoding="utf-8")))
+    missing_exp = 0
+    for (year, number), items in grouped.items():
+        page = OUTPUT_DIR / year.lower() / f"q{number}" / "index.html"
+        source = page.read_text(encoding="utf-8") if page.exists() else ""
+        for item in items:
+            exp = explanations.get(str(item.get("label")))
+            if exp and exp.get("c") and html.escape(exp["c"], quote=True) not in source:
+                missing_exp += 1
+    if missing_exp:
+        fail(errors, f"解説が載っていない肢: {missing_exp}")
 
     if errors:
         print("Validation failed:", file=sys.stderr)

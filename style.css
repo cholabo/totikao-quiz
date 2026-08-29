@@ -1,7 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+
+/* ===== 配色「墨と朱」 =====
+   紙の地に墨で書き、藍を主役に、朱は印のように少しだけ使う。
+   色は必ずここの変数を通す。個別の指定に直接書くと、暗い配色のときに片方だけ残って読めなくなる。 */
+:root {
+  --bg: #eff3f4;            /* 紙 */
+  --surface: #ffffff;
+  --ink: #1e2c34;           /* 墨 */
+  --muted: #61747f;
+  --line: #d5e0e5;
+  --soft: #f3f7f9;
+  --primary: #0b6e9e;       /* 藍 */
+  --primary-deep: #08557a;
+  --on-primary: #ffffff;
+  --correct: #1f7a44;
+  --correct-soft: #e4f2e8;
+  --wrong: #b9423c;
+  --wrong-soft: #f8e9e7;
+  --seal: #ce4a2f;          /* 朱。印のように、ここぞという場所だけ */
+  --seal-soft: #fbeae6;
+  --focus: #f0b429;
+  --shadow: 0 1px 2px rgba(20, 40, 50, 0.06), 0 8px 24px rgba(20, 40, 50, 0.07);
+  /* モードボタンの面。明るい地では色を塗り、暗い地では沈ませて枠と文字で見せる */
+  --btn-primary-bg: #0b6e9e;   --btn-primary-fg: #ffffff;   --btn-primary-line: transparent;
+  --btn-review-bg:  #1f7a44;   --btn-review-fg:  #ffffff;   --btn-review-line:  transparent;
+  --btn-ta-bg:      #ce4a2f;   --btn-ta-fg:      #ffffff;   --btn-ta-line:      transparent;
+  --font-display: "Shippori Mincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", Meiryo, sans-serif;
+}
+
+/* 暗いときの配色。夜に長く見る画面なので、面は塗らず沈ませる。
+   同じ値を2箇所に書いているのは、OSの設定に従う場合と、明示的に暗いほうを選んだ場合の両方に効かせるため。 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1116;
+    --surface: #121b21;
+    --ink: #c8d6dd;
+    --muted: #7b8f9a;
+    --line: #21303a;
+    --soft: #16222a;
+    --primary: #4e9ec7;
+    --primary-deep: #6bb3d6;
+    --on-primary: #08131a;
+    --correct: #4e9f6e;
+    --correct-soft: #15281d;
+    --wrong: #c4685f;
+    --wrong-soft: #2d1d1a;
+    --seal: #c4603f;
+    --seal-soft: #281812;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.32);
+    --btn-primary-bg: #132c39;  --btn-primary-fg: #79b9db;  --btn-primary-line: #24506a;
+    --btn-review-bg:  #142a1e;  --btn-review-fg:  #6fb98c;  --btn-review-line:  #23543a;
+    --btn-ta-bg:      #2a1912;  --btn-ta-fg:      #d1785a;  --btn-ta-line:      #5a3122;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0b1116;
+  --surface: #121b21;
+  --ink: #c8d6dd;
+  --muted: #7b8f9a;
+  --line: #21303a;
+  --soft: #16222a;
+  --primary: #4e9ec7;
+  --primary-deep: #6bb3d6;
+  --on-primary: #08131a;
+  --correct: #4e9f6e;
+  --correct-soft: #15281d;
+  --wrong: #c4685f;
+  --wrong-soft: #2d1d1a;
+  --seal: #c4603f;
+  --seal-soft: #281812;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.32);
+  --btn-primary-bg: #132c39;  --btn-primary-fg: #79b9db;  --btn-primary-line: #24506a;
+  --btn-review-bg:  #142a1e;  --btn-review-fg:  #6fb98c;  --btn-review-line:  #23543a;
+  --btn-ta-bg:      #2a1912;  --btn-ta-fg:      #d1785a;  --btn-ta-line:      #5a3122;
+}
+
 body {
-  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-  background: #eef2f6;
-  color: #333;
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  background: var(--bg);
+  color: var(--ink);
   margin: 0;
   padding: 15px;
   display: flex;
@@ -9,14 +89,16 @@ body {
   align-items: flex-start;
   min-height: 100vh;
   box-sizing: border-box;
+  line-height: 1.8;
 }
 
 main {
-  background: #fff;
+  background: var(--surface);
   margin-top: 20px;
   padding: 30px 25px 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
   width: 100%;
   max-width: 500px;
   box-sizing: border-box;
@@ -28,165 +110,413 @@ main {
 
 .title-page {
   text-align: center;
-  margin-top: 10vh;
+  margin-top: 6vh;
 }
 
-.title-page h1 {
-  font-size: 1.8em;
-  color: #0070A8;
-  margin-bottom: 10px;
+/* ===== 表紙。測量方眼の地に、朱の印とアプリ名 ===== */
+.hero {
+  position: relative;
+  margin: -10px -5px 20px;
+  padding: 26px 0 24px;
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 26px 26px;
+  background-position: center center;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 90% 80% at center, transparent 20%, var(--surface) 92%);
+  pointer-events: none;
+}
+
+.hero-in {
+  position: relative;
+  z-index: 1;
+}
+
+.hanko {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 14px;
+  border: 2.5px solid var(--seal);
+  border-radius: 9px;
+  color: var(--seal);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 27px;
+  font-weight: 700;
+  transform: rotate(-3deg);
+  background: var(--surface);
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 1.6em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  color: var(--ink);
+  margin: 0 0 6px;
+  text-wrap: balance;
 }
 
 .subtitle {
-  color: #666;
-  margin-bottom: 40px;
+  color: var(--muted);
+  font-size: 0.8em;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+/* ===== 進捗。数字ひとつを大きく ===== */
+.dash {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px 12px;
+  margin: 0 0 24px;
+  text-align: left;
+}
+
+.dash-top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.dash-big {
+  font-family: var(--font-display);
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.dash-cap {
+  color: var(--muted);
+  font-size: 0.85em;
+  font-variant-numeric: tabular-nums;
+}
+
+.dash-sub {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.8em;
+  font-variant-numeric: tabular-nums;
 }
 
 #mode-select {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
   align-items: center;
   width: 100%;
 }
 
 .mode-btn {
-  font-size: 1.3em;
-  font-weight: bold;
-  padding: 18px 0;
-  border: none;
-  border-radius: 50px;
+  font-family: inherit;
+  font-size: 1.1em;
+  font-weight: 700;
+  padding: 17px 0;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
   cursor: pointer;
-  width: 95%;
-  color: white;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.1s;
+  width: 100%;
+  color: var(--on-primary);
+  transition: transform 0.08s ease, border-color 0.12s ease;
 }
 
 .mode-btn:active {
-  transform: translateY(3px);
-  box-shadow: none;
+  transform: translateY(2px);
 }
 
-.normal-mode { background: linear-gradient(135deg, #0070A8 0%, #005885 100%); }
+.normal-mode { background: var(--btn-primary-bg); color: var(--btn-primary-fg); border-color: var(--btn-primary-line); }
+.review-mode { background: var(--btn-review-bg);  color: var(--btn-review-fg);  border-color: var(--btn-review-line); }
+.ta-mode     { background: var(--btn-ta-bg);      color: var(--btn-ta-fg);      border-color: var(--btn-ta-line); }
+
 .resume-mode {
-  background: #fff;
-  border: 2px solid #0070A8;
-  color: #005f8a;
+  background: var(--surface);
+  border-color: var(--primary);
+  color: var(--primary);
 }
-.review-mode { background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); }
-.ta-mode { background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%); }
-.archive-mode {
-  background: linear-gradient(135deg, #6a5a21 0%, #4d4219 100%);
-  box-sizing: border-box;
+
+/* ===== データベース。出題モードの下に置く調べもの用の入口 =====
+   解くのと調べるのは目的が違うので、色は持たせず地色と線だけで四角に並べる。
+   モードボタンと同じ幅の中に 2×2。 */
+#db-select {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.db-heading {
+  font-family: var(--font-display);
+  font-size: 0.86em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin: 0 0 12px;
   text-align: center;
+}
+
+.db-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.db-btn {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  color: var(--primary);
   text-decoration: none;
+  text-align: center;
+  transition: transform 0.08s ease, border-color 0.12s ease;
+}
+
+.db-btn:hover,
+.db-btn:focus-visible { border-color: var(--primary); }
+.db-btn:active { transform: translateY(2px); }
+
+/* 表紙の印と同じ作り。四つを見分ける目印 */
+.db-btn-mark {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--seal);
+  border-radius: 7px;
+  color: var(--seal);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  transform: rotate(-3deg);
+}
+
+.db-btn-name {
+  font-family: var(--font-display);
+  font-size: 1.12em;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.db-btn-sub {
+  font-size: 0.72em;
+  line-height: 1.5;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 
 .progress-panel {
-  background: #f4f8fb;
-  border: 1px solid #d9e6ef;
+  background: var(--soft);
+  border: 1px solid var(--line);
   border-radius: 10px;
-  color: #24546d;
-  font-size: 0.95em;
-  line-height: 1.6;
+  color: var(--muted);
+  font-size: 0.9em;
+  line-height: 1.7;
   margin: 0 0 24px;
   padding: 12px 14px;
+  font-variant-numeric: tabular-nums;
 }
 
 #timer-bar {
-  font-size: 1.8em;
-  font-weight: bold;
-  color: #d32f2f;
+  font-family: var(--font-display);
+  font-size: 1.7em;
+  font-weight: 700;
+  color: var(--seal);
   text-align: center;
   margin-bottom: 25px;
   padding: 10px;
-  background-color: #ffebee;
+  background: var(--seal-soft);
   border-radius: 10px;
-  border: 2px solid #ffcdd2;
+  border: 1px solid var(--seal);
+  font-variant-numeric: tabular-nums;
 }
 
 .penalty-flash { animation: flashRed 0.3s ease; }
 
 @keyframes flashRed {
-  0% { background-color: #ff0000; color: white; }
-  100% { background-color: #ffebee; color: #d32f2f; }
+  0% { background: var(--seal); color: var(--surface); }
+  100% { background: var(--seal-soft); color: var(--seal); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .penalty-flash { animation: none; }
+  .mode-btn, .choice, #next-btn, #unknown-btn { transition: none; }
+}
+
+/* ===== 出題画面。地の上に問題カードを1枚置く ===== */
+.quiz-page {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  padding: 10px 0 40px;
+  margin-top: 0;
+}
+
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 22px 20px;
+}
+
+/* カードの上のメタ行。肢番号と分野 */
+.quiz-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 2px 10px;
+  min-height: 1.6em;
 }
 
 #question-number {
-  font-weight: bold;
-  color: #0070A8;
-  margin-bottom: 15px;
-  font-size: 1.1em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--seal);
+  font-size: 1em;
+}
+
+.topic-chip {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 1px 10px;
+  font-size: 0.74em;
+  color: var(--muted);
+}
+
+/* 柱書は問題文の前に、細い罫で */
+/* 前提文は問題文の一段下。読み飛ばす対象ではなく、問いの一部として読ませたい */
+.q-context {
+  font-size: 0.95em;
+  color: var(--muted);
+  border-left: 3px solid var(--line);
+  padding: 2px 0 2px 12px;
+  margin: 0 0 12px;
+  white-space: pre-wrap;
+  line-height: 1.9;
+}
+
+/* 現行法に合わせて語句を直した肢の断り。目立たせすぎると問題文より先に読まれるので、
+   小さく、地色だけで区切る */
+.q-edited {
+  font-size: 0.78em;
+  line-height: 1.7;
+  color: var(--muted);
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 7px 10px;
+  margin: 12px 0 0;
+  text-align: left;
 }
 
 #question-text {
   white-space: pre-wrap;
-  line-height: 1.8;
-  margin-bottom: 40px;
-  color: #222;
-  font-size: 1.2em;
+  line-height: 2;
+  margin-bottom: 24px;
+  color: var(--ink);
+  font-size: 1.05em;
   font-weight: 500;
 }
 
 #choices {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
+  gap: 12px;
   margin-bottom: 25px;
 }
 
 .choice {
-  font-size: 2.2em;
-  font-weight: bold;
-  padding: 15px 0;
-  border: 3px solid #0070A8;
+  font-family: var(--font-display);
+  font-size: 2em;
+  font-weight: 600;
+  padding: 13px 0;
+  border: 1.5px solid var(--line);
   border-radius: 12px;
-  background-color: #fff;
-  color: #0070A8;
+  background: var(--soft);
+  color: var(--ink);
   cursor: pointer;
-  box-shadow: 0 5px 0 #005F8A;
-  transition: all 0.1s;
+  transition: transform 0.08s ease, border-color 0.12s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-.choice:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 #005F8A;
-}
+.choice:hover { border-color: var(--primary); }
+.choice:active { transform: translateY(2px); }
 
 .choice:disabled,
 #unknown-btn:disabled {
   cursor: default;
-  opacity: 0.65;
+  opacity: 0.45;
 }
 
-.choice:disabled:active {
-  box-shadow: 0 5px 0 #005F8A;
-  transform: none;
+.choice:disabled:active { transform: none; }
+
+/* 正解の肢と、選んでしまった肢を、ボタンそのもので示す */
+.choice.is-answer {
+  background: var(--correct-soft);
+  border-color: var(--correct);
+  color: var(--correct);
 }
 
-#unknown-btn:disabled:active {
-  box-shadow: 0 4px 0 #bbb;
-  transform: none;
+.choice.is-miss {
+  background: var(--wrong-soft);
+  border-color: var(--wrong);
+  color: var(--wrong);
+}
+
+.choice.is-answer:disabled,
+.choice.is-miss:disabled {
+  opacity: 1;
+}
+
+/* 解答すると、この位置の「？」が「次の問題へ」に入れ替わる */
+#unknown-btn,
+#next-btn {
+  grid-column: 1 / span 2;
+  font-family: inherit;
+  font-size: 0.95em;
+  padding: 14px;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.08s ease;
 }
 
 #unknown-btn {
-  grid-column: 1 / span 2;
-  font-size: 1.1em;
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  background-color: #e0e0e0;
-  color: #555;
-  font-weight: bold;
-  box-shadow: 0 4px 0 #bbb;
-  cursor: pointer;
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--muted);
 }
 
-#unknown-btn:active {
-  transform: translateY(3px);
-  box-shadow: none;
+#next-btn {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+  border-color: var(--btn-primary-line);
+}
+
+#unknown-btn:active,
+#next-btn:active { transform: translateY(2px); }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 #controls {
@@ -196,43 +526,41 @@ main {
   margin-top: 30px;
 }
 
-#next-btn {
+/* 正解したときは解説を閉じておき、読みたいときだけ開く */
+.exp-toggle {
+  display: block;
   width: 100%;
-  font-size: 1.1em;
-  padding: 14px;
-  border: none;
+  margin: 0 0 10px;
+  padding: 11px;
+  border: 1px solid var(--line);
   border-radius: 10px;
-  background: linear-gradient(to bottom, #0070A8, #005F8A);
-  color: white;
-  font-weight: bold;
+  background: var(--soft);
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.9em;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 95, 138, 0.3);
 }
 
-#next-btn:active {
-  transform: translateY(2px);
-  box-shadow: none;
-}
+.exp-toggle:hover { color: var(--primary); border-color: var(--primary); }
 
 #home-btn,
 .secondary-btn {
   width: 100%;
-  font-size: 1em;
-  padding: 14px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  background-color: #fff;
-  color: #666;
-  font-weight: bold;
+  font-family: inherit;
+  font-size: 0.92em;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--muted);
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 3px 0 #ddd;
 }
 
 #home-btn:active,
 .secondary-btn:active {
   transform: translateY(2px);
-  box-shadow: none;
-  background: #f9f9f9;
+  background: var(--soft);
 }
 
 .list-header {
@@ -240,48 +568,69 @@ main {
 }
 
 .list-header h1 {
-  color: #0070A8;
-  font-size: 1.65em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--primary);
+  font-size: 1.5em;
   margin: 0 0 8px;
 }
 
 .list-header p {
-  color: #666;
-  line-height: 1.6;
+  color: var(--muted);
+  font-size: 0.9em;
+  line-height: 1.7;
   margin: 0;
 }
 
-.list-actions {
+/* 分野別の進み具合。出題を絞るためのものではなく、進みを眺めるためのもの */
+.topic-panel {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px 12px;
+  margin-bottom: 20px;
+}
+
+.topic-panel-title {
+  font-family: var(--font-display);
+  margin: 0 0 10px;
+  font-size: 0.82em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.topic-row {
   display: grid;
+  grid-template-columns: 5.2em 1fr 5.2em;
+  align-items: center;
   gap: 10px;
-  grid-template-columns: 1fr;
-  margin-bottom: 22px;
+  margin: 7px 0;
 }
 
-.list-action-btn {
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1em;
-  font-weight: bold;
-  padding: 13px 10px;
+.topic-name {
+  font-size: 0.85em;
+  color: var(--ink);
 }
 
-.list-action-primary {
-  background: #0070A8;
-  color: #fff;
+.topic-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  overflow: hidden;
 }
 
-.list-action-secondary {
-  background: #fff;
-  border: 1px solid #bbb;
-  color: #555;
-}
+.topic-fill { background: var(--correct); }
+.topic-review { background: var(--wrong); }
 
-.list-action-link {
-  box-sizing: border-box;
-  text-align: center;
-  text-decoration: none;
+.topic-num {
+  font-size: 0.76em;
+  color: var(--muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .status-legend {
@@ -293,38 +642,58 @@ main {
 
 .legend-item {
   align-items: center;
-  color: #555;
+  color: var(--muted);
   display: inline-flex;
-  font-size: 0.85em;
+  font-size: 0.82em;
   gap: 5px;
 }
 
 .legend-dot {
-  border: 1px solid #aaa;
+  border: 1px solid var(--line);
   border-radius: 3px;
   height: 12px;
   width: 12px;
 }
 
 .year-section {
-  border-bottom: 1px solid #dce5eb;
+  border-bottom: 1px solid var(--line);
   padding: 4px 0;
 }
 
+/* 開閉の印はブラウザ既定のマーカーに任せず自前で描く。
+   list-style-position: outside だと印が枠の左外に出て、狭い画面ではみ出す。 */
 .year-section summary {
-  color: #174d68;
+  font-family: var(--font-display);
+  color: var(--ink);
   cursor: pointer;
-  font-size: 1.1em;
-  font-weight: bold;
-  list-style-position: outside;
+  font-size: 1.05em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  list-style: none;
   padding: 15px 4px;
 }
 
+.year-section summary::-webkit-details-marker { display: none; }
+
+.year-section summary::before {
+  content: "▶";
+  display: inline-block;
+  width: 1.15em;
+  font-size: 0.72em;
+  color: var(--muted);
+  transition: transform 0.15s ease;
+}
+
+.year-section[open] > summary::before { transform: rotate(90deg); }
+
 .year-summary-count {
-  color: #6d7d85;
-  font-size: 0.82em;
+  font-family: var(--font-body);
+  color: var(--muted);
+  font-size: 0.8em;
   font-weight: normal;
+  letter-spacing: 0;
   margin-left: 8px;
+  font-variant-numeric: tabular-nums;
 }
 
 .question-grid {
@@ -335,15 +704,15 @@ main {
 }
 
 .question-group {
-  border: 1px solid #dbe3e8;
-  border-radius: 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
   padding: 10px;
 }
 
 .question-group-title {
-  color: #444;
-  font-size: 0.9em;
-  font-weight: bold;
+  color: var(--muted);
+  font-size: 0.85em;
+  font-weight: 700;
   margin-bottom: 8px;
 }
 
@@ -355,28 +724,30 @@ main {
 
 .question-link {
   align-items: center;
-  border: 1px solid #9aaab3;
-  border-radius: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
-  font-weight: bold;
+  font-family: inherit;
+  font-weight: 700;
   justify-content: center;
   min-height: 36px;
   min-width: 38px;
   padding: 4px 8px;
 }
 
-.status-unanswered { background: #fff; color: #24546d; }
-.status-correct { background: #dff2e2; border-color: #7db386; color: #24602c; }
-.status-wrong { background: #fde2e2; border-color: #d58b8b; color: #9b2424; }
+.status-unanswered { background: var(--surface); color: var(--muted); }
+.status-correct { background: var(--correct-soft); border-color: var(--correct); color: var(--correct); }
+.status-wrong { background: var(--wrong-soft); border-color: var(--wrong); color: var(--wrong); }
 
+/* いま止まっている位置。朱で印をつける */
 .resume-position {
-  box-shadow: 0 0 0 3px #f0b429;
+  box-shadow: 0 0 0 2px var(--seal);
 }
 
 .list-error {
-  color: #a02727;
-  line-height: 1.6;
+  color: var(--wrong);
+  line-height: 1.7;
   padding: 20px 0;
 }
 
@@ -389,18 +760,48 @@ main {
   .question-grid {
     grid-template-columns: 1fr;
   }
-
-  .list-actions {
-    grid-template-columns: 1fr;
-  }
 }
 
-#result {
-  font-size: 1.5em;
-  font-weight: bold;
-  margin: 20px 0;
-  height: 1.5em;
-  text-align: center;
+/* ===== 判定。明朝の印を斜めに押す ===== */
+.verdict {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 16px;
+  text-align: left;
+}
+
+.stamp {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 27px;
+  font-weight: 700;
+  border: 2.5px solid currentColor;
+  transform: rotate(-6deg);
+  animation: stamp-in 0.22s ease-out;
+}
+
+@keyframes stamp-in {
+  from { transform: rotate(-6deg) scale(1.5); opacity: 0; }
+  to   { transform: rotate(-6deg) scale(1);   opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp { animation: none; }
+}
+
+.verdict.is-correct .stamp { color: var(--correct); background: var(--correct-soft); }
+.verdict.is-wrong   .stamp { color: var(--wrong);   background: var(--wrong-soft); }
+
+.verdict-text {
+  font-weight: 700;
+  font-size: 1em;
+  line-height: 1.6;
 }
 
 .feedback-area {
@@ -411,45 +812,55 @@ main {
 .feedback-open-btn {
   background: transparent;
   border: 0;
-  color: #71818a;
-  font-size: 0.82em;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.8em;
   min-height: 44px;
   margin: 0;
   padding: 8px 12px;
   text-decoration: underline;
   text-underline-offset: 3px;
   width: auto;
+  cursor: pointer;
 }
 
 .feedback-open-btn:hover {
   background: transparent;
-  color: #3f5966;
+  color: var(--primary);
   transform: none;
 }
 
 .feedback-form {
-  background: #f8fbfd;
-  border: 1px solid #d7e3ea;
+  background: var(--soft);
+  border: 1px solid var(--line);
   border-radius: 10px;
   padding: 12px;
   text-align: left;
 }
 
 .feedback-form label {
-  color: #44545c;
+  color: var(--muted);
   display: block;
-  font-weight: bold;
+  font-size: 0.88em;
+  font-weight: 700;
   margin-bottom: 7px;
 }
 
 .feedback-form textarea {
-  border: 1px solid #aebdc5;
+  background: var(--surface);
+  border: 1px solid var(--line);
   border-radius: 8px;
   box-sizing: border-box;
+  color: var(--ink);
   font: inherit;
   padding: 10px;
   resize: vertical;
   width: 100%;
+}
+
+.feedback-form textarea:focus {
+  outline: none;
+  border-color: var(--primary);
 }
 
 .feedback-actions {
@@ -463,9 +874,21 @@ main {
   margin: 0;
 }
 
+#feedback-submit-btn {
+  font-family: inherit;
+  font-size: 0.92em;
+  font-weight: 700;
+  padding: 13px;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  background: var(--primary);
+  color: var(--on-primary);
+  cursor: pointer;
+}
+
 .feedback-status {
-  color: #44545c;
-  font-size: 0.9em;
+  color: var(--muted);
+  font-size: 0.88em;
   margin: 8px 0 0;
 }
 
@@ -477,10 +900,11 @@ main {
 
 #progress-info {
   margin-top: 30px;
-  font-size: 0.9em;
+  font-size: 0.85em;
   text-align: center;
-  color: #888;
-  line-height: 1.6;
+  color: var(--muted);
+  line-height: 1.7;
+  font-variant-numeric: tabular-nums;
 }
 
 #final-result-area {
@@ -488,9 +912,21 @@ main {
   padding-top: 20px;
 }
 
+/* 出題画面は main が地なので、タイムアタックの結果は自分でカードになる */
+.quiz-page #final-result-area {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 24px 20px 28px;
+}
+
 .ta-title {
-  color: #d32f2f;
-  font-size: 2em;
+  font-family: var(--font-display);
+  color: var(--seal);
+  font-size: 1.8em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   margin-bottom: 30px;
 }
 
@@ -507,8 +943,10 @@ main {
 }
 
 .ta-wrong-review h3 {
-  color: #314a57;
-  font-size: 1.15em;
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-size: 1.1em;
+  font-weight: 700;
   margin: 0 0 12px;
 }
 
@@ -518,24 +956,37 @@ main {
 }
 
 .ta-wrong-card {
-  background: #f8fbfd;
-  border: 1px solid #d7e3ea;
+  background: var(--soft);
+  border: 1px solid var(--line);
   border-radius: 12px;
   padding: 14px;
 }
 
 .ta-wrong-card h4 {
-  color: #006a9f;
-  font-size: 1em;
+  font-family: var(--font-display);
+  color: var(--seal);
+  font-size: 0.98em;
   margin: 0 0 9px;
 }
 
-.ta-wrong-question {
-  color: #263238;
-  line-height: 1.7;
-  margin: 0;
+/* 前提文と問題文。出題中の画面（.q-context / #question-text）と同じ見え方にそろえる */
+.ta-wrong-context {
+  font-size: 0.95em;
+  color: var(--muted);
+  border-left: 3px solid var(--line);
+  padding: 2px 0 2px 12px;
+  margin: 0 0 12px;
+  white-space: pre-wrap;
+  line-height: 1.9;
   overflow-wrap: anywhere;
-  white-space: pre-line;
+}
+
+.ta-wrong-question {
+  color: var(--ink);
+  line-height: 1.9;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .ta-wrong-answers {
@@ -545,31 +996,44 @@ main {
   margin: 13px 0 0;
 }
 
+/* 振り返りの中の解説は、カードがすでに枠と地色を持っているので囲みを外す */
+.explanation.ta-exp {
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: 13px 0 0;
+  margin: 13px 0 0;
+}
+
+.explanation.ta-exp:empty { display: none; }
+
 .ta-wrong-answers div {
-  background: #fff;
-  border: 1px solid #dce5eb;
+  background: var(--surface);
+  border: 1px solid var(--line);
   border-radius: 8px;
   padding: 9px 10px;
 }
 
 .ta-wrong-answers dt {
-  color: #697981;
-  font-size: 0.78em;
+  color: var(--muted);
+  font-size: 0.76em;
   margin-bottom: 3px;
 }
 
 .ta-wrong-answers dd {
-  color: #263238;
-  font-size: 1.25em;
-  font-weight: bold;
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-size: 1.2em;
+  font-weight: 700;
   margin: 0;
 }
 
 .ta-all-correct {
-  background: #edf8ef;
-  border: 1px solid #b9ddbf;
+  background: var(--correct-soft);
+  border: 1px solid var(--correct);
   border-radius: 10px;
-  color: #24642d;
+  color: var(--correct);
   margin: 0;
   padding: 14px;
   text-align: center;
@@ -582,25 +1046,27 @@ main {
 }
 
 .stat-label {
-  font-size: 1em;
-  color: #666;
+  font-size: 0.9em;
+  color: var(--muted);
 }
 
 .stat-value {
-  font-size: 2.5em;
-  font-weight: bold;
-  color: #333;
+  font-family: var(--font-display);
+  font-size: 2.3em;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
 }
 
 #ta-controls {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
 }
 
 @media (max-width: 560px) {
   .ta-title {
-    font-size: 1.65em;
+    font-size: 1.55em;
     margin-bottom: 22px;
   }
 
@@ -613,58 +1079,81 @@ main {
     min-width: 0;
     width: 50%;
   }
-
-  .ta-wrong-answers {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 .control-btn {
-  font-size: 1.1em;
-  padding: 15px;
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-weight: bold;
+  font-family: inherit;
+  font-size: 1em;
+  padding: 14px;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  color: var(--on-primary);
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-.control-btn:active {
-  transform: translateY(2px);
-  box-shadow: none;
+.control-btn:active { transform: translateY(2px); }
+
+.blue-btn {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+  border-color: var(--btn-primary-line);
 }
 
-.blue-btn { background: #0070A8; }
-.black-btn { background: #000; }
-.gray-btn { background: #888; }
+.black-btn {
+  background: var(--surface);
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.gray-btn {
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--muted);
+}
 
 .hidden { display: none !important; }
 
+/* 出題画面・一覧の下に置く出どころの断り。トップの footer より控えめに */
+.page-credit {
+  margin: 34px auto 0;
+  max-width: 42em;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.76em;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.page-credit p { margin: 0 0 6px; }
+.page-credit a { color: var(--primary); text-decoration: none; }
+.page-credit a:hover { text-decoration: underline; }
+
 footer {
   margin-top: 50px;
-  color: #888;
-  font-size: 0.85em;
-  border-top: 1px solid #eee;
+  color: var(--muted);
+  font-size: 0.82em;
+  border-top: 1px solid var(--line);
   padding-top: 20px;
 }
 
 footer a {
-  color: #0070A8;
+  color: var(--primary);
   text-decoration: none;
 }
 
 .privacy-link-row {
-  font-size: 0.85em;
+  font-size: 0.82em;
   margin-top: 28px;
   text-align: center;
 }
 
 .privacy-link-row a {
-  color: #607984;
+  color: var(--muted);
 }
 
-/* questions.json から生成する年度別・問題別の検索用ページ */
+/* ===== questions.json から生成する年度別・問題別の検索用ページ ===== */
 .seo-page {
   max-width: 880px;
 }
@@ -679,8 +1168,8 @@ footer a {
 }
 
 .breadcrumbs li {
-  color: #687983;
-  font-size: 0.86em;
+  color: var(--muted);
+  font-size: 0.84em;
 }
 
 .breadcrumbs li:not(:last-child)::after {
@@ -690,40 +1179,47 @@ footer a {
 
 .breadcrumbs a,
 .seo-page a {
-  color: #006b9d;
+  color: var(--primary);
 }
 
 .seo-header {
-  border-bottom: 1px solid #dce5eb;
+  border-bottom: 1px solid var(--line);
   margin-bottom: 28px;
   padding-bottom: 22px;
 }
 
 .seo-header h1 {
-  color: #0070A8;
-  font-size: clamp(1.55rem, 4.5vw, 2.15rem);
-  line-height: 1.45;
+  font-family: var(--font-display);
+  color: var(--primary);
+  font-size: clamp(1.45rem, 4.5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
   margin: 6px 0 12px;
+  text-wrap: balance;
 }
 
 .seo-header p,
 .seo-context p,
 .seo-choice-text,
 .seo-note {
-  line-height: 1.85;
+  line-height: 1.9;
 }
 
 .seo-eyebrow {
-  color: #56717f;
-  font-size: 0.88em;
-  font-weight: bold;
-  letter-spacing: 0.05em;
+  color: var(--seal);
+  font-size: 0.82em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   margin: 0;
 }
 
 .seo-page h2 {
-  color: #174d68;
-  font-size: 1.25em;
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-size: 1.15em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
 }
 
 .seo-year-grid,
@@ -746,13 +1242,18 @@ footer a {
 
 .seo-year-grid a,
 .seo-question-list a {
-  background: #f8fbfd;
-  border: 1px solid #d7e3ea;
+  background: var(--soft);
+  border: 1px solid var(--line);
   border-radius: 10px;
   display: flex;
   gap: 8px;
   padding: 14px 16px;
   text-decoration: none;
+}
+
+.seo-year-grid a:hover,
+.seo-question-list a:hover {
+  border-color: var(--primary);
 }
 
 .seo-year-grid a {
@@ -761,17 +1262,17 @@ footer a {
 
 .seo-year-grid span,
 .seo-choice-count {
-  color: #6d7d85;
-  font-size: 0.86em;
+  color: var(--muted);
+  font-size: 0.84em;
 }
 
 .seo-question-number {
+  font-weight: 700;
   flex: 0 0 48px;
-  font-weight: bold;
 }
 
 .seo-question-preview {
-  color: #44545c;
+  color: var(--muted);
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -785,8 +1286,8 @@ footer a {
 }
 
 .seo-context {
-  background: #f4f8fb;
-  border-left: 4px solid #0070A8;
+  background: var(--soft);
+  border-left: 3px solid var(--primary);
   border-radius: 8px;
   margin-bottom: 24px;
   padding: 14px 18px;
@@ -797,7 +1298,7 @@ footer a {
 }
 
 .seo-choice-card {
-  border: 1px solid #dbe3e8;
+  border: 1px solid var(--line);
   border-radius: 12px;
   margin-bottom: 16px;
   padding: 18px;
@@ -816,12 +1317,12 @@ footer a {
 .seo-label,
 .seo-source,
 .seo-note {
-  color: #697a83;
-  font-size: 0.88em;
+  color: var(--muted);
+  font-size: 0.85em;
 }
 
 .seo-answer {
-  background: #edf7ed;
+  background: var(--correct-soft);
   border-radius: 7px;
   display: inline-block;
   margin-bottom: 4px;
@@ -829,9 +1330,150 @@ footer a {
 }
 
 .seo-answer span {
-  color: #1d6b2b;
-  font-size: 1.2em;
-  font-weight: bold;
+  font-family: var(--font-display);
+  color: var(--correct);
+  font-size: 1.15em;
+  font-weight: 700;
+}
+
+/* 年度別アーカイブに載せる解説。アプリのクイズ画面と同じ内容を静的HTMLで出している。
+   条文の本文はここには置かず、根拠のリンクで jobun/ の条文ページへ送る。 */
+.seo-explanation {
+  border-top: 1px dashed var(--line);
+  margin-top: 14px;
+  padding-top: 13px;
+}
+
+.seo-exp-core {
+  font-family: var(--font-display);
+  color: var(--primary);
+  font-size: 1.02em;
+  font-weight: 700;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.seo-exp-body {
+  line-height: 1.95;
+  margin: 10px 0 0;
+}
+
+.seo-exp-norule,
+.seo-exp-doctrine {
+  border: 1.5px dashed var(--line);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 0.9em;
+  line-height: 1.85;
+  margin: 10px 0 0;
+  padding: 9px 12px;
+}
+
+.seo-exp-norule::before {
+  content: "規定なし";
+  border: 1px solid var(--seal);
+  border-radius: 5px;
+  color: var(--seal);
+  display: inline-block;
+  font-size: 0.74em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-right: 8px;
+  padding: 1px 6px;
+  vertical-align: 0.1em;
+}
+
+.seo-exp-doctrine::before {
+  content: "条文なし";
+  border: 1px solid var(--muted);
+  border-radius: 5px;
+  color: var(--muted);
+  display: inline-block;
+  font-size: 0.74em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-right: 8px;
+  padding: 1px 6px;
+  vertical-align: 0.1em;
+}
+
+.seo-exp-sup {
+  background: var(--seal-soft);
+  border-radius: 8px;
+  color: var(--seal);
+  font-size: 0.86em;
+  line-height: 1.8;
+  margin: 10px 0 0;
+  padding: 10px 12px;
+}
+
+.seo-exp-note {
+  border-left: 3px solid var(--seal);
+  color: var(--muted);
+  font-size: 0.85em;
+  line-height: 1.8;
+  margin: 10px 0 0;
+  padding: 2px 0 2px 11px;
+}
+
+.seo-refs {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 12px 0 0;
+}
+
+.seo-refs-label {
+  color: var(--muted);
+  font-size: 0.72em;
+  letter-spacing: 0.1em;
+}
+
+.seo-ref {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.82em;
+  padding: 4px 11px;
+  text-decoration: none;
+}
+
+.seo-ref:hover,
+.seo-ref:focus-visible {
+  border-color: var(--primary);
+}
+
+.seo-ref.is-plain {
+  color: var(--muted);
+}
+
+/* 年度別ページ側の、語句を直した肢の断り */
+.seo-edited {
+  font-size: 0.82em;
+  line-height: 1.75;
+  color: var(--muted);
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 11px;
+  margin: 10px 0 0;
+}
+
+.seo-topic-chip {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 0.72em;
+  letter-spacing: 0.08em;
+  margin-left: auto;
+  padding: 2px 9px;
+  text-decoration: none;
+}
+
+.seo-topic-chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .seo-cta-row,
@@ -844,35 +1486,35 @@ footer a {
 
 .seo-primary-link,
 .seo-secondary-link {
-  border-radius: 9px;
+  border-radius: 10px;
   display: inline-block;
-  font-weight: bold;
+  font-weight: 700;
   padding: 12px 16px;
   text-decoration: none;
 }
 
 .seo-primary-link {
-  background: #0070A8;
-  color: #fff !important;
+  background: var(--primary);
+  color: var(--on-primary) !important;
 }
 
 .seo-secondary-link {
-  background: #fff;
-  border: 1px solid #aebdc5;
+  background: var(--surface);
+  border: 1px solid var(--line);
 }
 
 .seo-prev-next {
-  border-top: 1px solid #dce5eb;
+  border-top: 1px solid var(--line);
   justify-content: space-between;
   padding-top: 20px;
 }
 
 .seo-footer {
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 .seo-footer a {
-  color: #607984;
+  color: var(--muted);
 }
 
 .privacy-page section {
@@ -880,7 +1522,7 @@ footer a {
 }
 
 .privacy-list {
-  line-height: 1.8;
+  line-height: 1.85;
   padding-left: 1.4em;
 }
 
@@ -923,4 +1565,630 @@ footer a {
   .seo-secondary-link {
     text-align: center;
   }
+}
+
+/* ===== 解説（解答後に表示） ===== */
+.explanation {
+  text-align: left;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 16px;
+  margin: 4px 0 22px;
+}
+
+.exp-core {
+  font-family: var(--font-display);
+  margin: 0 0 10px;
+  font-size: 1.05em;
+  font-weight: 700;
+  line-height: 1.75;
+  color: var(--primary);
+}
+
+.exp-body {
+  margin: 0;
+  font-size: 0.93em;
+  line-height: 1.95;
+  color: var(--ink);
+}
+
+/* 条文カード。本文は原文が隣にある前提で書いてあるので、開けば必ず条文そのものが出る。
+   畳んでおくのは、周回のテンポを落とさないため。 */
+.exp-cards {
+  margin: 16px 0 0;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.exp-cards > summary {
+  cursor: pointer;
+  font-size: 0.78em;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: var(--primary);
+  list-style: none;
+}
+
+.exp-cards > summary::-webkit-details-marker { display: none; }
+
+.exp-cards > summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-right: 6px;
+  transition: transform 0.15s ease;
+}
+
+.exp-cards[open] > summary::before { transform: rotate(90deg); }
+
+.exp-cards-body {
+  margin-top: 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exp-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exp-cards-list:empty { display: none; }
+
+figure.law {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+figure.law.gist { border-style: dashed; }
+
+figure.law figcaption {
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+  padding: 7px 11px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+/* 種別の印。条＝藍、通達と判例＝朱 */
+figure.law figcaption::before {
+  content: "条";
+  font-family: var(--font-display);
+  font-size: 0.66em;
+  font-weight: 700;
+  color: var(--on-primary);
+  background: var(--primary);
+  width: 1.25rem;
+  height: 1.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  flex: none;
+}
+
+figure.law.dir figcaption,
+figure.law.case figcaption { color: var(--seal); }
+figure.law.dir figcaption::before { content: "達"; background: var(--seal); }
+figure.law.case figcaption::before { content: "判"; background: var(--seal); }
+
+figure.law figcaption a { color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; }
+figure.law figcaption a:hover,
+figure.law figcaption a:focus-visible { color: var(--primary-deep); }
+figure.law.dir figcaption a:hover,
+figure.law.case figcaption a:hover { opacity: 0.8; }
+
+.law-chip {
+  font-size: 0.62em;
+  letter-spacing: 0.08em;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 1px 6px;
+  font-family: var(--font-body);
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.law-uv { margin-left: auto; color: var(--seal); border-color: var(--seal); font-weight: 700; }
+
+/* 条文の字は解説本文（.exp-body 0.93em）と同じ大きさにそろえる。
+   カードは読み飛ばす添え物ではなく、解説と並んで読むものなので。 */
+figure.law p {
+  margin: 0;
+  padding: 9px 12px;
+  font-family: var(--font-display);
+  font-size: 0.93em;
+  line-height: 1.9;
+}
+
+figure.law.gist p { font-family: var(--font-body); }
+
+figure.law p.law-lead {
+  color: var(--muted);
+  padding-bottom: 0;
+  font-family: var(--font-body);
+}
+
+figure.law ol,
+figure.law ul.law-branch {
+  margin: 0;
+  padding: 9px 12px 11px 2.4em;
+  font-family: var(--font-display);
+  font-size: 0.93em;
+  line-height: 1.85;
+}
+
+/* 枝（ア・イ・ウ…）は本文が番号を持っているので、記号を重ねない */
+figure.law ul.law-branch {
+  list-style: none;
+  padding-left: 12px;
+}
+
+/* 「〜という規定はない」で解く肢。無いことは条文で示せないので、探した範囲を残す */
+.exp-norule {
+  margin: 12px 0 0;
+  border: 1.5px dashed var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.exp-norule-claim {
+  margin: 0;
+  font-size: 0.86em;
+  line-height: 1.85;
+  color: var(--ink);
+}
+
+.exp-norule-claim::before {
+  content: "規定なし";
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--seal);
+  border: 1px solid var(--seal);
+  border-radius: 5px;
+  padding: 1px 6px;
+  vertical-align: 0.1em;
+}
+
+/* 条文にも通達にも判例にも根拠が無く、講学上そう説明されているだけのもの */
+.exp-doctrine {
+  margin: 12px 0 0;
+  border: 1.5px dashed var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.86em;
+  line-height: 1.85;
+  color: var(--muted);
+}
+
+.exp-doctrine::before {
+  content: "条文なし";
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  border: 1px solid var(--muted);
+  border-radius: 5px;
+  padding: 1px 6px;
+  vertical-align: 0.1em;
+}
+
+/* 原典に当たれていないもの */
+.exp-review {
+  margin: 12px 0 0;
+  padding: 2px 0 2px 11px;
+  border-left: 3px solid var(--seal);
+  font-size: 0.8em;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+.exp-superseded {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  background: var(--seal-soft);
+  border-radius: 8px;
+  font-size: 0.82em;
+  line-height: 1.75;
+  color: var(--seal);
+}
+
+.exp-refs {
+  margin: 16px 0 0;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+
+.exp-refs-label {
+  font-size: 0.72em;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+/* 根拠はチップで横に並べる。種別（条文・別表・判例…）は仕切り線の右に */
+.exp-refs-list {
+  list-style: none;
+  margin: 9px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.exp-refs-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 5px 11px;
+  font-size: 0.8em;
+  line-height: 1.6;
+}
+
+.exp-refs-list li:has(a):hover {
+  border-color: var(--primary);
+}
+
+.exp-refs-list a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.exp-refs-list a:hover,
+.exp-refs-list a:focus-visible {
+  color: var(--primary);
+}
+
+.exp-ref-plain {
+  color: var(--muted);
+}
+
+.exp-chip {
+  font-size: 0.85em;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  border-left: 1px solid var(--line);
+  padding-left: 7px;
+  margin-left: 0;
+}
+
+/* 根拠なし解説の注記 */
+.exp-unverified {
+  color: var(--seal);
+  font-size: 0.85em;
+}
+
+/* ===== 資料ページ（準則・通達・別表） ===== */
+.src-head {
+  margin-bottom: 22px;
+}
+
+.src-title {
+  font-family: var(--font-display);
+  font-size: 1.4em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+  margin: 0 0 8px;
+}
+
+.src-lead {
+  margin: 0;
+  font-size: 0.86em;
+  line-height: 1.85;
+  color: var(--muted);
+}
+
+.src-note {
+  margin: 12px 0 0;
+  padding: 11px 13px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 0.78em;
+  line-height: 1.85;
+  color: var(--muted);
+}
+
+.src-note strong {
+  color: var(--ink);
+}
+
+.src-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.src-search {
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  padding: 12px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.src-search:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.src-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.src-filter {
+  font: inherit;
+  font-size: 0.82em;
+  padding: 7px 14px;
+  min-height: 38px;
+  width: auto;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.src-filter.is-on {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+
+.src-focus {
+  margin-bottom: 26px;
+}
+
+.src-focus-lead {
+  margin: 0 0 8px;
+  font-size: 0.72em;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.src-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.src-card {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 16px 14px;
+}
+
+.src-card.is-focus {
+  background: var(--surface);
+  border-color: var(--primary);
+  box-shadow: var(--shadow);
+}
+
+.src-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin-bottom: 10px;
+}
+
+.src-card-title {
+  font-family: var(--font-display);
+  margin: 0;
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--primary);
+}
+
+.src-kind {
+  flex: 0 0 auto;
+  font-size: 0.7em;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+.src-card-sub {
+  margin: 0 0 10px;
+  font-size: 0.8em;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+.src-row {
+  display: flex;
+  gap: 9px;
+  margin-top: 8px;
+}
+
+.src-row.is-sub {
+  padding-left: 18px;
+}
+
+.src-num {
+  flex: 0 0 auto;
+  min-width: 2.4em;
+  font-size: 0.78em;
+  color: var(--muted);
+  padding-top: 3px;
+}
+
+.src-text {
+  margin: 0;
+  font-size: 0.88em;
+  line-height: 1.95;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+
+.src-origin {
+  margin: 14px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 0.72em;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.src-empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9em;
+  padding: 30px 0;
+}
+
+.src-controls {
+  margin-top: 30px;
+}
+
+.src-row.is-hit,
+.src-row:target {
+  background: var(--seal-soft);
+  border-radius: 8px;
+  margin-left: -8px;
+  margin-right: -8px;
+  padding: 6px 8px;
+}
+
+.src-row:target .src-num {
+  color: var(--seal);
+  font-weight: 700;
+}
+
+/* ===== 条文・判例ページの「出題された肢」 ===== */
+.tested-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0 0;
+}
+
+.tested-row {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 9px 12px;
+}
+
+.tested-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  flex: 0 0 auto;
+  font-size: 0.9em;
+}
+
+.tested-label a {
+  color: var(--seal);
+  text-decoration: none;
+}
+
+.tested-label a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.tested-v {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.tested-v.is-o { color: var(--correct); }
+.tested-v.is-x { color: var(--wrong); }
+
+.tested-core {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.87em;
+  color: var(--ink);
+  line-height: 1.8;
+}
+
+.tested-para {
+  flex: 0 0 auto;
+  font-size: 0.72em;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+
+.tested-solve {
+  flex: 0 0 auto;
+  font-size: 0.8em;
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .tested-row { flex-wrap: wrap; }
+  .tested-core { flex-basis: 100%; order: 5; }
+}
+
+.src-row.is-hit .src-num {
+  color: var(--seal);
+  font-weight: 700;
+}
+
+.src-heading {
+  margin: 14px 0 4px;
+  font-size: 0.76em;
+  line-height: 1.65;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.src-textbox {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sources-link {
+  text-align: center;
+  margin: 22px 0 0;
+  font-size: 0.85em;
+}
+
+.sources-link a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1px;
+}
+
+.sources-link a:hover,
+.sources-link a:focus-visible {
+  border-bottom-color: var(--primary);
 }

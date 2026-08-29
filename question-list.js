@@ -1,20 +1,19 @@
-const LEARNING_STATE_KEY = "learningStateByLabel";
-const YEAR_MODE_START_KEY = "yearModeStartLabel";
-const YEAR_MODE_RESUME_KEY = "yearModeResumeLabel";
+// 年度順モードの入口。年度を開いて、始めたい肢を選ぶ。
+// 共通の並び順・学習状態は common.js にある。
 
 let questions = [];
 let learningState = loadLearningState();
 
-fetch("questions.json", { cache: "no-store" })
+fetch(QUESTIONS_URL)
   .then(response => {
     if (!response.ok) throw new Error("questions.json could not be loaded");
     return response.json();
   })
   .then(data => {
-    questions = data.filter(question => question.label).sort(compareQuestions);
+    questions = sortQuestions(data.filter(question => question.label));
     renderProgress();
-    renderResumeAction();
     renderQuestionList();
+    renderTopicPanel();
   })
   .catch(() => {
     document.getElementById("list-progress-info").textContent = "進捗を読み込めませんでした。";
@@ -22,29 +21,71 @@ fetch("questions.json", { cache: "no-store" })
       '<p class="list-error">問題データを読み込めませんでした。トップに戻って、もう一度お試しください。</p>';
   });
 
-function loadLearningState() {
-  try {
-    const parsed = JSON.parse(localStorage.getItem(LEARNING_STATE_KEY) || "{}");
-    return parsed && typeof parsed === "object" ? parsed : {};
-  } catch {
-    return {};
-  }
-}
-
 function getResult(question) {
-  const result = learningState[question.label]?.lastResult;
-  return result === "unknown" ? "wrong" : result || "unanswered";
+  return getResultOf(learningState, question.label);
 }
 
 function renderProgress() {
-  const results = questions.map(getResult);
-  const total = questions.length;
-  const unanswered = results.filter(result => result === "unanswered").length;
-  const review = results.filter(result => result === "wrong" || result === "unknown").length;
-  const completed = results.filter(result => result === "correct").length;
-
+  const p = summarizeProgress(questions, learningState);
+  const pass = getPassCount();
   document.getElementById("list-progress-info").textContent =
-    `全${total}問 / 未回答${unanswered}問 / 復習${review}問 / 完了${completed}問`;
+    (pass > 0 ? `${pass}周完了｜` : "")
+    + `全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 完了${p.completed}問`;
+}
+
+// 分野は出題を絞るためのものではなく、進み具合を眺めるためのもの。
+// 全肢を通しでやる学習なので、ここから出題を分岐させることはしない。
+const TOPIC_ORDER = ["民法", "土地", "建物", "区分建物", "総論", "筆界特定", "審査請求", "調査士法"];
+
+function renderTopicPanel() {
+  fetch("data/topics.json")
+    .then(response => (response.ok ? response.json() : null))
+    .then(topics => {
+      if (!topics) return;
+
+      const stats = new Map();
+      questions.forEach(question => {
+        const topic = topics[question.label];
+        if (!topic) return;
+        if (!stats.has(topic)) stats.set(topic, { total: 0, completed: 0, review: 0 });
+        const entry = stats.get(topic);
+        entry.total += 1;
+        const result = getResult(question);
+        if (result === "correct") entry.completed += 1;
+        else if (result === "wrong") entry.review += 1;
+      });
+      if (stats.size === 0) return;
+
+      const rows = document.getElementById("topic-rows");
+      const fragment = document.createDocumentFragment();
+      const names = TOPIC_ORDER.filter(name => stats.has(name))
+        .concat([...stats.keys()].filter(name => !TOPIC_ORDER.includes(name)));
+
+      names.forEach(name => {
+        const { total, completed, review } = stats.get(name);
+        const percent = total ? Math.round((completed / total) * 100) : 0;
+
+        const row = document.createElement("div");
+        row.className = "topic-row";
+        row.innerHTML =
+          '<span class="topic-name"></span>' +
+          '<span class="topic-bar"><span class="topic-fill"></span><span class="topic-review"></span></span>' +
+          '<span class="topic-num"></span>';
+        row.querySelector(".topic-name").textContent = name;
+        row.querySelector(".topic-fill").style.width = percent + "%";
+        row.querySelector(".topic-review").style.width =
+          (total ? Math.round((review / total) * 100) : 0) + "%";
+        row.querySelector(".topic-num").textContent = `${completed} / ${total}`;
+        row.title = `${name}：完了${completed}問・復習${review}問・全${total}問`;
+        fragment.appendChild(row);
+      });
+
+      rows.replaceChildren(fragment);
+      document.getElementById("topic-panel").classList.remove("hidden");
+    })
+    .catch(() => {
+      // 分野データが無くても一覧は使える
+    });
 }
 
 function renderQuestionList() {
@@ -91,16 +132,19 @@ function renderQuestionList() {
   });
 
   list.replaceChildren(fragment);
+
+  // いま止まっている位置まで開いて、そこへ寄せる（毎回スクロールして探さなくてよいように）
+  const resumeLabel = localStorage.getItem(YEAR_MODE_RESUME_KEY);
+  const marker = resumeLabel && list.querySelector(".resume-position");
+  if (marker) {
+    marker.closest("details").open = true;
+    marker.scrollIntoView({ block: "center" });
+  }
 }
 
 function createQuestionButton(question) {
   const result = getResult(question);
-  const statusText = {
-    unanswered: "未回答",
-    correct: "正解済み",
-    wrong: "復習対象",
-    unknown: "復習対象"
-  }[result];
+  const statusText = { unanswered: "未回答", correct: "正解済み", wrong: "復習対象" }[result];
 
   const button = document.createElement("button");
   button.type = "button";
@@ -115,33 +159,6 @@ function createQuestionButton(question) {
   return button;
 }
 
-function startYearMode(label) {
-  localStorage.setItem("quizMode", "year");
-  if (label) {
-    localStorage.setItem(YEAR_MODE_START_KEY, label);
-    localStorage.setItem(YEAR_MODE_RESUME_KEY, label);
-  } else {
-    localStorage.removeItem(YEAR_MODE_START_KEY);
-  }
-  window.location.href = "quiz.html";
-}
-
-function renderResumeAction() {
-  const button = document.getElementById("list-resume-btn");
-  const resumeLabel = localStorage.getItem(YEAR_MODE_RESUME_KEY);
-  const resumeExists = questions.some(question => question.label === resumeLabel);
-
-  if (!resumeExists) {
-    if (resumeLabel) localStorage.removeItem(YEAR_MODE_RESUME_KEY);
-    button.classList.add("hidden");
-    return;
-  }
-
-  button.textContent = `続きから（${resumeLabel}）`;
-  button.classList.remove("hidden");
-  button.addEventListener("click", () => startYearMode(resumeLabel), { once: true });
-}
-
 function groupBy(items, getKey) {
   const grouped = new Map();
   items.forEach(item => {
@@ -152,55 +169,3 @@ function groupBy(items, getKey) {
   return grouped;
 }
 
-function compareQuestions(a, b) {
-  const yearDifference = getYearOrder(a.year || a.label) - getYearOrder(b.year || b.label);
-  if (yearDifference !== 0) return yearDifference;
-
-  const questionDifference =
-    Number(a.questionNo || extractQuestionNo(a.label)) - Number(b.questionNo || extractQuestionNo(b.label));
-  if (questionDifference !== 0) return questionDifference;
-
-  const choiceDifference = getChoiceOrder(a.choice || extractChoice(a.label)) -
-    getChoiceOrder(b.choice || extractChoice(b.label));
-  return choiceDifference || a.label.localeCompare(b.label, "ja");
-}
-
-function getYearOrder(value) {
-  const text = String(value || "");
-  const heisei = text.match(/H(\d+)/i);
-  if (heisei) return Number(heisei[1]);
-  const reiwa = text.match(/R(\d+)/i);
-  if (reiwa) return 100 + Number(reiwa[1]);
-  return 999;
-}
-
-function extractYear(label) {
-  return String(label || "").split("-")[0];
-}
-
-function extractQuestionNo(label) {
-  const match = String(label || "").match(/^[HR]\d+-(\d+)/i);
-  return match ? Number(match[1]) : 0;
-}
-
-function extractChoice(label) {
-  return String(label || "").split("-")[2] || "";
-}
-
-function getChoiceOrder(choice) {
-  const order = ["ア", "イ", "ウ", "エ", "オ", "1", "2", "3", "4", "5", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩"];
-  const index = order.indexOf(String(choice || "").trim());
-  return index >= 0 ? index : 999;
-}
-
-function formatYear(year) {
-  const heisei = String(year).match(/^H(\d+)$/i);
-  if (heisei) return `平成${heisei[1]}年度`;
-  const reiwa = String(year).match(/^R(\d+)$/i);
-  if (reiwa) return `令和${reiwa[1]}年度`;
-  return String(year);
-}
-
-document.getElementById("list-home-btn").addEventListener("click", () => {
-  window.location.href = "index.html";
-});
