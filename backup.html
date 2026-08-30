@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学習データの引き継ぎ｜土地家屋調査士 過去問アプリ</title>
+  <meta name="description" content="解いた記録を引き継ぎコードにして、別の端末へ移したり、控えとして保管したりできます。">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://cholabo.jp/backup.html">
+  <link rel="stylesheet" href="style.css?v=6.7">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <main class="seo-page privacy-page">
+    <nav class="breadcrumbs" aria-label="パンくずリスト">
+      <ol>
+        <li><a href="index.html">トップ</a></li>
+        <li aria-current="page">学習データの引き継ぎ</li>
+      </ol>
+    </nav>
+
+    <header class="seo-header">
+      <p class="seo-eyebrow">端末を変えるとき・控えを取るとき</p>
+      <h1>学習データの引き継ぎ</h1>
+      <p>解いた記録はこの端末のブラウザの中にだけあります。機種を変えたり、ブラウザのデータを消したりすると失われます。下のリンクを自分あてに送っておくと、あとから元に戻せます。</p>
+    </header>
+
+    <section>
+      <h2 id="stat-title">いまの進み具合</h2>
+      <p id="stat" class="backup-stat">読み込み中…</p>
+    </section>
+
+    <section id="area" class="hidden">
+      <h2>引き継ぎリンク</h2>
+      <p>いちばん確実なのは、<strong>自分あてに送っておく</strong>ことです。LINEのトーク、メモ、メールなど、あとで自分が開ける場所ならどこでも構いません。</p>
+      <div class="backup-actions">
+        <button id="share" type="button" class="control-btn blue-btn hidden">リンクを送る</button>
+        <button id="copy" type="button" class="control-btn gray-btn">リンクをコピー</button>
+      </div>
+      <p id="msg" class="backup-msg" aria-live="polite"></p>
+
+      <details class="backup-raw">
+        <summary>リンクを直接見る・手で選んでコピーする</summary>
+        <textarea id="code" readonly rows="4" spellcheck="false"></textarea>
+        <p class="backup-note">このリンクを開くと、開いた端末に記録が入ります。中身は解いた記録だけで、名前や連絡先は入っていません。</p>
+      </details>
+    </section>
+
+    <section>
+      <h2>受け取る側</h2>
+      <p>新しい端末で、送ったリンクを開いてください。確認の画面が出ます。<a href="restore.html">引き継ぎコードを貼り付ける画面</a>から手で入れることもできます。</p>
+    </section>
+
+    <div class="seo-cta-row">
+      <a class="seo-primary-link" href="index.html">トップへ戻る</a>
+      <a class="seo-secondary-link" href="quiz.html">問題を解く</a>
+    </div>
+
+    <footer class="seo-footer">
+      <p>引き継ぎリンクは、その時点の記録です。解き進めたら取り直してください。</p>
+    </footer>
+  </main>
+
+  <script src="common.js?v=1.4"></script>
+  <script src="backup.js?v=1.0"></script>
+  <script>
+    const stat = document.getElementById("stat");
+    const msg = document.getElementById("msg");
+
+    fetch(QUESTIONS_URL)
+      .then(res => res.json())
+      .then(async questions => {
+        const valid = questions.filter(q => q.label);
+        const labels = valid.map(q => q.label);
+        const state = loadLearningState();
+        const p = summarizeProgress(valid, state);
+        const pass = getPassCount();
+        const n = v => v.toLocaleString("ja-JP");
+
+        stat.textContent = `${n(p.completed)}問 完了 ・ 復習 ${n(p.review)} ・ 未回答 ${n(p.unanswered)}`
+          + (pass > 0 ? ` ・ ${pass}周完了` : "");
+
+        if (p.completed === 0 && p.review === 0) {
+          stat.textContent += "　まだ記録がないので、引き継ぐものはありません。";
+          return;
+        }
+
+        const code = await BACKUP.encode(
+          labels, state, pass, localStorage.getItem(YEAR_MODE_RESUME_KEY) || "");
+        const url = location.origin + location.pathname.replace(/backup\.html$/, "restore.html") + "#" + code;
+
+        document.getElementById("code").value = url;
+        document.getElementById("area").classList.remove("hidden");
+
+        // 共有シートも HTTPS でしか出せない。使えないときはボタンを出さない
+        const share = document.getElementById("share");
+        if (navigator.share && window.isSecureContext) {
+          share.classList.remove("hidden");
+          share.addEventListener("click", () => {
+            navigator.share({ title: "調査士過去問 引き継ぎリンク", url })
+              .catch(() => { /* 送るのをやめただけ。何も出さない */ });
+          });
+        }
+
+        // コピーは環境によって使える手が違う。
+        // navigator.clipboard は HTTPS（と localhost）でしか動かず、
+        // 社内LANやファイル直開きでは存在しない。古い execCommand を後ろに置き、
+        // それも駄目なら欄を開いて全選択し、長押しでコピーできる状態まで持っていく。
+        const field = document.getElementById("code");
+        const box = document.querySelector(".backup-raw");
+
+        function selectField() {
+          box.open = true;
+          field.focus();
+          field.setSelectionRange(0, field.value.length);
+          // iOS は setSelectionRange だけだと選択が見えないことがある
+          try { field.select(); } catch {}
+        }
+
+        document.getElementById("copy").addEventListener("click", async () => {
+          if (navigator.clipboard && window.isSecureContext) {
+            try {
+              await navigator.clipboard.writeText(url);
+              msg.textContent = "コピーしました。自分あてに貼り付けて残しておいてください。";
+              return;
+            } catch { /* 下の手を試す */ }
+          }
+          selectField();
+          let ok = false;
+          try { ok = document.execCommand("copy"); } catch { ok = false; }
+          msg.textContent = ok
+            ? "コピーしました。自分あてに貼り付けて残しておいてください。"
+            : "自動でコピーできませんでした。下の欄を選んである状態にしたので、長押しして「コピー」を選んでください。";
+        });
+      })
+      .catch(() => { stat.textContent = "進み具合を読み込めませんでした。"; });
+  </script>
+</body>
+</html>

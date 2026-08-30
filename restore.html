@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学習データを戻す｜土地家屋調査士 過去問アプリ</title>
+  <meta name="description" content="引き継ぎリンクやコードから、解いた記録をこの端末に戻します。">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://cholabo.jp/restore.html">
+  <link rel="stylesheet" href="style.css?v=6.7">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <main class="seo-page privacy-page">
+    <nav class="breadcrumbs" aria-label="パンくずリスト">
+      <ol>
+        <li><a href="index.html">トップ</a></li>
+        <li aria-current="page">学習データを戻す</li>
+      </ol>
+    </nav>
+
+    <header class="seo-header">
+      <p class="seo-eyebrow">別の端末で取った記録から</p>
+      <h1>学習データを戻す</h1>
+    </header>
+
+    <section id="paste">
+      <h2>引き継ぎコードを貼り付ける</h2>
+      <p>前の端末の<a href="backup.html">引き継ぎ画面</a>で作ったリンク（またはコード）を貼り付けてください。</p>
+      <textarea id="input" rows="4" spellcheck="false" placeholder="https://cholabo.jp/restore.html#…"></textarea>
+      <div class="backup-actions">
+        <button id="read" type="button" class="control-btn blue-btn">中身を確かめる</button>
+      </div>
+    </section>
+
+    <section id="preview" class="hidden">
+      <h2>この記録を入れますか</h2>
+      <p id="what" class="backup-stat"></p>
+      <p id="warn" class="backup-warn hidden"></p>
+      <div class="backup-actions">
+        <button id="apply" type="button" class="control-btn blue-btn">この端末に入れる</button>
+        <button id="cancel" type="button" class="control-btn gray-btn">やめる</button>
+      </div>
+    </section>
+
+    <p id="msg" class="backup-msg" aria-live="polite"></p>
+
+    <div class="seo-cta-row">
+      <a class="seo-primary-link" href="index.html">トップへ戻る</a>
+    </div>
+
+    <footer class="seo-footer">
+      <p>入れると、この端末にいまある記録は置き換わります。戻す前に、この端末の<a href="backup.html">引き継ぎリンク</a>も取っておくと安全です。</p>
+    </footer>
+  </main>
+
+  <script src="common.js?v=1.4"></script>
+  <script src="backup.js?v=1.0"></script>
+  <script>
+    const msg = document.getElementById("msg");
+    const input = document.getElementById("input");
+    let labels = [], pending = null;
+
+    const codeOf = text => String(text || "").includes("#")
+      ? String(text).slice(String(text).lastIndexOf("#") + 1)
+      : String(text).trim();
+
+    fetch(QUESTIONS_URL)
+      .then(res => res.json())
+      .then(questions => {
+        labels = questions.filter(q => q.label).map(q => q.label);
+        if (location.hash.length > 1) {
+          input.value = location.hash.slice(1);
+          read();
+        }
+      })
+      .catch(() => { msg.textContent = "問題データを読み込めませんでした。通信を確かめてもう一度開いてください。"; });
+
+    async function read() {
+      msg.textContent = "";
+      const code = codeOf(input.value);
+      if (!code) { msg.textContent = "コードを貼り付けてください。"; return; }
+      try {
+        pending = await BACKUP.decode(code, labels);
+      } catch (err) {
+        pending = null;
+        document.getElementById("preview").classList.add("hidden");
+        msg.textContent = "読み取れませんでした。" + err.message;
+        return;
+      }
+      const n = v => v.toLocaleString("ja-JP");
+      let done = 0, review = 0;
+      for (const label of Object.keys(pending.state)) {
+        const r = getResultOf(pending.state, label);
+        if (r === "correct") done++; else if (r === "wrong") review++;
+      }
+      document.getElementById("what").textContent =
+        `${n(done)}問 完了 ・ 復習 ${n(review)} ・ 未回答 ${n(pending.total - done - review)}`
+        + (pending.passCount > 0 ? ` ・ ${pending.passCount}周完了` : "");
+
+      const here = summarizeProgress(
+        labels.map(l => ({ label: l })), loadLearningState());
+      const warn = document.getElementById("warn");
+      if (here.completed + here.review > 0) {
+        warn.textContent = `この端末にはすでに ${n(here.completed)}問完了・復習 ${n(here.review)} の記録があります。入れると置き換わります。`;
+        warn.classList.remove("hidden");
+      } else {
+        warn.classList.add("hidden");
+      }
+      document.getElementById("preview").classList.remove("hidden");
+    }
+
+    document.getElementById("read").addEventListener("click", read);
+
+    document.getElementById("cancel").addEventListener("click", () => {
+      pending = null;
+      document.getElementById("preview").classList.add("hidden");
+      msg.textContent = "入れずにやめました。";
+    });
+
+    document.getElementById("apply").addEventListener("click", () => {
+      if (!pending) return;
+      try {
+        localStorage.setItem(LEARNING_STATE_KEY, JSON.stringify(pending.state));
+        setPassCount(pending.passCount);
+        if (pending.resumeLabel) localStorage.setItem(YEAR_MODE_RESUME_KEY, pending.resumeLabel);
+        else localStorage.removeItem(YEAR_MODE_RESUME_KEY);
+      } catch {
+        msg.textContent = "この端末に保存できませんでした。プライベートブラウズを使っている場合は、通常の画面で開いてください。";
+        return;
+      }
+      document.getElementById("preview").classList.add("hidden");
+      document.getElementById("paste").classList.add("hidden");
+      msg.textContent = "入れました。トップに戻ると、進み具合が引き継がれています。";
+      history.replaceState(null, "", location.pathname);
+    });
+  </script>
+</body>
+</html>

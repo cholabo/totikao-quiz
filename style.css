@@ -1448,6 +1448,75 @@ footer a {
   color: var(--muted);
 }
 
+/* ===== 学習データの引き継ぎ ===== */
+.backup-stat {
+  font-family: var(--font-display);
+  font-size: 1.02em;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 0;
+  line-height: 1.8;
+  font-variant-numeric: tabular-nums;
+}
+
+.backup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0 0;
+}
+
+.backup-actions .control-btn { flex: 1 1 12em; }
+
+.backup-msg {
+  margin: 12px 0 0;
+  font-size: 0.88em;
+  line-height: 1.8;
+  color: var(--primary);
+}
+
+.backup-msg:empty { display: none; }
+
+.backup-warn {
+  margin: 12px 0 0;
+  font-size: 0.88em;
+  line-height: 1.8;
+  color: var(--seal);
+  background: var(--seal-soft);
+  border: 1px solid var(--seal);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.backup-raw { margin: 18px 0 0; }
+.backup-raw > summary { cursor: pointer; font-size: 0.86em; color: var(--primary); }
+
+.backup-note {
+  font-size: 0.82em;
+  line-height: 1.8;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+
+.privacy-page textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 10px 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78em;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+
 /* 年度別ページ側の、語句を直した肢の断り */
 .seo-edited {
   font-size: 0.82em;
