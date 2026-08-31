@@ -1209,6 +1209,12 @@ footer a {
   line-height: 1.9;
 }
 
+/* 欄が複数ある肢（R2-19の三欄など）は、出題画面と同じところで改行させる。
+   改行を持たない肢の見え方は変わらない。 */
+.seo-choice-text {
+  white-space: pre-wrap;
+}
+
 .seo-eyebrow {
   color: var(--seal);
   font-size: 0.82em;
