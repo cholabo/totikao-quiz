@@ -20,7 +20,7 @@ from urllib.parse import quote, urljoin
 DEFAULT_SITE_URL = "https://cholabo.jp/"
 
 # style.css の版。アプリ側の quiz.html などと揃える（キャッシュを踏まないため）
-CSS_VERSION = "6.7"
+CSS_VERSION = "6.8"
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 APP_DIR = ROOT_DIR / "app" if (ROOT_DIR / "app" / "questions.json").exists() else ROOT_DIR

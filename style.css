@@ -401,10 +401,13 @@ main {
 }
 
 /* 柱書は問題文の前に、細い罫で */
-/* 前提文は問題文の一段下。読み飛ばす対象ではなく、問いの一部として読ませたい */
+/* 前提文は問題文の一段下。読み飛ばす対象ではなく、問いの一部として読ませたい。
+   肢の本文が名詞句だけの設問（「給水タンク」など14設問）では、問いはこちらにしかない。
+   薄くすると、濃く太い名詞句のほうが問いに見えてしまうので、本文と同じ濃さにする。
+   前提文であることは、左の罫と一段字下げで示す。 */
 .q-context {
   font-size: 0.95em;
-  color: var(--muted);
+  color: var(--ink);
   border-left: 3px solid var(--line);
   padding: 2px 0 2px 12px;
   margin: 0 0 12px;
@@ -972,7 +975,7 @@ main {
 /* 前提文と問題文。出題中の画面（.q-context / #question-text）と同じ見え方にそろえる */
 .ta-wrong-context {
   font-size: 0.95em;
-  color: var(--muted);
+  color: var(--ink);
   border-left: 3px solid var(--line);
   padding: 2px 0 2px 12px;
   margin: 0 0 12px;
