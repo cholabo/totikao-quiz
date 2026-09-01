@@ -111,7 +111,6 @@ def page_shell(
     breadcrumb_ld: list[tuple[str, str]],
     content: str,
     site_url: str = DEFAULT_SITE_URL,
-    extra_ld: str = "",
 ) -> str:
     breadcrumb_html = "\n".join(
         f'<li><a href="{esc(href)}">{esc(name)}</a></li>' if index < len(breadcrumbs) - 1
@@ -121,7 +120,6 @@ def page_shell(
     # フッターから about.html / privacy.html へ戻る相対パス。css_href と同じ深さ
     prefix = css_href[: -len("style.css")] if css_href.endswith("style.css") else ""
     og_image = absolute_url(site_url, "ogimage.png")
-    extra = f'\n  <script type="application/ld+json">{extra_ld}</script>' if extra_ld else ""
     return f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -142,7 +140,7 @@ def page_shell(
   <meta name="twitter:image" content="{esc(og_image)}">
   <link rel="stylesheet" href="{esc(css_href)}?v={CSS_VERSION}">
   <link rel="icon" href="{esc(favicon_href)}" type="image/x-icon">
-  <script type="application/ld+json">{breadcrumb_json(breadcrumb_ld)}</script>{extra}
+  <script type="application/ld+json">{breadcrumb_json(breadcrumb_ld)}</script>
 </head>
 <body>
   <main class="seo-page">
@@ -242,34 +240,16 @@ def explanation_html(exp: dict | None, prefix: str) -> str:
     return '        <div class="seo-explanation">\n          ' + "\n          ".join(parts) + "\n        </div>"
 
 
-def quiz_json(display_year: str, number: int, items: list[dict], explanations: dict[str, dict]) -> str:
-    """練習問題の構造化データ。◯✕なので選択肢は二つ。"""
-    parts = []
-    for item in items:
-        label = clean_text(item.get("label"))
-        exp = explanations.get(label) or {}
-        correct = "正しい" if clean_text(item.get("answer")) in {"○", "◯", "〇"} else "誤り"
-        wrong = "誤り" if correct == "正しい" else "正しい"
-        answer: dict[str, object] = {"@type": "Answer", "text": correct}
-        detail = " ".join(x for x in [clean_text(exp.get("c")), clean_text(exp.get("a"))] if x)
-        if detail:
-            answer["answerExplanation"] = {"@type": "Comment", "text": detail}
-        parts.append({
-            "@type": "Question",
-            "eduQuestionType": "Multiple choice",
-            "name": clean_text(item.get("text")),
-            "acceptedAnswer": answer,
-            "suggestedAnswer": [{"@type": "Answer", "text": wrong}],
-        })
-    data = {
-        "@context": "https://schema.org",
-        "@type": "Quiz",
-        "name": f"土地家屋調査士 {display_year} 過去問 問{number}",
-        "about": {"@type": "Thing", "name": "土地家屋調査士試験"},
-        "educationalLevel": "professional certification",
-        "hasPart": parts,
-    }
-    return json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+# 練習問題（Quiz）の構造化データは、以前ここで出していた。2026-08-31 に外した。
+#
+# Google が「練習問題」のリッチリザルトを廃止したため。2026年1月に
+# Search Console のレポート・リッチリザルトテスト・検索の絞り込みから外され、
+# ヘルプ文書も削除された。出しても検索結果に出ず、Search Console には
+# 「無効なアイテム」だけが残る（実例：/kakomon/r5/q19/）。
+#
+# 代わりになるのは Education Q&A だが、対応言語が英語・ポルトガル語・
+# スペイン語・ベトナム語で日本語が入っていないので使えない。
+# パンくずリストの構造化データは別系統で、そのまま出している。
 
 
 def group_questions(rows: list[dict]) -> dict[str, dict[int, list[dict]]]:
@@ -520,7 +500,6 @@ def render_question_page(
         breadcrumb_ld=[(name, url) for name, _href, url in breadcrumbs],
         content=content,
         site_url=site_url,
-        extra_ld=quiz_json(display_year, number, items, explanations),
     )
     question_dir = OUTPUT_DIR / slug / f"q{number}"
     question_dir.mkdir(parents=True, exist_ok=True)
