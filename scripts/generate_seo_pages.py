@@ -22,6 +22,21 @@ DEFAULT_SITE_URL = "https://cholabo.jp/"
 # style.css の版。アプリ側の quiz.html などと揃える（キャッシュを踏まないため）
 CSS_VERSION = "6.9"
 
+# 法務省が問題PDFを載せている年度ごとのページ。
+# 公共データ利用規約（第1.0版）が「当該ページのURL」を示すよう求めているので、
+# 年度が特定できるものはその年度のページを指す。
+# 平成年度は法務省側に個別ページが見当たらないため入れていない。
+# まとめ： https://www.moj.go.jp/shikaku_saiyo_index5.html
+MOJ_YEAR_PAGE = {
+    "R1": "https://www.moj.go.jp/MINJI/minji05_00001.html",
+    "R2": "https://www.moj.go.jp/MINJI/minji05_00119.html",
+    "R3": "https://www.moj.go.jp/MINJI/minji05_00412.html",
+    "R4": "https://www.moj.go.jp/MINJI/minji05_00485.html",
+    "R5": "https://www.moj.go.jp/MINJI/minji05_00568.html",
+    "R6": "https://www.moj.go.jp/MINJI/minji05_00663.html",
+    "R7": "https://www.moj.go.jp/MINJI/minji05_00732.html",
+}
+
 ROOT_DIR = Path(__file__).resolve().parents[1]
 APP_DIR = ROOT_DIR / "app" if (ROOT_DIR / "app" / "questions.json").exists() else ROOT_DIR
 QUESTIONS_PATH = APP_DIR / "questions.json"
@@ -151,7 +166,7 @@ def page_shell(
     </nav>
 {content}
     <footer class="seo-footer">
-      <p>掲載している過去問は、法務省「土地家屋調査士試験」の試験問題に基づきます。問題文の著作権は法務省に帰属します。</p>
+      <p>出典：<a href="https://www.moj.go.jp/shikaku_saiyo_index5.html" rel="noopener">「土地家屋調査士試験」（法務省）</a>を加工して作成。5肢の組合せを問う形式を、肢ごとの◯✕に組み替えています。加工したのは当サイトであり、法務省が作成・公表したものではありません。</p>
       <p>本サイトは個人の学習支援を目的とした非公式サイトであり、法務省その他の公的機関とは関係ありません。<br><a href="{prefix}about.html">このサイトについて・免責事項</a>　/　<a href="{prefix}privacy.html">プライバシー</a></p>
     </footer>
   </main>
@@ -434,7 +449,18 @@ def render_question_page(
         choice = clean_text(item.get("choice")) or label
         answer = "○" if clean_text(item.get("answer")) in {"○", "◯", "〇"} else "×"
         source = clean_text(item.get("source"))
-        source_html = f'<p class="seo-source"><strong>出典：</strong>{esc(source)}</p>' if source else ""
+        # 法務省が年度ごとに問題PDFを載せているページ。原本に当たれるようにリンクする。
+        # 平成年度は法務省側に個別ページが見当たらないので、その年度は素のままにする
+        moj = MOJ_YEAR_PAGE.get(clean_text(item.get("year")))
+        if source and moj:
+            source_html = ('<p class="seo-source"><strong>出典：</strong>'
+                           f'<a href="{moj}" rel="noopener">{esc(source)}</a>'
+                           'を加工して作成</p>')
+        elif source:
+            source_html = (f'<p class="seo-source"><strong>出典：</strong>{esc(source)}'
+                           'を加工して作成</p>')
+        else:
+            source_html = ""
         topic = clean_text(topics.get(label))
         topic_html = ""
         if topic in TOPICS:
