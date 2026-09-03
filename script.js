@@ -395,6 +395,18 @@ function renderQuestion(question) {
   const context = document.getElementById("q-context");
   context.textContent = question.context || "";
   context.classList.toggle("hidden", !question.context);
+  // 前提文が問いの形（「〜か。」）なら、◯の向きを一行で示す。
+  // 対話形式は肢が学生の答えなので、問いに当てはまるかではなく答えの正誤を問う
+  const hint = document.getElementById("q-context-hint");
+  const ctx = (question.context || "").trim();
+  let hintText = "";
+  if (/か[。．]?$/.test(ctx)) {
+    hintText = ctx.includes("対話")
+      ? "学生の答えとして正しければ◯、誤っていれば✕"
+      : "この問いに当てはまれば◯、当てはまらなければ✕";
+  }
+  hint.textContent = hintText;
+  hint.classList.toggle("hidden", !hintText);
   document.getElementById("question-text").textContent = question.text;
   // 語句を直した肢は、解く前から断っておく
   document.getElementById("q-edited").classList.toggle("hidden", !question.edited);
@@ -486,6 +498,7 @@ function showNoQuestionMessage(message) {
   document.getElementById("question-number").textContent = "";
   updateTopicChip(null);
   document.getElementById("q-context").classList.add("hidden");
+  document.getElementById("q-context-hint").classList.add("hidden");
   document.getElementById("q-edited").classList.add("hidden");
   document.getElementById("question-text").textContent = message;
   document.getElementById("choices").classList.add("hidden");

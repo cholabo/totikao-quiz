@@ -415,6 +415,14 @@ main {
   line-height: 1.9;
 }
 
+/* 前提文が問いの形のときの、◯の向きの案内。前提文の罫の下に小さく添える */
+.q-context-hint {
+  font-size: 0.8em;
+  color: var(--muted);
+  margin: -6px 0 12px 15px;
+  line-height: 1.7;
+}
+
 /* 現行法に合わせて語句を直した肢の断り。目立たせすぎると問題文より先に読まれるので、
    小さく、地色だけで区切る */
 .q-edited {

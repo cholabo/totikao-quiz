@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=6.9">
+  <link rel="stylesheet" href="style.css?v=7.0">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -45,6 +45,9 @@
       <div class="q-card">
         <div id="question-area">
           <p id="q-context" class="q-context hidden"></p>
+          <!-- 前提文が「〜か。」の問いで終わる設問は、肢が文でなく名詞句のことが多く、
+               ◯が「問いに当てはまる」なのか「肢の記述が正しい」なのか迷う。ここで向きを示す -->
+          <p id="q-context-hint" class="q-context-hint hidden"></p>
           <div id="question-text"></div>
           <!-- 現行法に合わせて語句を直した肢の断り。原文のままだと誤解されないように、
                解説を開かなくても問題文のすぐ下で見えるところに置く -->
@@ -145,6 +148,6 @@
     </template>
   </main>
   <script src="common.js?v=1.4"></script>
-  <script src="script.js?v=4.3"></script>
+  <script src="script.js?v=4.4"></script>
 </body>
 </html>
