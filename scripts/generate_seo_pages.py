@@ -474,9 +474,17 @@ def render_question_page(
             '置き換えています。どこを直したかは下の解説に書いてあります。</p>'
             if item.get("edited") else ""
         )
+        # 図を参照する肢は、肢文の下に図を置く（quiz.html と同じ見え方）
+        fig = item.get("figure") or {}
+        figure_html = (
+            f'<figure class="q-figure"><img src="../../../{esc(fig["src"])}" alt="{esc(fig.get("cap") or "図")}" loading="lazy">'
+            f'<figcaption>{esc(fig.get("cap") or "")}</figcaption></figure>'
+            if fig.get("src") else ""
+        )
         choice_articles.append(f"""      <article class="seo-choice-card">
         <div class="seo-choice-heading"><h2>肢 {esc(choice)}</h2><span class="seo-label">{esc(label)}</span>{topic_html}</div>
         <p class="seo-choice-text">{esc(item.get("text"))}</p>
+        {figure_html}
         {edited_html}
         <p class="seo-answer"><strong>解答：</strong><span>{answer}</span></p>
 {explanation_html(explanations.get(label), "../../../")}

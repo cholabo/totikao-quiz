@@ -423,6 +423,25 @@ main {
   line-height: 1.7;
 }
 
+/* 肢文が参照する図。原本の線画は黒線・白地なので、暗い配色でも白地のまま置く */
+.q-figure {
+  margin: 12px 0 0;
+  text-align: center;
+}
+.q-figure img {
+  max-width: min(100%, 320px);
+  height: auto;
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+.q-figure figcaption {
+  font-size: 0.8em;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
 /* 現行法に合わせて語句を直した肢の断り。目立たせすぎると問題文より先に読まれるので、
    小さく、地色だけで区切る */
 .q-edited {

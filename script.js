@@ -408,6 +408,18 @@ function renderQuestion(question) {
   hint.textContent = hintText;
   hint.classList.toggle("hidden", !hintText);
   document.getElementById("question-text").textContent = question.text;
+  // 図を参照する肢は、肢文の下に図を出す
+  const figure = document.getElementById("q-figure");
+  const fig = question.figure;
+  if (fig && fig.src) {
+    const img = document.getElementById("q-figure-img");
+    img.src = fig.src;
+    img.alt = fig.cap || "図";
+    document.getElementById("q-figure-cap").textContent = fig.cap || "";
+    figure.classList.remove("hidden");
+  } else {
+    figure.classList.add("hidden");
+  }
   // 語句を直した肢は、解く前から断っておく
   document.getElementById("q-edited").classList.toggle("hidden", !question.edited);
   hideVerdict();
@@ -499,6 +511,7 @@ function showNoQuestionMessage(message) {
   updateTopicChip(null);
   document.getElementById("q-context").classList.add("hidden");
   document.getElementById("q-context-hint").classList.add("hidden");
+  document.getElementById("q-figure").classList.add("hidden");
   document.getElementById("q-edited").classList.add("hidden");
   document.getElementById("question-text").textContent = message;
   document.getElementById("choices").classList.add("hidden");

@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=7.0">
+  <link rel="stylesheet" href="style.css?v=7.1">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -49,6 +49,11 @@
                ◯が「問いに当てはまる」なのか「肢の記述が正しい」なのか迷う。ここで向きを示す -->
           <p id="q-context-hint" class="q-context-hint hidden"></p>
           <div id="question-text"></div>
+          <!-- 肢文が図を参照する設問（R4-12 など）。図は法務省の問題PDFから切り出したもの -->
+          <figure id="q-figure" class="q-figure hidden">
+            <img id="q-figure-img" alt="" loading="lazy">
+            <figcaption id="q-figure-cap"></figcaption>
+          </figure>
           <!-- 現行法に合わせて語句を直した肢の断り。原文のままだと誤解されないように、
                解説を開かなくても問題文のすぐ下で見えるところに置く -->
           <p id="q-edited" class="q-edited hidden">出題文のうち、法改正で呼び名が変わった語を現行の言い方に置き換えています。解答すると、どこを直したか解説に出ます。</p>
@@ -148,6 +153,6 @@
     </template>
   </main>
   <script src="common.js?v=1.5"></script>
-  <script src="script.js?v=4.4"></script>
+  <script src="script.js?v=4.5"></script>
 </body>
 </html>
