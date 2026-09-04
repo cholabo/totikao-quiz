@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>読むだけの問｜土地家屋調査士 過去問アプリ</title>
+  <meta name="description" content="肢ごとの◯✕に分けられない過去問（流れ図・空欄補充）を原文のまま読むページです。">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="style.css?v=7.3">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#eff3f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f171c" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+  <main class="list-page">
+    <header class="list-header">
+      <h1 id="reading-title">読むだけの問</h1>
+      <p>流れ図や空欄補充の組合せなど、肢ごとの◯✕に分けられない問です。原文のまま置いてあり、クイズには出ません。</p>
+    </header>
+
+    <!-- 中身は data/reading.json から。?q=H19-14 のように問を指定する -->
+    <article id="reading-body" class="reading-item">読み込み中...</article>
+
+    <nav id="reading-nav" class="reading-nav" aria-label="前後の問"></nav>
+
+    <div id="controls">
+      <a class="secondary-btn reading-back" href="question-list.html">問題一覧へ戻る</a>
+    </div>
+
+    <footer class="page-credit">
+      <p>出典：<a href="https://www.moj.go.jp/shikaku_saiyo_index5.html" rel="noopener">「土地家屋調査士試験」（法務省）</a>を加工して作成。加工したのは当サイトであり、法務省が作成・公表したものではありません。
+      本サイトは個人の学習支援を目的とした非公式なものです。</p>
+      <p><a href="about.html">このサイトについて・免責事項</a>　/　<a href="privacy.html">プライバシー</a>　/　<a href="index.html">トップ</a></p>
+    </footer>
+  </main>
+
+  <script src="reading.js?v=1.0"></script>
+</body>
+</html>

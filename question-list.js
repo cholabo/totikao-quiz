@@ -132,6 +132,7 @@ function renderQuestionList() {
   });
 
   list.replaceChildren(fragment);
+  renderReadingSection(list);
 
   // いま止まっている位置まで開いて、そこへ寄せる（毎回スクロールして探さなくてよいように）
   const resumeLabel = localStorage.getItem(YEAR_MODE_RESUME_KEY);
@@ -140,6 +141,40 @@ function renderQuestionList() {
     marker.closest("details").open = true;
     marker.scrollIntoView({ block: "center" });
   }
+}
+
+// ◯✕に組み替えていない問（流れ図・空欄補充の組合せ）。出題には使わず、年度の一番下で読めるだけにする。
+// data/reading.json に原文・図・選択肢・正解を置いてある。
+function renderReadingSection(list) {
+  fetch("data/reading.json")
+    .then(response => (response.ok ? response.json() : []))
+    .then(items => {
+      if (!Array.isArray(items) || items.length === 0) return;
+      const details = document.createElement("details");
+      details.className = "year-section reading-section";
+      const summary = document.createElement("summary");
+      summary.append(document.createTextNode("◯✕にしていない問（読むだけ）"));
+      const count = document.createElement("span");
+      count.className = "year-summary-count";
+      count.textContent = `${items.length}問・出題されません`;
+      summary.appendChild(count);
+      details.appendChild(summary);
+
+      // 一覧には問のリンクだけを置き、中身は reading.html で読む
+      const ul = document.createElement("ul");
+      ul.className = "reading-list";
+      items.forEach(item => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = "reading.html?q=" + encodeURIComponent(item.label);
+        a.textContent = `${item.label}　${item.title || ""}`;
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+      details.appendChild(ul);
+      list.appendChild(details);
+    })
+    .catch(() => {});
 }
 
 function createQuestionButton(question) {
