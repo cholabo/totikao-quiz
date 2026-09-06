@@ -16,6 +16,44 @@ function loadExplanations(year) {
   return explanationCache.get(year);
 }
 
+// 過去問ノート（note/）の対応表。肢 → 出題マップのマスとページ。無くても解説は出る
+let noteMapPromise = null;
+function loadNoteMap() {
+  if (!noteMapPromise) {
+    noteMapPromise = fetch("note/map.json").then(res => (res.ok ? res.json() : null)).catch(() => null);
+  }
+  return noteMapPromise;
+}
+
+function fillNoteLinks(area, label) {
+  const box = area.querySelector(".exp-note");
+  const list = area.querySelector(".exp-note-list");
+  if (!box || !list) return;
+  loadNoteMap().then(map => {
+    const cells = (map && map[label]) || [];
+    if (!cells.length) return;
+    list.textContent = "";
+    cells.forEach(c => {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = "note/" + c.c;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = `${c.k} × ${c.a}`;
+      a.title = "同じ問われ方の肢を一覧で見る";
+      li.appendChild(a);
+      const sub = document.createElement("span");
+      sub.className = "exp-note-sub";
+      const parts = [];
+      if (c.r) parts.push(`<a href="note/${c.r}" target="_blank" rel="noopener">${c.k}</a>`);
+      if (c.x) parts.push(`<a href="note/${c.x}" target="_blank" rel="noopener">${c.a}</a>`);
+      if (parts.length) { sub.innerHTML = "ノート: " + parts.join(" ／ "); li.appendChild(sub); }
+      list.appendChild(li);
+    });
+    box.classList.remove("hidden");
+  });
+}
+
 function getExplanation(question) {
   if (!question) return Promise.resolve(null);
   return loadExplanations(question.year).then(map => (map ? map[question.label] || null : null));
@@ -607,7 +645,8 @@ function newExplanationBody() {
 // area は exp-template を写した中身を持つ要素。
 // 一言・解説・条文カード・関連法令をそこに埋める。
 // 問題文と条文の対比欄は、解説の中で同じことが言えているので置いていない。
-function fillExplanation(area, exp) {
+function fillExplanation(area, exp, label) {
+    if (label) fillNoteLinks(area, label);
     area.querySelector(".exp-core").textContent = exp.c || "";
     area.querySelector(".exp-body").textContent = exp.a || "";
 
@@ -727,7 +766,7 @@ function showExplanation(question, shouldOpen) {
 
     area.textContent = "";
     area.appendChild(newExplanationBody());
-    fillExplanation(area, exp);
+    fillExplanation(area, exp, label);
 
     area.dataset.label = label;
     if (shouldOpen) {
@@ -1003,7 +1042,7 @@ function renderTimeAttackWrongReview() {
         return;
       }
       area.appendChild(body);
-      fillExplanation(area, exp);
+      fillExplanation(area, exp, item.label);
     });
   }
 }
