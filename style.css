@@ -1830,6 +1830,9 @@ figure.law {
 }
 
 figure.law.gist { border-style: dashed; }
+figure.law.gist figcaption::before { content: "旨"; }   /* 要旨（原文の言い換え）。条文そのものではない */
+figure.law.lo figcaption { border-bottom: 0; padding: 5px 11px; font-weight: 600; }
+figure.law.lo { background: transparent; }
 
 figure.law figcaption {
   font-size: 0.78em;

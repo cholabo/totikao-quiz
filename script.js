@@ -592,7 +592,7 @@ function openExplanation() {
 // 見出しは条文ページ（アプリ内DB）へのリンクにして、そこから全文と e-Gov に行ける。
 function buildCard(c) {
   const fig = document.createElement("figure");
-  fig.className = "law" + (c.k === "dir" ? " dir" : c.k === "case" ? " case" : "") + (c.g ? " gist" : "");
+  fig.className = "law" + (c.k === "dir" ? " dir" : c.k === "case" ? " case" : "") + (c.g ? " gist" : "") + (c.lo ? " lo" : "");
 
   const cap = document.createElement("figcaption");
   const href = c.u || (c.s ? `sources.html${c.h ? "?p=" + encodeURIComponent(c.h) : ""}#${c.s}` : null);
@@ -616,6 +616,7 @@ function buildCard(c) {
     cap.appendChild(s);
   }
   fig.appendChild(cap);
+  if (c.lo) return fig;  // 見出しだけ（条文はリンク先で読む）
 
   for (const l of c.l || []) {
     const p = document.createElement("p");
@@ -688,13 +689,17 @@ function fillExplanation(area, exp, label) {
 
     const cards = area.querySelector(".exp-cards");
     const cardList = area.querySelector(".exp-cards-list");
-    const nCards = (exp.k || []).length;
     cardList.textContent = "";
-    if (nCards) {
+    const cardItems = exp.k || [];
+    // 条文カードの無い根拠（関連法令）は、同じ枠の中に見出しだけの薄いカードで並べる。
+    // 「条文を見る」と「関連法令」の二つの欄に分かれていると、同じものが二度出ているように見えるため（2026-09-07）
+    const linkOnly = (exp.r || []).map(ref => ({ t: ref.t, k: ref.k === "通達" ? "dir" : ref.k === "判例" ? "case" : undefined, u: ref.u, s: ref.s, h: ref.h, lo: 1 }));
+    const nAll = cardItems.length + linkOnly.length;
+    if (nAll) {
       cards.open = false;
-      cards.querySelector("summary").textContent =
-        nCards > 1 ? `条文を見る（${nCards}件）` : "条文を見る";
-      exp.k.forEach(c => cardList.appendChild(buildCard(c)));
+      cards.querySelector("summary").textContent = nAll > 1 ? `根拠を見る（${nAll}件）` : "根拠を見る";
+      cardItems.forEach(c => cardList.appendChild(buildCard(c)));
+      linkOnly.forEach(c => cardList.appendChild(buildCard(c)));
       cards.classList.remove("hidden");
     } else {
       cards.classList.add("hidden");
@@ -715,40 +720,8 @@ function fillExplanation(area, exp, label) {
     const refsBox = area.querySelector(".exp-refs");
     const list = area.querySelector(".exp-refs-list");
     list.textContent = "";
-    if (exp.r && exp.r.length) {
-      exp.r.forEach(ref => {
-        const li = document.createElement("li");
-        // e-Gov にある条文は条・項を指定して直接飛ばす。
-        // 準則・通達・別表は e-Gov に無い（別表は項ごとの位置指定ができない）ので、アプリ内の資料へ。
-        // 資料は条まるごとを載せているので、指している項を p で渡して目立たせる
-        const inApp = ref.s
-          ? `sources.html${ref.h ? "?p=" + encodeURIComponent(ref.h) : ""}#${ref.s}`
-          : null;
-        const href = ref.u || inApp;
-        if (href) {
-          const a = document.createElement("a");
-          a.href = href;
-          a.target = "_blank";
-          a.rel = "noopener";
-          a.textContent = ref.t;
-          li.appendChild(a);
-        } else {
-          const span = document.createElement("span");
-          span.className = "exp-ref-plain";
-          span.textContent = ref.t;
-          li.appendChild(span);
-        }
-        if (ref.k) {
-          const chip = document.createElement("span");
-          chip.className = "exp-chip";
-          chip.textContent = ref.k;
-          li.appendChild(chip);
-        }
-        list.appendChild(li);
-      });
-      refsBox.classList.remove("hidden");
-    } else if (exp.uv) {
-      // 根拠なし解説：正直にその旨を示す
+    if (!nAll && exp.uv) {
+      // 根拠が何も無い未検証の肢だけ、正直にその旨を示す
       const li = document.createElement("li");
       const span = document.createElement("span");
       span.className = "exp-ref-plain exp-unverified";
