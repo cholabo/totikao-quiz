@@ -2003,6 +2003,26 @@ figure.law ul.law-branch {
   color: var(--muted);
 }
 
+/* 過去問ノートへの対応（問われ方 × 登記の種類）。関連法令と同じ仕切り。小さく、1 マス 1 行 */
+.exp-note {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.exp-note-list { list-style: none; margin: 7px 0 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.exp-note-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 0.8em; line-height: 1.5; }
+.exp-note-list > li > a {
+  color: var(--primary); font-weight: 600; text-decoration: none;
+  border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; background: var(--soft);
+}
+.exp-note-list > li > a:hover { border-color: var(--primary); }
+.exp-note-sub { display: inline-flex; gap: 4px; }
+.exp-note-sub a {
+  color: var(--muted); text-decoration: none; font-size: 0.92em;
+  border: 1px dashed var(--line); border-radius: 999px; padding: 1px 8px;
+}
+.exp-note-sub a:hover { color: var(--primary); border-color: var(--primary); }
+
 /* 根拠はチップで横に並べる。種別（条文・別表・判例…）は仕切り線の右に */
 .exp-refs-list {
   list-style: none;
