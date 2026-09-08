@@ -7,12 +7,12 @@ const YEAR_MODE_RESUME_KEY = "yearModeResumeLabel";
 const YEAR_MODE_PASS_KEY = "yearModePassCount";
 
 // 問題データを差し替えたら上げる。3画面が同じ値を使うのでここだけ直せばよい。
-const QUESTIONS_URL = "questions.json?v=20260904c";
+const QUESTIONS_URL = "questions.json?v=20260908a";
 
 function loadLearningState() {
   try {
     const parsed = JSON.parse(localStorage.getItem(LEARNING_STATE_KEY) || "{}");
-    return parsed && typeof parsed === "object" ? parsed : {};
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
   } catch {
     return {};
   }
@@ -25,7 +25,11 @@ function getPassCount() {
 }
 
 function setPassCount(count) {
-  localStorage.setItem(YEAR_MODE_PASS_KEY, String(Math.max(0, Math.floor(count))));
+  try {
+    localStorage.setItem(YEAR_MODE_PASS_KEY, String(Math.max(0, Math.floor(count))));
+  } catch {
+    // 保存できない環境でも出題は続ける
+  }
 }
 
 // 未回答・復習・完了の3状態。「？」は復習と同じ扱いにする。

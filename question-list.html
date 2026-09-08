@@ -15,7 +15,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=7.5">
+  <link rel="stylesheet" href="style.css?v=7.9">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -29,12 +29,22 @@
       <p>年度を開き、始めたい肢を選んでください。その位置から順番に出題します。</p>
     </header>
 
-    <div id="list-progress-info" class="progress-panel">進捗を読み込み中...</div>
+    <div id="list-progress-info" class="progress-panel" aria-live="polite">進捗を読み込み中...</div>
 
     <section id="topic-panel" class="topic-panel hidden" aria-label="分野別の進み具合">
       <h2 class="topic-panel-title">分野別の進み具合</h2>
       <div id="topic-rows"></div>
     </section>
+
+    <!-- 過去問ノートの軸（登記の種類 × 問われ方）ごとの進み具合。数が多いので畳んでおく。名前はノートのページへ -->
+    <details id="kind-panel" class="topic-panel tag-panel hidden">
+      <summary class="topic-panel-title">登記の種類ごとの進み具合（過去問ノートの縦軸）</summary>
+      <div id="kind-rows"></div>
+    </details>
+    <details id="ax-panel" class="topic-panel tag-panel hidden">
+      <summary class="topic-panel-title">問われ方ごとの進み具合（過去問ノートの横軸）</summary>
+      <div id="ax-rows"></div>
+    </details>
 
     <div class="status-legend" aria-label="学習状態の色分け">
       <span class="legend-item"><span class="legend-dot status-unanswered"></span>未回答</span>
@@ -42,7 +52,7 @@
       <span class="legend-item"><span class="legend-dot status-wrong"></span>復習</span>
     </div>
 
-    <div id="question-list" aria-live="polite"></div>
+    <div id="question-list"></div>
 
     <footer class="page-credit">
       <p>出典：<a href="https://www.moj.go.jp/shikaku_saiyo_index5.html" rel="noopener">「土地家屋調査士試験」（法務省）</a>を加工して作成。肢ごとの◯✕に組み替えています。加工したのは当サイトであり、法務省が作成・公表したものではありません。
@@ -51,7 +61,7 @@
     </footer>
   </main>
 
-  <script src="common.js?v=1.5"></script>
-  <script src="question-list.js?v=2.3"></script>
+  <script src="common.js?v=1.6"></script>
+  <script src="question-list.js?v=2.4"></script>
 </body>
 </html>

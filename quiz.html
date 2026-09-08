@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=7.8">
+  <link rel="stylesheet" href="style.css?v=7.9">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -61,15 +61,15 @@
 
         <!-- 解答したら「？」があった場所がそのまま「次の問題へ」になる。親指を動かさずに進めるため。 -->
         <div id="choices">
-          <button class="choice" data-choice="◯">◯</button>
-          <button class="choice" data-choice="✕">✕</button>
+          <button class="choice" data-choice="◯" aria-label="正しい">◯</button>
+          <button class="choice" data-choice="✕" aria-label="誤り">✕</button>
           <button id="unknown-btn">？</button>
           <button id="next-btn" class="hidden">次の問題へ</button>
         </div>
 
         <div id="verdict" class="verdict hidden">
           <div id="stamp" class="stamp" aria-hidden="true"></div>
-          <div id="result" class="verdict-text"></div>
+          <div id="result" class="verdict-text" aria-live="polite"></div>
         </div>
 
         <button id="exp-toggle" class="exp-toggle hidden" type="button" aria-expanded="false" aria-controls="explanation">解説を見る</button>
@@ -153,12 +153,11 @@
         </div>
       </details>
       <div class="exp-refs hidden">
-        <span class="exp-refs-label">関連法令</span>
         <ul class="exp-refs-list"></ul>
       </div>
     </template>
   </main>
-  <script src="common.js?v=1.5"></script>
-  <script src="script.js?v=4.8"></script>
+  <script src="common.js?v=1.6"></script>
+  <script src="script.js?v=4.10"></script>
 </body>
 </html>

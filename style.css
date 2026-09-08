@@ -435,6 +435,7 @@ main {
   text-align: center;
 }
 .q-figure img {
+  box-sizing: border-box;
   max-width: min(100%, 320px);
   height: auto;
   background: #fff;
@@ -655,6 +656,7 @@ main {
 
 #home-btn,
 .secondary-btn {
+  box-sizing: border-box;
   width: 100%;
   font-family: inherit;
   font-size: 0.92em;
@@ -700,6 +702,15 @@ main {
   padding: 14px 16px 12px;
   margin-bottom: 20px;
 }
+
+.tag-panel > summary { cursor: pointer; list-style: none; margin-bottom: 0; }
+.tag-panel[open] > summary { margin-bottom: 10px; }
+.tag-panel .topic-row { grid-template-columns: minmax(9em, max-content) 1fr 5.2em; }   /* 縦軸名は長い（最長 13 文字） */
+.tag-panel > summary::-webkit-details-marker { display: none; }
+.tag-panel > summary::before { content: "▸ "; color: var(--muted); }
+.tag-panel[open] > summary::before { content: "▾ "; }
+.tag-panel .topic-name a { color: var(--primary); text-decoration: none; }
+.tag-panel .topic-name a:hover { text-decoration: underline; }
 
 .topic-panel-title {
   font-family: var(--font-display);
@@ -1560,6 +1571,8 @@ footer a {
   border-color: var(--primary);
 }
 
+.seo-ref.is-sub { border-style: dashed; color: var(--muted); }
+
 .seo-ref.is-plain {
   color: var(--muted);
 }
@@ -1830,7 +1843,7 @@ figure.law {
 }
 
 figure.law.gist { border-style: dashed; }
-figure.law.gist figcaption::before { content: "旨"; }   /* 要旨（原文の言い換え）。条文そのものではない */
+figure.law.gist figcaption::before { content: "旨"; }   /* 要旨（原文の言い換え）。条文そのものではない。通達・判例の要旨は種別の印（達・判）を優先し、破線の枠だけで要旨と分かる */
 figure.law.lo figcaption { border-bottom: 0; padding: 5px 11px; font-weight: 600; }
 figure.law.lo { background: transparent; }
 

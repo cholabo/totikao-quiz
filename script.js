@@ -11,18 +11,17 @@ function loadExplanations(year) {
   if (!explanationCache.has(year)) {
     explanationCache.set(year, fetch(`data/exp-${year}.json`)
       .then(res => (res.ok ? res.json() : null))
-      .catch(() => null));
+      .catch(() => null)
+      .then(map => { if (!map) explanationCache.delete(year); return map; }));   // 失敗は覚えない（電波が戻れば取り直す）
   }
   return explanationCache.get(year);
 }
 
-// 過去問ノート（note/）の対応表。肢 → 出題マップのマスとページ。無くても解説は出る
-let noteMapPromise = null;
-function loadNoteMap() {
-  if (!noteMapPromise) {
-    noteMapPromise = fetch("note/map.json").then(res => (res.ok ? res.json() : null)).catch(() => null);
-  }
-  return noteMapPromise;
+// 過去問ノート（note/）との対応は questions.json の各肢が持つ（ax = 問われ方、ks = 登記の種類、cells = マスとページ）。
+// 正本は textbook/cells → dataset/tags.json → build/apply_tags.js。
+function noteCellsOf(label) {
+  const q = questions.find(x => x.label === label);
+  return (q && q.cells) || [];
 }
 
 function noteChip(href, text) {
@@ -35,9 +34,9 @@ function fillNoteLinks(area, label) {
   const box = area.querySelector(".exp-note");
   const list = area.querySelector(".exp-note-list");
   if (!box || !list) return;
-  loadNoteMap().then(map => {
-    const cells = (map && map[label]) || [];
-    if (!cells.length) return;
+  const cells = noteCellsOf(label);
+  if (!cells.length) return;
+  {
     list.textContent = "";
     cells.forEach(c => {
       const li = document.createElement("li");
@@ -58,7 +57,7 @@ function fillNoteLinks(area, label) {
       list.appendChild(li);
     });
     box.classList.remove("hidden");
-  });
+  }
 }
 
 function getExplanation(question) {
@@ -89,7 +88,7 @@ const MAX_RESPONSE_TIME_MS = 60 * 60 * 1000;
 const QUIZ_FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbykTsPoM-VFHtSWZUmS-TTqZyi7gtJd637B94mw5i_rDgeNtd6_XCRLLTQQ7Z6Fj_x9/exec";
 const searchParams = new URLSearchParams(window.location.search);
 const requestedStartLabel = searchParams.get("start");
-const requestedMode = searchParams.get("mode");
+const requestedMode = ["year", "review", "timeattack"].includes(searchParams.get("mode")) ? searchParams.get("mode") : null;
 let learningState = loadLearningState();
 
 let currentMode = requestedMode || localStorage.getItem("quizMode") || "year";
@@ -151,7 +150,11 @@ function normalizeAnswer(value) {
 }
 
 function saveLearningState() {
-  localStorage.setItem(LEARNING_STATE_KEY, JSON.stringify(learningState));
+  try {
+    localStorage.setItem(LEARNING_STATE_KEY, JSON.stringify(learningState));
+  } catch {
+    // 容量超過や保存が禁じられた環境。進捗は残らないが、出題は続ける
+  }
 }
 
 function getQuestionKey(question) {
@@ -293,7 +296,8 @@ function updateProgress() {
   const p = summarizeProgress(questions, learningState);
   const modeName = currentMode === "review" ? "復習モード" : "年度順モード";
   const pass = getPassCount();
-  progressInfo.textContent = `${modeName}${pass > 0 ? `（${pass + 1}周目）` : ""}`
+  const shown = pass + (yearPassJustFinished ? 0 : 1);   // 一周し終えた肢の画面では、まだその周のまま
+  progressInfo.textContent = `${modeName}${pass > 0 ? `（${shown}周目）` : ""}`
     + `｜全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 完了${p.completed}問`;
 }
 
@@ -415,14 +419,16 @@ function getYearModeQuestions() {
     return sorted.filter(q => !isAnswered(q));
   }
 
+  const used = new Set(usedQuestions);
   return sorted.filter(question =>
     compareQuestions(question, startQuestion) >= 0 &&
-    !usedQuestions.includes(getQuestionKey(question))
+    !used.has(getQuestionKey(question))
   );
 }
 
 function showTimeAttackQuestion() {
-  let available = questions.filter(q => !usedQuestions.includes(getQuestionKey(q)));
+  const used = new Set(usedQuestions);
+  let available = questions.filter(q => !used.has(getQuestionKey(q)));
 
   if (available.length === 0) {
     usedQuestions = [];
@@ -769,6 +775,8 @@ function resetFeedbackArea() {
   form.classList.add("hidden");
   openButton.classList.remove("hidden");
   openButton.disabled = false;
+  const submitButton = document.getElementById("feedback-submit-btn");
+  if (submitButton) submitButton.disabled = false;   // 一度送った後も次の肢で送れるように
   comment.value = "";
   status.textContent = "";
 }
@@ -1043,8 +1051,8 @@ document.getElementById("ta-home-btn").addEventListener("click", () => {
 
 document.getElementById("share-x-btn").addEventListener("click", () => {
   const text = `土地家屋調査士クイズ タイムアタック結果\n正解：${taCorrectCount}問\n誤答：${taWrongCount}問\n#調査士クイズ\n`;
-  navigator.clipboard.writeText(text).then(() => {
-    alert("結果をコピーしました。Xを開くので貼り付けてください。");
-    window.open("https://twitter.com/intent/tweet", "_blank");
-  });
+  const win = window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text), "_blank", "noopener");
+  navigator.clipboard.writeText(text)
+    .then(() => { if (!win) alert("結果をコピーしました。Xに貼り付けてください。"); })
+    .catch(() => { if (!win) alert("コピーできませんでした。"); });
 });

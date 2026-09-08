@@ -20,7 +20,7 @@ from urllib.parse import quote, urljoin
 DEFAULT_SITE_URL = "https://cholabo.jp/"
 
 # style.css の版。アプリ側の quiz.html などと揃える（キャッシュを踏まないため）
-CSS_VERSION = "6.9"
+CSS_VERSION = "7.9"
 
 # 法務省が問題PDFを載せている年度ごとのページ。
 # 公共データ利用規約（第1.0版）が「当該ページのURL」を示すよう求めているので、
@@ -224,9 +224,26 @@ def ref_links(exp: dict, prefix: str) -> str:
     return f'<p class="seo-refs"><span class="seo-refs-label">根拠</span>{"".join(chips)}</p>'
 
 
-def explanation_html(exp: dict | None, prefix: str) -> str:
-    if not exp:
+def note_links(item: dict, prefix: str) -> str:
+    """過去問ノートのマス（登記の種類 × 問われ方）とページへのリンク。questions.json の cells 列から。"""
+    chips: list[str] = []
+    for c in item.get("cells") or []:
+        if not c.get("c"):
+            continue
+        chips.append(f'<a class="seo-ref" href="{esc(prefix + "note/" + c["c"])}">{esc(c["k"])} × {esc(c["a"])}</a>')
+        if c.get("r"):
+            chips.append(f'<a class="seo-ref is-sub" href="{esc(prefix + "note/" + c["r"])}">{esc(c["k"])}</a>')
+        if c.get("x"):
+            chips.append(f'<a class="seo-ref is-sub" href="{esc(prefix + "note/" + c["x"])}">{esc(c["a"])}</a>')
+    if not chips:
         return ""
+    return f'<p class="seo-refs"><span class="seo-refs-label">問われ方</span>{"".join(chips)}</p>'
+
+
+def explanation_html(exp: dict | None, prefix: str, item: dict | None = None) -> str:
+    if not exp:
+        nl = note_links(item or {}, prefix)
+        return ('        <div class="seo-explanation">\n          ' + nl + "\n        </div>") if nl else ""
     parts = []
     if exp.get("c"):
         parts.append(f'<p class="seo-exp-core">{esc(exp["c"])}</p>')
@@ -250,6 +267,10 @@ def explanation_html(exp: dict | None, prefix: str) -> str:
     links = ref_links(exp, prefix)
     if links:
         parts.append(links)
+    if item:
+        nl = note_links(item, prefix)
+        if nl:
+            parts.append(nl)
     if not parts:
         return ""
     return '        <div class="seo-explanation">\n          ' + "\n          ".join(parts) + "\n        </div>"
@@ -487,7 +508,7 @@ def render_question_page(
         {figure_html}
         {edited_html}
         <p class="seo-answer"><strong>解答：</strong><span>{answer}</span></p>
-{explanation_html(explanations.get(label), "../../../")}
+{explanation_html(explanations.get(label), "../../../", item)}
         {source_html}
       </article>""")
 

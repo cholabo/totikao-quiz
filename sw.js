@@ -2,7 +2,7 @@
 // ページ本体は「まずネットワーク、だめならキャッシュ」。更新がすぐ届く。
 // 問題データ・解説・資料は「まずキャッシュ、裏で更新」。2回目以降は即表示になる。
 // CACHE_VERSION を上げると古いキャッシュを捨てて入れ替わる。
-const CACHE_VERSION = "v39-20260907b";
+const CACHE_VERSION = "v41-20260908b";
 const SHELL_CACHE = `shell-${CACHE_VERSION}`;
 const DATA_CACHE = `data-${CACHE_VERSION}`;
 const FONT_CACHE = "fonts-v1";   // 書体は版に紐づけず、取れたものを残す
@@ -13,16 +13,26 @@ const SHELL_FILES = [
   "./index.html",
   "./quiz.html",
   "./question-list.html",
-  "./style.css?v=7.8",
-  "./common.js?v=1.5",
-  "./script.js?v=4.8",
-  "./question-list.js?v=2.1",
+  "./style.css?v=7.9",
+  "./common.js?v=1.6",
+  "./script.js?v=4.10",
+  "./question-list.js?v=2.4",
+  "./backup.html",
+  "./restore.html",
   "./backup.js?v=1.0",
+  "./about.html",
+  "./privacy.html",
+  "./reading.html",
+  "./reading.js?v=1.0",
+  "./data/reading.json",
+  "./sources.html",
+  "./sources.js?v=2.0",
+  "./sources.json",
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./data/topics.json",
-  "./questions.json?v=20260904c"
+  "./questions.json?v=20260908a"
 ];
 
 self.addEventListener("install", event => {
@@ -62,10 +72,11 @@ self.addEventListener("fetch", event => {
     event.respondWith(
       caches.open(FONT_CACHE).then(cache => cache.match(request).then(hit => hit || fetch(request)
         .then(response => {
-          if (response.ok) cache.put(request, response.clone());
+          // @import で取る fonts.googleapis.com の CSS は opaque（ok が false）で返るので、それも残す
+          if (response.ok || response.type === "opaque") cache.put(request, response.clone());
           return response;
         })
-        .catch(() => hit)))
+        .catch(() => hit || Response.error())))
     );
     return;
   }
@@ -77,11 +88,14 @@ self.addEventListener("fetch", event => {
     event.respondWith(
       fetch(request)
         .then(response => {
-          const copy = response.clone();
-          caches.open(SHELL_CACHE).then(cache => cache.put(request, copy));
+          if (response.ok) {                       // 404 の頁は残さない
+            const copy = response.clone();
+            caches.open(SHELL_CACHE).then(cache => cache.put(request, copy));
+          }
           return response;
         })
-        .catch(() => caches.match(request).then(hit => hit || caches.match("./index.html")))
+        // ?mode=review のようなクエリ付きでも同じ頁に当たるように ignoreSearch
+        .catch(() => caches.match(request, { ignoreSearch: true }).then(hit => hit || caches.match("./index.html")))
     );
     return;
   }
@@ -95,7 +109,7 @@ self.addEventListener("fetch", event => {
             if (response.ok) cache.put(request, response.clone());
             return response;
           })
-          .catch(() => hit);
+          .catch(() => hit || Response.error());
         return hit || network;
       }))
     );
