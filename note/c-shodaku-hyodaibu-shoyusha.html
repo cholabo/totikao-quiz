@@ -26,7 +26,7 @@ h1{font-size:1.25em;margin:6px 0}h1 small{font-weight:400;color:var(--muted);fon
 <form onsubmit="return sendRep(event)"><textarea name="c" maxlength="500" rows="3" placeholder="どの記述が、どう違うか（条文や先例があれば）"></textarea>
 <button type="submit">送る</button><span class="st"></span></form></details>
 <p class="dis">過去問（法務省公表の土地家屋調査士試験問題）を肢ごとに◯✕に組み替え、それを根拠に組み立てた学習ノートです。条文・先例に照らして確認していますが、正確性・完全性を保証するものではありません。実際の手続では最新の法令原文を確認してください。詳しくは<a href="../about.html">このサイトについて・免責事項</a>。</p>
-<p class="ver">第0.2版（2026-09-08）｜<a href="index.html">目次</a>｜<a href="map.html">出題マップ</a>｜<a href="../">過去問アプリ</a></p>
+<p class="ver">第0.3版（2026-09-09）｜<a href="index.html">目次</a>｜<a href="map.html">出題マップ</a>｜<a href="../">過去問アプリ</a></p>
 </footer>
 <script>
 async function sendRep(e){e.preventDefault();const f=e.target,st=f.querySelector('.st'),b=f.querySelector('button');const c=f.c.value.trim();if(!c){st.textContent='内容を書いてください';return false}

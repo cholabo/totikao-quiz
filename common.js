@@ -7,7 +7,7 @@ const YEAR_MODE_RESUME_KEY = "yearModeResumeLabel";
 const YEAR_MODE_PASS_KEY = "yearModePassCount";
 
 // 問題データを差し替えたら上げる。3画面が同じ値を使うのでここだけ直せばよい。
-const QUESTIONS_URL = "questions.json?v=20260908a";
+const QUESTIONS_URL = "questions.json?v=20260909a";
 
 function loadLearningState() {
   try {
