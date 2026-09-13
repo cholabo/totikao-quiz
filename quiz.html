@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=7.9">
+  <link rel="stylesheet" href="style.css?v=8.6">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -131,6 +131,11 @@
     <!-- 解説の中身。解答直後の欄と、タイムアタックの振り返りの二か所で同じ形を使う -->
     <template id="exp-template">
       <p class="exp-core"></p>
+      <!-- 原則パターン: 結論文の下に「⇒ 原則」を 1 行。説明は畳む -->
+      <details class="exp-rule hidden">
+        <summary class="exp-rule-s"></summary>
+        <p class="exp-rule-why"></p>
+      </details>
       <div class="exp-norule hidden">
         <p class="exp-norule-claim"></p>
       </div>
@@ -138,6 +143,14 @@
       <p class="exp-body"></p>
       <p class="exp-review hidden"></p>
       <p class="exp-superseded hidden"></p>
+      <div class="exp-sib hidden">
+        <span class="exp-refs-label">同じ結論の過去問</span>
+        <ul class="exp-sib-list"></ul>
+      </div>
+      <div class="exp-link hidden">
+        <span class="exp-refs-label">つながる論点</span>
+        <ul class="exp-link-list"></ul>
+      </div>
       <!-- 過去問ノート（note/）との対応。この肢が出題マップのどのマスにあるかと、そのページへ。
            類題は同じマスの一覧で探せる -->
       <div class="exp-note hidden">
@@ -158,6 +171,6 @@
     </template>
   </main>
   <script src="common.js?v=1.6"></script>
-  <script src="script.js?v=4.10"></script>
+  <script src="script.js?v=4.16"></script>
 </body>
 </html>

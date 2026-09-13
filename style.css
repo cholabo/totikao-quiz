@@ -1880,6 +1880,10 @@ figure.law.dir figcaption,
 figure.law.case figcaption { color: var(--seal); }
 figure.law.dir figcaption::before { content: "達"; background: var(--seal); }
 figure.law.case figcaption::before { content: "判"; background: var(--seal); }
+/* このサイトで定めたルール（規定なし）。条文・通達・判例と色を分ける */
+figure.law.rule { border-color: var(--rule, #b8860b); }
+figure.law.rule figcaption { color: var(--rule, #b8860b); }
+figure.law.rule figcaption::before { content: "定"; background: var(--rule, #b8860b); }
 
 figure.law figcaption a { color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; }
 figure.law figcaption a:hover,
@@ -2520,3 +2524,27 @@ figure.law ul.law-branch {
 }
 .src-card-body .src-row.is-hit,
 .src-card-body .src-row:target { margin-left: 0; margin-right: 0; }
+
+
+/* 結論パターン（2026-09-12）。一言＝固定の結論文、その下に当て込み・土台・同じ結論の過去問 */
+a.exp-sib-l { text-decoration: underline; text-underline-offset: 2px; }
+.exp-sib, .exp-link { margin: 14px 0 0; border-top: 1px solid var(--line); padding-top: 10px; font-size: 0.9em; }
+.exp-sib-list, .exp-link-list { list-style: none; margin: 6px 0 0; padding: 0; }
+.exp-sib-list li { display: grid; grid-template-columns: 1.6em auto 1fr; gap: 6px; align-items: baseline; margin: 4px 0; line-height: 1.7; }
+.exp-sib-v { font-weight: 700; }
+.exp-sib-v.ok { color: var(--ok, #2a8a4a); }
+.exp-sib-v.ng { color: var(--ng, #c33); }
+.exp-sib-l { color: var(--muted, #667); font-size: 0.88em; white-space: nowrap; }
+.exp-link-list li { margin: 4px 0; line-height: 1.7; }
+.exp-link-s { display: block; font-weight: 600; }
+.exp-link-k { display: inline-block; font-size: 0.78em; font-weight: 600; color: var(--muted, #667); border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; margin-right: 6px; vertical-align: 1px; }
+.exp-link-n { display: block; color: var(--muted, #667); font-size: 0.92em; }
+
+/* 解説を開いたときに、問題文のうち条文とずれている語だけ色を変える */
+.q-mark { background: transparent; color: var(--seal); font-weight: 700; }
+
+/* 原則パターン。結論文の下に「⇒ 原則」を 1 行、開くと原則の説明 */
+.exp-rule { margin: -4px 0 12px; font-size: 0.98em; }
+.exp-rule > summary { cursor: pointer; list-style: none; color: var(--primary); font-weight: 600; line-height: 1.7; }
+.exp-rule > summary::-webkit-details-marker { display: none; }
+.exp-rule-why { margin: 6px 0 0 1.2em; font-size: 0.9em; line-height: 1.85; color: var(--ink); }

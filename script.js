@@ -598,7 +598,7 @@ function openExplanation() {
 // 見出しは条文ページ（アプリ内DB）へのリンクにして、そこから全文と e-Gov に行ける。
 function buildCard(c) {
   const fig = document.createElement("figure");
-  fig.className = "law" + (c.k === "dir" ? " dir" : c.k === "case" ? " case" : "") + (c.g ? " gist" : "") + (c.lo ? " lo" : "");
+  fig.className = "law" + (c.k === "dir" ? " dir" : c.k === "case" ? " case" : c.k === "rule" ? " rule" : "") + (c.g ? " gist" : "") + (c.lo ? " lo" : "");
 
   const cap = document.createElement("figcaption");
   const href = c.u || (c.s ? `sources.html${c.h ? "?p=" + encodeURIComponent(c.h) : ""}#${c.s}` : null);
@@ -663,6 +663,7 @@ function fillExplanation(area, exp, label) {
     if (label) fillNoteLinks(area, label);
     area.querySelector(".exp-core").textContent = exp.c || "";
     area.querySelector(".exp-body").textContent = exp.a || "";
+    fillPattern(area, exp);
 
     // 「〜という規定はない」で解く肢。
     // どこを探して無かったかは negative_rules.json に残してあり、ここには出さない。
@@ -738,6 +739,56 @@ function fillExplanation(area, exp, label) {
     } else {
       refsBox.classList.add("hidden");
     }
+}
+
+// 結論パターン（exp.p）のある肢。一言は固定の結論文になっているので、
+// その下に「この肢のどこがずれるか」（alt か台帳の一言）、畳んだ土台の原則、同じ結論の過去問、つながる論点を置く。
+function fillPattern(area, exp) {
+  const p = exp.p;
+  const sib = area.querySelector(".exp-sib"), link = area.querySelector(".exp-link"), rule = area.querySelector(".exp-rule");
+  [sib, link, rule].forEach(el => el && el.classList.add("hidden"));
+  if (!p || !sib) return;
+  if (p.rule && rule) {
+    area.querySelector(".exp-rule-s").textContent = "⇒ " + p.rule.s;
+    area.querySelector(".exp-rule-why").textContent = p.rule.why || "";
+    rule.open = false; rule.classList.remove("hidden");
+  }
+  // 当て込みの欄は置かない。解説を開いたら、問題文のうち条文とずれている語だけ色を変える（原文に同じ語があるときだけ）。
+  if (area.id === "explanation") markQuestion(p.alt && p.alt.q);   // 振り返り一覧では問題文を触らない
+  const qlink = l => { const a = document.createElement("a"); a.className = "exp-sib-l"; a.href = "quiz.html?start=" + encodeURIComponent(l); a.textContent = l; return a; };
+  const sl = area.querySelector(".exp-sib-list"); sl.textContent = "";
+  for (const x of p.sib || []) {
+    const li = document.createElement("li");
+    const v = document.createElement("span"); v.className = "exp-sib-v " + (x.v === "◯" ? "ok" : "ng"); v.textContent = x.v;
+    const q = document.createElement("span"); q.className = "exp-sib-q"; q.textContent = x.q;
+    li.append(v, qlink(x.l), q); sl.appendChild(li);
+  }
+  if ((p.sib || []).length) sib.classList.remove("hidden");
+  const ll = area.querySelector(".exp-link-list"); ll.textContent = "";
+  for (const x of p.lk || []) {
+    const li = document.createElement("li");
+    const st = document.createElement("span"); st.className = "exp-link-s"; st.textContent = x.s;
+    if (x.k) { const kk = document.createElement("span"); kk.className = "exp-link-k"; kk.textContent = x.k; st.prepend(kk); }
+    const n = document.createElement("span"); n.className = "exp-link-n"; n.textContent = x.n;
+    li.append(st, n);
+    if (x.l && x.l.length) { const w = document.createElement("span"); w.className = "exp-link-l"; x.l.forEach((l, i) => { if (i) w.append("、"); w.appendChild(qlink(l)); }); n.append("（", w, "）"); }
+    ll.appendChild(li);
+  }
+  if ((p.lk || []).length) link.classList.remove("hidden");
+}
+
+// 問題文の中で、条文とずれている語（台帳の alt の「問題文」側）に色を付ける。見つからなければ何もしない。
+function markQuestion(phrase) {
+  const el = document.getElementById("question-text");
+  if (!el || !currentQuestion) return;
+  el.textContent = currentQuestion.text;
+  if (!phrase) return;
+  const t = currentQuestion.text; const i = t.indexOf(phrase);
+  if (i < 0) return;
+  el.textContent = "";
+  el.append(t.slice(0, i));
+  const m = document.createElement("mark"); m.className = "q-mark"; m.textContent = phrase; el.appendChild(m);
+  el.append(t.slice(i + phrase.length));
 }
 
 // 正解したときは閉じておく。周回を重ねると、知っている解説を毎回読まされるのが摩擦になるため。
