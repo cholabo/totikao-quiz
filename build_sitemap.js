@@ -22,6 +22,7 @@ const pages = [];
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       if (entry.name.startsWith('.') || entry.name.startsWith('_')) continue;  // .backup など
+      if (entry.name === 'shinsei') continue;   // 申請書ドリルは未公開（2026-09-13）。公開するときにこの行を消す
       walk(full);
       continue;
     }
