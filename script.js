@@ -582,6 +582,7 @@ function hideExplanation() {
   if (!area) return;
   area.classList.add("hidden");
   area.dataset.label = "";
+  qaHide();
 }
 
 function openExplanation() {
@@ -591,6 +592,7 @@ function openExplanation() {
   area.classList.remove("hidden");
   toggle.classList.add("hidden");
   toggle.setAttribute("aria-expanded", "true");
+  qaShowFor(area.dataset.label);
 }
 
 // 条文カードを組み立てる。
@@ -808,6 +810,7 @@ function showExplanation(question, shouldOpen) {
     area.dataset.label = label;
     if (shouldOpen) {
       area.classList.remove("hidden");
+      qaShowFor(label);   // 質問ボックス（送り先が設定されているときだけ出る）
     } else {
       document.getElementById("exp-toggle").classList.remove("hidden");
     }
@@ -1107,3 +1110,104 @@ document.getElementById("share-x-btn").addEventListener("click", () => {
     .then(() => { if (!win) alert("結果をコピーしました。Xに貼り付けてください。"); })
     .catch(() => { if (!win) alert("コピーできませんでした。"); });
 });
+
+// ---- 質問対応 AI（画面下のドック）----
+// 解説を開いているあいだ、画面の下に質問欄を固定する（問題文や解説を見ながら打てるように）。回答は入力欄の上のシートに出す。
+// 送り先が空のあいだは出ない。試すときは devtools で localStorage.setItem("qa.endpoint", "http://localhost:8787")。
+// 回答の [ID] は Worker が返す refs のリンク先（サイト内の条文・ノート・肢のページ）に変え、別タブで開く。
+const QA_ENDPOINT_DEFAULT = "https://cholabo-qa.cholabo.workers.dev";
+const QA_ENDPOINT = (() => { try { return localStorage.getItem("qa.endpoint") || QA_ENDPOINT_DEFAULT; } catch (e) { return QA_ENDPOINT_DEFAULT; } })();
+let qaLastId = null;
+function qaUid() {
+  try {
+    let u = localStorage.getItem("qa.uid");
+    if (!u) { u = Array.from(crypto.getRandomValues(new Uint8Array(12)), b => b.toString(16).padStart(2, "0")).join(""); localStorage.setItem("qa.uid", u); }
+    return u;
+  } catch (e) { return "anon"; }
+}
+function qaReset() {
+  const box = document.getElementById("qa-box");
+  if (!box) return;
+  document.getElementById("qa-sheet").classList.add("hidden");
+  document.getElementById("qa-answer").textContent = "";
+  document.getElementById("qa-vote").classList.add("hidden");
+  document.getElementById("qa-vote-status").textContent = "";
+  document.getElementById("qa-status").textContent = "";
+  const input = document.getElementById("qa-input");
+  input.value = ""; input.style.height = "";
+  document.getElementById("qa-submit").disabled = false;
+  qaLastId = null;
+}
+// 解説を出したときに呼ぶ。タイムアタック中は出さない
+function qaShowFor(label) {
+  const box = document.getElementById("qa-box");
+  if (!box) return;
+  if (!QA_ENDPOINT || isTimeAttack || !label) { qaHide(); return; }
+  if (box.dataset.label !== label) qaReset();   // 同じ肢で解説を閉じて開き直しただけなら回答は残す
+  box.dataset.label = label;
+  box.classList.remove("hidden");
+  document.body.classList.add("qa-open");
+}
+function qaHide() {
+  const box = document.getElementById("qa-box");
+  if (!box) return;
+  box.classList.add("hidden"); box.dataset.label = "";
+  document.body.classList.remove("qa-open");
+}
+const qaEsc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]));
+// 本文を段落に分け、[ID] をリンクに。「参照:」の行は小さく最後に
+function qaRender(answer, refs) {
+  const urlOf = id => { const r = (refs || []).find(x => x.id === id); return r && r.url ? r.url : null; };
+  // ノートの ID は「ノート:分筆×申請人」だが、× が誤りの印に見えるので表示は「ノート「分筆／申請人」」にする。通達の見出しは長いので括弧と空白以降を落とす
+  const shortId = id => id.startsWith("ノート:") ? "ノート「" + id.slice(4).replace("×", "／") + "」" : id.startsWith("用語:") ? "用語「" + id.slice(3) + "」" : (id.length > 24 ? id.replace(/（[^）]*）/g, "").replace(/[\s　].*$/, "") : id);
+  const link = (m, id) => { const u = urlOf(id); return u ? `<a class="qa-ref" href="${qaEsc(u)}" target="_blank" rel="noopener" title="${qaEsc(id)}">${qaEsc(shortId(id))}</a>` : `<span class="qa-ref" title="${qaEsc(id)}">${qaEsc(shortId(id))}</span>`; };
+  // [用語:〇〇] は飛び先が無いので消す（「参照」の行からも。用語だけの参照行なら行ごと）
+  const cleaned = String(answer || "").replace(/\[用語:[^\[\]\n]{1,40}\]/g, "").replace(/^(参照[:：])\s*(?:,\s*)+/mg, "$1 ").replace(/,\s*(?=,|$)/mg, "").replace(/^参照[:：]\s*$/mg, "");
+  const lines = cleaned.split(/\r?\n/);
+  const refLine = lines.filter(l => /^参照[:：]/.test(l.trim())).pop();
+  const body = lines.filter(l => l !== refLine).join("\n").trim();
+  const paras = body.split(/\n{2,}/).map(p => "<p>" + qaEsc(p).replace(/\n/g, "<br>").replace(/\[([^\[\]\n]{1,80})\]/g, link) + "</p>").join("");
+  const foot = refLine ? `<p class="qa-refs">${qaEsc(refLine).replace(/\[([^\[\]\n]{1,80})\]/g, link)}</p>` : "";
+  return paras + foot;
+}
+async function qaSubmit(event) {
+  event.preventDefault();
+  const box = document.getElementById("qa-box");
+  const label = box && box.dataset.label;
+  const input = document.getElementById("qa-input"), btn = document.getElementById("qa-submit"), st = document.getElementById("qa-status"), ans = document.getElementById("qa-answer"), vote = document.getElementById("qa-vote"), sheet = document.getElementById("qa-sheet");
+  const question = String(input.value || "").trim().slice(0, 300);
+  if (!label || !QA_ENDPOINT || question.length < 2) return;
+  btn.disabled = true; st.textContent = "考えています…（5〜10 秒）";
+  try {
+    const res = await fetch(QA_ENDPOINT.replace(/\/$/, "") + "/ask", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ label, question, uid: qaUid() }) });
+    const j = await res.json().catch(() => ({}));
+    if (!res.ok) { st.textContent = j.message || "いま答えを作れませんでした。少し待ってからもう一度お試しください。"; btn.disabled = false; return; }
+    ans.innerHTML = qaRender(j.answer, j.refs);
+    sheet.classList.remove("hidden"); sheet.scrollTop = 0;
+    qaLastId = j.id || null;
+    document.getElementById("qa-vote-status").textContent = "";
+    if (qaLastId) vote.classList.remove("hidden");
+    st.textContent = "";
+    const rem = document.getElementById("qa-remaining");
+    if (rem && typeof j.remaining === "number") rem.textContent = `今日はあと ${j.remaining} 回`;
+    input.value = ""; input.style.height = "";
+    btn.disabled = false;
+  } catch (e) {
+    st.textContent = "送信できませんでした。通信状態を確認して、もう一度お試しください。";
+    btn.disabled = false;
+  }
+}
+async function qaVote(v) {
+  if (!qaLastId || !QA_ENDPOINT) return;
+  const s = document.getElementById("qa-vote-status");
+  try {
+    await fetch(QA_ENDPOINT.replace(/\/$/, "") + "/feedback", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ id: qaLastId, vote: v }) });
+    s.textContent = v === 1 ? "ありがとうございます。" : "記録しました。直す材料にします。";
+  } catch (e) { s.textContent = "送れませんでした。"; }
+}
+document.getElementById("qa-form")?.addEventListener("submit", qaSubmit);
+document.getElementById("qa-close")?.addEventListener("click", () => document.getElementById("qa-sheet").classList.add("hidden"));
+document.querySelectorAll(".qa-vote-btn").forEach(b => b.addEventListener("click", () => qaVote(parseInt(b.dataset.vote, 10))));
+// 入力欄は 1 行から始めて中身に合わせて伸びる（4 行まで）。Ctrl/⌘+Enter で送る
+document.getElementById("qa-input")?.addEventListener("input", e => { const t = e.target; t.style.height = "auto"; t.style.height = Math.min(t.scrollHeight, 7 * 16) + "px"; });
+document.getElementById("qa-input")?.addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); document.getElementById("qa-form").requestSubmit(); } });

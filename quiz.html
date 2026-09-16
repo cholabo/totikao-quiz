@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=8.6">
+  <link rel="stylesheet" href="style.css?v=9.1">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -128,6 +128,26 @@
       本サイトは個人の学習支援を目的とした非公式なものです。</p>
       <p><a href="about.html">このサイトについて・免責事項</a>　/　<a href="privacy.html">プライバシー</a>　/　<a href="index.html">トップ</a></p>
     </footer>
+    <!-- 質問対応 AI。解説を開いているあいだ画面の下に固定（問題文や解説を見ながら打てるように）。
+         回答は入力欄の上のシートに出す。QA_ENDPOINT が空のあいだは出ない。回答の [条番号] はサイト内のページへのリンク（別タブ） -->
+    <div id="qa-box" class="qa-dock hidden" aria-label="解説について質問する">
+      <div id="qa-sheet" class="qa-sheet hidden">
+        <div class="qa-sheet-head"><span class="qa-sheet-title">回答</span><button type="button" id="qa-close" class="qa-close" aria-label="閉じる">×</button></div>
+        <div id="qa-answer" class="qa-answer"></div>
+        <div id="qa-vote" class="qa-vote hidden">
+          <button type="button" class="qa-vote-btn" data-vote="1">役に立った</button>
+          <button type="button" class="qa-vote-btn" data-vote="-1">ずれている</button>
+          <span id="qa-vote-status"></span>
+        </div>
+        <p class="qa-note">ノートの解説・条文だけを材料に AI が答えます。おかしい所は「問題内容の違和感を報告」から。</p>
+      </div>
+      <p id="qa-status" class="qa-status" aria-live="polite"></p>
+      <form id="qa-form" class="qa-form">
+        <textarea id="qa-input" maxlength="300" rows="1" placeholder="この解説について聞く" aria-label="質問"></textarea>
+        <button id="qa-submit" type="submit">聞く</button>
+      </form>
+      <p class="qa-meta"><span id="qa-remaining" class="qa-remaining"></span></p>
+    </div>
     <!-- 解説の中身。解答直後の欄と、タイムアタックの振り返りの二か所で同じ形を使う -->
     <template id="exp-template">
       <p class="exp-core"></p>
@@ -171,6 +191,6 @@
     </template>
   </main>
   <script src="common.js?v=1.6"></script>
-  <script src="script.js?v=4.16"></script>
+  <script src="script.js?v=4.19"></script>
 </body>
 </html>

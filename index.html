@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=7.9">
+  <link rel="stylesheet" href="style.css?v=9.1">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -55,6 +55,19 @@
       <button id="start-review-btn" class="mode-btn review-mode">復習モード</button>
       <button id="start-timeattack-btn" class="mode-btn ta-mode">タイムアタック（5分）</button>
     </div>
+
+    <!-- 更新情報。直した肢と日付だけを小さく。4 行ぶん見せて、あとはスクロール。
+         指摘をくれた人への返事も兼ねる。新しいものを上に足す（README「いまの状態」と同じ日付） -->
+    <section id="updates" class="updates" aria-label="更新情報">
+      <h2 class="updates-heading">更新</h2>
+      <ul class="updates-list">
+        <li><time datetime="2026-09-16">9/16</time>解説 843 肢を見直し（R5-9-エ・H23-11-エ・H17-20-3 ほか）</li>
+        <li><time datetime="2026-09-14">9/14</time>読みもの「出る順」を追加</li>
+        <li><time datetime="2026-09-13">9/13</time>H18-2-イ の問題文を訂正、R6-4-エ の解説を修正</li>
+        <li><time datetime="2026-09-13">9/13</time>解説を結論文＋根拠カードの形に</li>
+        <li><time datetime="2026-09-12">9/12</time>H18-15-オ・H26-6-オ の解説を修正</li>
+      </ul>
+    </section>
 
     <!-- 調べもの用の入口。出題モードとは目的が違うので、色を持たせず一段下に置く。
          中身は 過去問・条文・準則等・判例 の四つに分かれている -->
