@@ -1206,7 +1206,7 @@ async function qaVote(v) {
   } catch (e) { s.textContent = "送れませんでした。"; }
 }
 // 質問の例（押すと入力欄に入る。何を聞けばいいか迷う人が多そうなので。2026-09-17）
-const QA_HINTS = ["この用語の意味は？", "やさしく言い換えて", "なぜこの結論になるの？", "似た肢との違いは？"];
+const QA_HINTS = ["この用語の意味は？", "問題文と解説を、条文なしで小学生にもわかる言葉に言い換えて", "なぜこの結論になるの？", "似た肢との違いは？"];   // 言い換えの「理由」は条文の訳まで（意味の芯を崩さない。2026-09-17 管理人）
 (function () {
   const box = document.getElementById("qa-hints"); if (!box) return;
   for (const h of QA_HINTS) {
