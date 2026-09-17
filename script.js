@@ -1205,6 +1205,16 @@ async function qaVote(v) {
     s.textContent = v === 1 ? "ありがとうございます。" : "記録しました。直す材料にします。";
   } catch (e) { s.textContent = "送れませんでした。"; }
 }
+// 質問の例（押すと入力欄に入る。何を聞けばいいか迷う人が多そうなので。2026-09-17）
+const QA_HINTS = ["この用語の意味は？", "やさしく言い換えて", "なぜこの結論になるの？", "似た肢との違いは？"];
+(function () {
+  const box = document.getElementById("qa-hints"); if (!box) return;
+  for (const h of QA_HINTS) {
+    const b = document.createElement("button"); b.type = "button"; b.className = "qa-hint"; b.textContent = h;
+    b.addEventListener("click", () => { const t = document.getElementById("qa-input"); if (!t) return; t.value = h === "この用語の意味は？" ? "「」の意味は？" : h; t.focus(); if (h === "この用語の意味は？") t.setSelectionRange(1, 1); t.dispatchEvent(new Event("input")); });
+    box.appendChild(b);
+  }
+})();
 document.getElementById("qa-form")?.addEventListener("submit", qaSubmit);
 document.getElementById("qa-close")?.addEventListener("click", () => document.getElementById("qa-sheet").classList.add("hidden"));
 document.querySelectorAll(".qa-vote-btn").forEach(b => b.addEventListener("click", () => qaVote(parseInt(b.dataset.vote, 10))));

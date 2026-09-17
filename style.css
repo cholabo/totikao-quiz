@@ -2598,6 +2598,9 @@ body.qa-open { padding-bottom: 92px; }
 .qa-dock .qa-form { display: flex; gap: 8px; align-items: flex-end; max-width: 720px; margin: 0 auto; }
 .qa-dock textarea { flex: 1; min-width: 0; background: var(--soft); border: 1px solid var(--line); border-radius: 12px; box-sizing: border-box; color: var(--ink); font: inherit; font-size: 16px; line-height: 1.5; padding: 9px 12px; resize: none; max-height: 7em; }
 .qa-dock .qa-form button { width: auto; min-height: 42px; margin: 0; padding: 6px 16px; font-size: 0.95em; border-radius: 12px; flex: 0 0 auto; }
+.qa-hints { display: flex; flex-wrap: wrap; gap: 6px; max-width: 720px; margin: 6px auto 0; }
+.qa-hint { width: auto; min-height: 0; margin: 0; padding: 3px 10px; font-size: 0.78em; line-height: 1.5; color: var(--muted); background: transparent; border: 1px solid var(--line, #ccc); border-radius: 999px; cursor: pointer; }
+.qa-hint:hover { color: var(--fg, inherit); }
 .qa-meta { margin: 3px 0 0; font-size: 0.74em; color: var(--muted); min-height: 1em; max-width: 720px; margin-left: auto; margin-right: auto; }
 .qa-status { margin: 0 0 4px; font-size: 0.84em; color: var(--muted); max-width: 720px; margin-left: auto; margin-right: auto; }
 .qa-status:empty { display: none; }
