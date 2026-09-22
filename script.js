@@ -1206,12 +1206,19 @@ async function qaVote(v) {
   } catch (e) { s.textContent = "送れませんでした。"; }
 }
 // 質問の例（押すと入力欄に入る。何を聞けばいいか迷う人が多そうなので。2026-09-17）
-const QA_HINTS = ["この用語の意味は？", "問題文と解説を、条文なしで小学生にもわかる言葉に言い換えて", "なぜこの結論になるの？", "似た肢との違いは？"];   // 言い換えの「理由」は条文の訳まで（意味の芯を崩さない。2026-09-17 管理人）
+// チップは「見出しは短く、入れる文はそのまま」。iPhone で 3 行になって邪魔だったので見出しだけ縮めた（2026-09-22 管理人）。
+// q に入れる文は変えない（言い換えの「理由」は条文の訳までという 9/17 の調整と、同じ質問の使い回しを保つため）
+const QA_HINTS = [
+  { t: "用語の意味", q: "「」の意味は？", caret: 1 },
+  { t: "やさしく", q: "問題文と解説を、条文なしで小学生にもわかる言葉に言い換えて" },
+  { t: "なぜ？", q: "なぜこの結論になるの？" },
+  { t: "似た肢との違い", q: "似た肢との違いは？" },
+];
 (function () {
   const box = document.getElementById("qa-hints"); if (!box) return;
   for (const h of QA_HINTS) {
-    const b = document.createElement("button"); b.type = "button"; b.className = "qa-hint"; b.textContent = h;
-    b.addEventListener("click", () => { const t = document.getElementById("qa-input"); if (!t) return; t.value = h === "この用語の意味は？" ? "「」の意味は？" : h; t.focus(); if (h === "この用語の意味は？") t.setSelectionRange(1, 1); t.dispatchEvent(new Event("input")); });
+    const b = document.createElement("button"); b.type = "button"; b.className = "qa-hint"; b.textContent = h.t; b.title = h.q;
+    b.addEventListener("click", () => { const t = document.getElementById("qa-input"); if (!t) return; t.value = h.q; t.focus(); if (h.caret) t.setSelectionRange(h.caret, h.caret); t.dispatchEvent(new Event("input")); });
     box.appendChild(b);
   }
 })();
