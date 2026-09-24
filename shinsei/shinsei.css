@@ -1,0 +1,80 @@
+/* 申請書ドリル。上に固定の事例カード、下に申請書。欄はマスク、タップで開く。 */
+/* 色は本体（style.css）と同じ紙・墨・朱。本体の骨組み（main や body の流し込み）は継がないので、ここだけで完結させる。 */
+:root { --bg: #eff3f4; --card: #ffffff; --ink: #1e2c34; --line: #cfd8dc; --seal: #ce4a2f; --seal-soft: #fbeae6; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0b1116; --card: #16222a; --ink: #c8d6dd; --line: #2b3b45; --seal: #c4603f; --seal-soft: #3a2a22; } }
+:root[data-theme="dark"] { --bg: #0b1116; --card: #16222a; --ink: #c8d6dd; --line: #2b3b45; --seal: #c4603f; --seal-soft: #3a2a22; }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+.sh-body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-size: 15px; font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", sans-serif; }
+.sh-head { position: sticky; top: 0; z-index: 3; display: flex; gap: 6px; align-items: center; padding: 8px 10px; background: var(--bg); border-bottom: 1px solid var(--line); }
+.sh-back { font-size: 24px; line-height: 1; text-decoration: none; color: var(--ink); padding: 0 8px; }
+.sh-select { flex: 1; min-width: 0; font-size: 14px; padding: 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+.sh-select-kind { flex: 0 0 7em; }
+.sh-scene { position: sticky; top: 46px; z-index: 2; margin: 8px 10px 0; padding: 8px 12px 10px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,.06); max-height: 46vh; overflow: auto; }
+.sh-scene-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+.sh-tag { font-weight: 700; color: var(--seal); }
+.sh-src { font-size: 12px; opacity: .7; white-space: nowrap; }
+.sh-rec-h { font-size: 12px; opacity: .8; margin-top: 4px; }
+.sh-scene .sh-tw { margin: 2px 0 4px; }
+table.rec { border-collapse: collapse; font-size: 12.5px; margin: 0; width: 100%; }
+table.rec th, table.rec td { border: 1px solid var(--line); padding: 2px 5px; text-align: left; vertical-align: top; white-space: pre-wrap; }
+table.rec th { background: var(--bg); font-weight: 600; white-space: nowrap; }
+.sh-right { margin: 0 0 4px; font-size: 12.5px; opacity: .85; }
+.sh-facts { margin: 4px 0 2px; line-height: 1.55; }
+.sh-facts ul { margin: 2px 0 4px; padding-left: 1.2em; }
+.sh-facts li { margin: 2px 0; font-size: 14px; }
+.sh-person { margin: 1px 0; font-size: 13.5px; line-height: 1.5; }
+.sh-note { font-size: 12px; opacity: .8; }
+table.rec.survey td:first-child { white-space: nowrap; }
+.sh-req { margin: 0; line-height: 1.55; font-weight: 600; }
+.sh-main { padding: 10px 10px 30px; }
+.sh-form { background: var(--card); border: 1px solid var(--ink); border-radius: 4px; padding: 12px 12px 8px; margin-bottom: 14px; }
+.sh-form h2 { text-align: center; letter-spacing: .6em; font-size: 17px; margin: 0 0 12px; }
+.sh-row { display: grid; grid-template-columns: 5em 1fr; gap: 4px 8px; align-items: start; margin: 6px 0; }
+.sh-row.full { grid-template-columns: 1fr; }   /* 枠の中に「申請人」と書く様式は見出し無し */
+.sh-cap { font-size: 13px; opacity: .8; margin: 8px 0 -4px; }   /* 枠の上に置く見出し（申請人の行が長いとき） */
+.sh-row .k { font-size: 13px; opacity: .8; padding-top: 4px; }
+.sh-row .v { display: flex; flex-wrap: wrap; gap: 4px 8px; }
+.sh-row .v.col { flex-direction: column; gap: 3px; }
+.sh-line { display: block; line-height: 1.5; }
+/* 表は横スクロールの箱の中。列は th の min-width（shinsei.js の COLW）で潰れないようにし、はみ出す分は横に動かす */
+.sh-tw { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 8px 0 4px; }
+.sh-form table { border-collapse: collapse; width: 100%; font-size: 13px; margin: 0; }
+.sh-form th, .sh-form td { border: 1px solid var(--ink); padding: 3px 4px; vertical-align: top; white-space: pre-wrap; }
+.sh-form th { background: var(--bg); font-weight: 600; font-size: 12px; white-space: nowrap; }
+.sh-form table.kv th { width: 7em; text-align: left; }
+.sh-form caption { text-align: left; font-size: 12px; font-weight: 700; padding: 6px 0 2px; }
+.sh-section { margin-top: 10px; font-size: 13px; font-weight: 700; }
+.sh-sign { text-align: right; margin-top: 8px; font-size: 13px; }
+/* マスク。開くまで中身は見えない（文字色を透明に）。空欄は開くと「空欄」と薄く出る。 */
+.mask { display: inline-block; min-width: 2.5em; padding: 2px 6px; border: 0; border-radius: 4px; background: var(--seal-soft); color: transparent; font: inherit; cursor: pointer; text-align: left; line-height: 1.5; user-select: none; white-space: pre-wrap; -webkit-tap-highlight-color: transparent; }
+.mask:focus-visible { outline: 2px solid var(--seal); outline-offset: 1px; }
+.mask.block { display: block; width: 100%; min-width: 0; }
+/* 申請人の枠。改行と字下げは模範解答のまま、折り返さずに横へ動かす */
+.mask.pre { white-space: pre; overflow-x: auto; font-size: 13.5px; line-height: 1.6; }
+.mask.open { background: transparent; color: var(--ink); user-select: text; }
+.mask.empty { min-width: 2em; }
+.mask.empty.open { color: var(--ink); opacity: .35; font-size: 11px; }
+.sh-form td .mask { display: block; width: 100%; min-width: 0; }
+.sh-points { margin: 0 0 14px; padding: 8px 12px; border: 1px dashed var(--line); border-radius: 8px; font-size: 14px; }
+.sh-points summary { cursor: pointer; color: var(--seal); font-weight: 700; }
+.sh-points ul { margin: 6px 0 0; padding-left: 1.2em; }
+.sh-empty { padding: 30px 10px; text-align: center; opacity: .7; }
+@media (min-width: 700px) { .sh-scene { max-height: 40vh; max-width: 700px; margin-left: auto; margin-right: auto; } .sh-main { max-width: 720px; margin: 0 auto; } }
+.sh-apply { margin: 8px 0 4px; font-size: 14px; }
+.sh-form table.hyoji th { text-align: center; }
+.sh-form table.hyoji th:first-child { white-space: nowrap; }
+.sh-form table.hyoji td .mask { min-height: 1.6em; }
+.sh-fig-wrap { margin: 4px 0 6px; text-align: center; }
+.sh-fig { width: 100%; height: auto; display: block; margin: 0 auto; color: var(--ink); }
+.sh-fig-note { font-size: 11.5px; opacity: .8; margin-top: 2px; }
+.sh-list { margin: 8px 10px 30px; font-size: 13px; opacity: .85; }
+.sh-list summary { cursor: pointer; }
+.sh-list h3 { font-size: 13px; margin: 8px 0 2px; }
+.sh-list ul { margin: 0; padding-left: 1.2em; line-height: 1.8; }
+.sh-list a { color: var(--ink); }
+.sh-rep { margin: 4px 2px 20px; font-size: 13.5px; }
+.sh-rep summary { cursor: pointer; color: var(--seal); font-weight: 600; }
+.sh-rep textarea { width: 100%; box-sizing: border-box; margin: 6px 0; border: 1px solid var(--line); border-radius: 8px; padding: 6px; font: inherit; background: var(--card); color: var(--ink); }
+.sh-rep button { border: 1px solid var(--seal); background: var(--seal); color: #fff; border-radius: 8px; padding: 5px 14px; cursor: pointer; }
+.sh-rep .st { margin-left: 8px; }

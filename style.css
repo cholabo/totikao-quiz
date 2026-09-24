@@ -291,10 +291,14 @@ main {
 /* ===== データベース。出題モードの下に置く調べもの用の入口 =====
    解くのと調べるのは目的が違うので、色は持たせず地色と線だけで並べる。
    モードボタンと同じ幅の中に横長のチップを 2×2。学習ボタンより軽く見せる（2026-09-05 に正方形から変更）。 */
-#db-select {
+#db-select, .hub {
   width: 100%;
   margin-top: 30px;
 }
+/* ハブ（2026-09-24）: 記述・読みもの・データベースを群に分けて同じチップで並べる。準備中は薄くして押せない */
+.hub-group + .hub-group { margin-top: 22px; }
+.db-btn.is-soon { opacity: .45; pointer-events: none; }
+.hub + .updates { margin-top: 26px; }
 
 .db-heading {
   font-family: var(--font-display);
@@ -1375,6 +1379,9 @@ footer a {
 .seo-choice-text {
   white-space: pre-wrap;
 }
+
+/* 見出し直下の 1〜2 文。何が分かるページかを先に言う（2026-09-24、AI の引用と検索の抜粋用） */
+.seo-lead { font-size: 1.02em; line-height: 1.9; margin: 0; }
 
 .seo-eyebrow {
   color: var(--seal);

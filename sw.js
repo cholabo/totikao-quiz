@@ -2,7 +2,7 @@
 // ページ本体は「まずネットワーク、だめならキャッシュ」。更新がすぐ届く。
 // 問題データ・解説・資料は「まずキャッシュ、裏で更新」。2回目以降は即表示になる。
 // CACHE_VERSION を上げると古いキャッシュを捨てて入れ替わる。
-const CACHE_VERSION = "v57-20260922a";
+const CACHE_VERSION = "v58-20260924a";
 const SHELL_CACHE = `shell-${CACHE_VERSION}`;
 const DATA_CACHE = `data-${CACHE_VERSION}`;
 const FONT_CACHE = "fonts-v1";   // 書体は版に紐づけず、取れたものを残す
@@ -13,7 +13,7 @@ const SHELL_FILES = [
   "./index.html",
   "./quiz.html",
   "./question-list.html",
-  "./style.css?v=7.9",
+  "./style.css?v=9.3",
   "./common.js?v=1.6",
   "./script.js?v=4.10",
   "./question-list.js?v=2.4",

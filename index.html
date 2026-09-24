@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=9.2">
+  <link rel="stylesheet" href="style.css?v=9.3">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -37,7 +37,7 @@
       <div class="hero-in">
         <div class="hanko" aria-hidden="true">調</div>
         <h1 class="wordmark">土地家屋調査士過去問</h1>
-        <p class="subtitle">肢別◯✕ 全2,088肢｜年度順・復習・タイムアタック</p>
+        <p class="subtitle">択一 肢別◯✕ 2,088肢｜記述 申請書ドリル｜読みもの</p>
       </div>
     </div>
 
@@ -56,6 +56,76 @@
       <button id="start-timeattack-btn" class="mode-btn ta-mode">タイムアタック（5分）</button>
     </div>
 
+    <!-- ハブ（案 2026-09-24）。択一の出題モードの下に、記述・読みもの・動画・データベースを同じ形の入口で並べる。
+         色は持たせず、群ごとに小見出し。準備中のものは薄く出して押せない -->
+    <nav id="hub" class="hub" aria-label="コンテンツ">
+      <section class="hub-group">
+        <h2 class="db-heading">記述</h2>
+        <div class="db-grid">
+          <a class="db-btn" href="shinsei/">
+            <span class="db-btn-mark" aria-hidden="true">申</span>
+            <span class="db-btn-name">申請書ドリル</span>
+            <span class="db-btn-sub">事例 → 申請書 36件</span>
+          </a>
+          <span class="db-btn is-soon" aria-disabled="true">
+            <span class="db-btn-mark" aria-hidden="true">算</span>
+            <span class="db-btn-name">計算ドリル</span>
+            <span class="db-btn-sub">準備中</span>
+          </span>
+        </div>
+      </section>
+      <section class="hub-group">
+        <h2 class="db-heading">読みもの・動画</h2>
+        <div class="db-grid">
+          <a class="db-btn" href="blog/">
+            <span class="db-btn-mark" aria-hidden="true">読</span>
+            <span class="db-btn-name">読みもの</span>
+            <span class="db-btn-sub">出る順など</span>
+          </a>
+          <a class="db-btn" href="note/map.html">
+            <span class="db-btn-mark" aria-hidden="true">図</span>
+            <span class="db-btn-name">出題マップ</span>
+            <span class="db-btn-sub">問われ方×登記の種類</span>
+          </a>
+          <a class="db-btn" href="reading.html">
+            <span class="db-btn-mark" aria-hidden="true">原</span>
+            <span class="db-btn-name">読むだけの問</span>
+            <span class="db-btn-sub">流れ図・空欄補充</span>
+          </a>
+          <span class="db-btn is-soon" aria-disabled="true">
+            <span class="db-btn-mark" aria-hidden="true">映</span>
+            <span class="db-btn-name">聞き流し動画</span>
+            <span class="db-btn-sub">YouTube 準備中</span>
+          </span>
+        </div>
+      </section>
+      <section class="hub-group">
+        <h2 class="db-heading">データベース</h2>
+        <div class="db-grid">
+          <a class="db-btn" href="kakomon/">
+            <span class="db-btn-mark" aria-hidden="true">問</span>
+            <span class="db-btn-name">過去問</span>
+            <span class="db-btn-sub">2,088肢</span>
+          </a>
+          <a class="db-btn" href="jobun/">
+            <span class="db-btn-mark" aria-hidden="true">法</span>
+            <span class="db-btn-name">条文</span>
+            <span class="db-btn-sub">516条</span>
+          </a>
+          <a class="db-btn" href="sources.html">
+            <span class="db-btn-mark" aria-hidden="true">達</span>
+            <span class="db-btn-name">通達等</span>
+            <span class="db-btn-sub">35件</span>
+          </a>
+          <a class="db-btn" href="hanrei/">
+            <span class="db-btn-mark" aria-hidden="true">判</span>
+            <span class="db-btn-name">判例</span>
+            <span class="db-btn-sub">88件</span>
+          </a>
+        </div>
+      </section>
+    </nav>
+
     <!-- 更新情報。直した肢と日付だけを小さく。4 行ぶん見せて、あとはスクロール。
          指摘をくれた人への返事も兼ねる。新しいものを上に足す（README「いまの状態」と同じ日付） -->
     <section id="updates" class="updates" aria-label="更新情報">
@@ -70,44 +140,6 @@
         <li><time datetime="2026-09-12">9/12</time>H18-15-オ・H26-6-オ の解説を修正</li>
       </ul>
     </section>
-
-    <!-- 調べもの用の入口。出題モードとは目的が違うので、色を持たせず一段下に置く。
-         中身は 過去問・条文・準則等・判例 の四つに分かれている -->
-    <nav id="db-select" aria-label="データベース">
-      <h2 class="db-heading">データベース</h2>
-      <div class="db-grid">
-        <a class="db-btn" href="note/map.html">
-          <span class="db-btn-mark" aria-hidden="true">図</span>
-          <span class="db-btn-name">出題マップ</span>
-          <span class="db-btn-sub">問われ方×登記の種類</span>
-        </a>
-        <a class="db-btn" href="blog/">
-          <span class="db-btn-mark" aria-hidden="true">読</span>
-          <span class="db-btn-name">読みもの</span>
-          <span class="db-btn-sub">出る順など</span>
-        </a>
-        <a class="db-btn" href="kakomon/">
-          <span class="db-btn-mark" aria-hidden="true">問</span>
-          <span class="db-btn-name">過去問</span>
-          <span class="db-btn-sub">2,088肢</span>
-        </a>
-        <a class="db-btn" href="jobun/">
-          <span class="db-btn-mark" aria-hidden="true">法</span>
-          <span class="db-btn-name">条文</span>
-          <span class="db-btn-sub">516条</span>
-        </a>
-        <a class="db-btn" href="sources.html">
-          <span class="db-btn-mark" aria-hidden="true">達</span>
-          <span class="db-btn-name">通達等</span>
-          <span class="db-btn-sub">35件</span>
-        </a>
-        <a class="db-btn" href="hanrei/">
-          <span class="db-btn-mark" aria-hidden="true">判</span>
-          <span class="db-btn-name">判例</span>
-          <span class="db-btn-sub">88件</span>
-        </a>
-      </div>
-    </nav>
 
     <footer>
       <p style="text-align: left; line-height: 1.6;">
