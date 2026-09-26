@@ -31,6 +31,8 @@ const pages = [];
 
     const rel = path.relative(ROOT, full).split(path.sep).join('/');
     if (EXCLUDE.has(rel)) continue;
+    // 過去問原文の PDF を作る中間ファイル（公開しない。deploy.js でも除外）
+    if (/^mondai\/[^/]+\/(print|kaito)\.html$/.test(rel)) continue;
 
     const html = fs.readFileSync(full, 'utf-8');
     if (/<meta[^>]+name=["']robots["'][^>]*noindex/i.test(html)) continue;
