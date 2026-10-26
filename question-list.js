@@ -3,6 +3,7 @@
 
 let questions = [];
 let learningState = loadLearningState();
+const bookmarks = loadBookmarks();   // ☆ の肢は一覧で枠と★（2026-10-23）
 
 fetch(QUESTIONS_URL)
   .then(response => {
@@ -12,8 +13,8 @@ fetch(QUESTIONS_URL)
   .then(data => {
     questions = sortQuestions(data.filter(question => question.label));
     renderProgress();
-    renderTagPanels();                       // 一覧より上にある欄を先に出しておく（あとから出ると位置がずれる）
-    renderTopicPanel().finally(renderQuestionList);
+    // 分野別・登記の種類・問われ方の進み具合の欄は 2026-10-22 に外した（管理人「いらない」。分けて解くのはタグ分けモード）
+    renderQuestionList();
   })
   .catch(() => {
     document.getElementById("list-progress-info").textContent = "進捗を読み込めませんでした。";
@@ -31,61 +32,6 @@ function renderProgress() {
   document.getElementById("list-progress-info").textContent =
     (pass > 0 ? `${pass}周完了｜` : "")
     + `全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 完了${p.completed}問`;
-}
-
-// 分野は出題を絞るためのものではなく、進み具合を眺めるためのもの。
-// 全肢を通しでやる学習なので、ここから出題を分岐させることはしない。
-const TOPIC_ORDER = ["民法", "土地", "建物", "区分建物", "総論", "筆界特定", "審査請求", "調査士法"];
-
-function renderTopicPanel() {
-  return fetch("data/topics.json")
-    .then(response => (response.ok ? response.json() : null))
-    .then(topics => {
-      if (!topics) return;
-
-      const stats = new Map();
-      questions.forEach(question => {
-        const topic = topics[question.label];
-        if (!topic) return;
-        if (!stats.has(topic)) stats.set(topic, { total: 0, completed: 0, review: 0 });
-        const entry = stats.get(topic);
-        entry.total += 1;
-        const result = getResult(question);
-        if (result === "correct") entry.completed += 1;
-        else if (result === "wrong") entry.review += 1;
-      });
-      if (stats.size === 0) return;
-
-      const rows = document.getElementById("topic-rows");
-      const fragment = document.createDocumentFragment();
-      const names = TOPIC_ORDER.filter(name => stats.has(name))
-        .concat([...stats.keys()].filter(name => !TOPIC_ORDER.includes(name)));
-
-      names.forEach(name => {
-        const { total, completed, review } = stats.get(name);
-        const percent = total ? Math.round((completed / total) * 100) : 0;
-
-        const row = document.createElement("div");
-        row.className = "topic-row";
-        row.innerHTML =
-          '<span class="topic-name"></span>' +
-          '<span class="topic-bar"><span class="topic-fill"></span><span class="topic-review"></span></span>' +
-          '<span class="topic-num"></span>';
-        row.querySelector(".topic-name").textContent = name;
-        row.querySelector(".topic-fill").style.width = percent + "%";
-        row.querySelector(".topic-review").style.width =
-          (total ? Math.round((review / total) * 100) : 0) + "%";
-        row.querySelector(".topic-num").textContent = `${completed} / ${total}`;
-        row.title = `${name}：完了${completed}問・復習${review}問・全${total}問`;
-        fragment.appendChild(row);
-      });
-
-      rows.replaceChildren(fragment);
-      document.getElementById("topic-panel").classList.remove("hidden");
-    })
-    .catch(() => {
-      // 分野データが無くても一覧は使える
-    });
 }
 
 function renderQuestionList() {
@@ -179,7 +125,7 @@ function renderReadingSection(list) {
 
 function createQuestionButton(question) {
   const result = getResult(question);
-  const statusText = { unanswered: "未回答", correct: "正解済み", wrong: "復習対象" }[result];
+  const statusText = { unanswered: "未回答", correct: "正解済み", wrong: "復習対象" }[result] + (bookmarks.has(question.label) ? "・ブックマーク" : "");
 
   const button = document.createElement("button");
   button.type = "button";
@@ -187,6 +133,7 @@ function createQuestionButton(question) {
   if (question.label === localStorage.getItem(YEAR_MODE_RESUME_KEY)) {
     button.classList.add("resume-position");
   }
+  if (bookmarks.has(question.label)) button.classList.add("is-bookmarked");
   button.textContent = question.choice || extractChoice(question.label) || question.label;
   button.title = `${question.label}（${statusText}）から始める`;
   button.setAttribute("aria-label", button.title);
@@ -202,59 +149,4 @@ function groupBy(items, getKey) {
     grouped.get(key).push(item);
   });
   return grouped;
-}
-
-
-// 登記の種類（縦軸）と問われ方（横軸）ごとの進み具合。questions.json の ax / ks から集計する。
-// 分野別と同じく眺めるためのもので、ここから出題を分岐させない。名前は過去問ノートの該当ページへ飛ぶ。
-function renderTagPanels() {
-  const byKind = new Map(), byAx = new Map(), kindPage = new Map(), axPage = new Map();
-  const bump = (map, key, result) => {
-    if (!map.has(key)) map.set(key, { total: 0, completed: 0, review: 0 });
-    const e = map.get(key); e.total += 1;
-    if (result === "correct") e.completed += 1; else if (result === "wrong") e.review += 1;
-  };
-  questions.forEach(q => {
-    if (!q.ax) return;
-    const result = getResult(q);
-    bump(byAx, q.ax, result);
-    (q.ks || []).forEach(k => bump(byKind, k, result));
-    (q.cells || []).forEach(c => { if (c.r) kindPage.set(c.k, c.r); if (c.x) axPage.set(c.a, c.x); });
-  });
-  if (byKind.size === 0) return;
-
-  const fill = (rowsId, stats, pages, order) => {
-    const rows = document.getElementById(rowsId);
-    if (!rows) return;
-    const fragment = document.createDocumentFragment();
-    order.forEach(name => {
-      const { total, completed, review } = stats.get(name);
-      const percent = total ? Math.round((completed / total) * 100) : 0;
-      const row = document.createElement("div");
-      row.className = "topic-row";
-      row.innerHTML =
-        '<span class="topic-name"></span>' +
-        '<span class="topic-bar"><span class="topic-fill"></span><span class="topic-review"></span></span>' +
-        '<span class="topic-num"></span>';
-      const nameEl = row.querySelector(".topic-name");
-      if (pages.get(name)) {
-        const a = document.createElement("a");
-        a.href = "note/" + pages.get(name); a.target = "_blank"; a.rel = "noopener"; a.textContent = name;
-        nameEl.appendChild(a);
-      } else {
-        nameEl.textContent = name;
-      }
-      row.querySelector(".topic-fill").style.width = percent + "%";
-      row.querySelector(".topic-review").style.width = (total ? Math.round((review / total) * 100) : 0) + "%";
-      row.querySelector(".topic-num").textContent = `${completed} / ${total}`;
-      row.title = `${name}：完了${completed}問・復習${review}問・全${total}問`;
-      fragment.appendChild(row);
-    });
-    rows.replaceChildren(fragment);
-  };
-  const byCount = m => [...m.keys()].sort((a, b) => m.get(b).total - m.get(a).total);
-  fill("kind-rows", byKind, kindPage, byCount(byKind));
-  fill("ax-rows", byAx, axPage, byCount(byAx));
-  document.getElementById("kind-panel")?.classList.remove("hidden");
-  document.getElementById("ax-panel")?.classList.remove("hidden");
 }

@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=9.3">
+  <link rel="stylesheet" href="style.css?v=10.0">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -49,10 +49,14 @@
       <p class="dash-sub" id="dash-sub">進捗を読み込み中...</p>
     </div>
 
+    <!-- 2026-10-22: 「過去問を解く」で開く形を試したが、タップが増えるので元の並びに戻した（管理人）。
+         「続きから」は最後に使ったモード（年度順かテーマ別）の続き -->
     <div id="mode-select">
       <button id="start-normal-btn" class="mode-btn normal-mode">年度順モード</button>
-      <button id="resume-year-btn" class="mode-btn resume-mode hidden">続きから</button>
-      <button id="start-review-btn" class="mode-btn review-mode">復習モード</button>
+      <button id="resume-btn" class="mode-btn resume-mode hidden">続きから</button>
+      <!-- テーマ別モード（2026-10-22）。結論パターンごとの代表 1 肢を登記の種類（民法は編）ごとに。入口は tagmode.html -->
+      <a id="start-tag-btn" class="mode-btn theme-mode" href="tagmode.html">厳選テーマ別モード</a>
+      <button id="start-review-btn" class="mode-btn review-mode">今日の復習</button>
       <button id="start-timeattack-btn" class="mode-btn ta-mode">タイムアタック（5分）</button>
     </div>
 
@@ -139,6 +143,7 @@
     <section id="updates" class="updates" aria-label="更新情報">
       <h2 class="updates-heading">更新</h2>
       <ul class="updates-list">
+        <li><time datetime="2026-10-26">10/26</time>厳選テーマ別モードとブックマークを追加、復習を「日を変えて 3 回」に</li>
         <li><time datetime="2026-10-22">10/22</time>R3-16-ア・イ、持分の更正など 16 肢の解説と、対話形式 6 問の前提を修正</li>
         <li><time datetime="2026-10-20">10/20</time>令和8年度の択一 100 肢を解説つきで追加し、過去問ノートにも反映</li>
         <li><time datetime="2026-10-13">10/13</time>過去問ダウンロードに H17・H18 を追加、H17・H18 の 18 肢の字句を修正</li>
@@ -159,7 +164,6 @@
 
     <footer>
       <p style="text-align: left; line-height: 1.6;">
-        復習モードは、開始時点の復習対象を年度順に一通り出題します。3回連続で正解すると復習完了です。<br>
         タイムアタックは、間違えると残り時間が20秒減ります。
       </p>
       <p>
@@ -174,9 +178,10 @@
     </footer>
   </main>
 
-  <script src="common.js?v=1.6"></script>
+  <script src="common.js?v=1.9"></script>
   <script>
     let restartLabel = "";
+    let resumeAction = null;
 
     function updateTopProgress() {
       const n = v => v.toLocaleString("ja-JP");
@@ -190,6 +195,9 @@
           document.getElementById("dash-total").textContent = n(p.total);
           document.getElementById("dash-sub").textContent =
             `未回答 ${n(p.unanswered)} ・ 復習 ${n(p.review)}` + (pass > 0 ? ` ・ ${pass}周完了` : "");
+          // 今日の復習の肢数（期限が来た復習対象とブックマーク）。規則は書かず数だけ見せる（2026-10-23）
+          const due = todayReviewLabels(validQuestions, loadLearningState(), loadBookmarks()).length;
+          document.getElementById("start-review-btn").textContent = due > 0 ? `今日の復習 ${n(due)} 肢` : "今日の復習は完了";
           updateResumeButton(validQuestions);
         })
         .catch(() => {
@@ -197,8 +205,17 @@
         });
     }
 
+    // 「続きから」は最後に使ったモードの続き。テーマ別で止まっていればそちら、それ以外は年度順
     function updateResumeButton(questions) {
-      const button = document.getElementById("resume-year-btn");
+      const button = document.getElementById("resume-btn");
+      const tag = loadTagResume();
+      if (localStorage.getItem("quizMode") === "tag" && tag) {
+        button.textContent = `続きから（テーマ別・${tag.label}）`;
+        resumeAction = () => startTagMode(tag.g, tag.label);
+        button.classList.remove("hidden");
+        return;
+      }
+
       const resumeLabel = localStorage.getItem(YEAR_MODE_RESUME_KEY);
       const resumeExists = questions.some(question => question.label === resumeLabel);
 
@@ -209,6 +226,7 @@
         if (done && questions.length) {
           restartLabel = getFirstLabel(questions);
           button.textContent = "もう一周する";
+          resumeAction = () => startYearMode(restartLabel);
           button.classList.remove("hidden");
           return;
         }
@@ -221,8 +239,24 @@
       button.textContent = (pass > 0 && resumeLabel === getFirstLabel(questions))
         ? `${pass + 1}周目をはじめる`
         : `続きから（${resumeLabel}）`;
+      resumeAction = () => startYearMode(resumeLabel);
       button.classList.remove("hidden");
     }
+
+    // どのボタンが押されているかを GA に送る（2026-10-22。「続きから」がどれだけ使われているかを見るため）
+    ["resume-btn", "start-normal-btn", "start-tag-btn", "start-review-btn", "start-timeattack-btn"].forEach(id => {
+      document.getElementById(id).addEventListener("click", () => {
+        try {
+          if (typeof window.gtag === "function") window.gtag("event", "top_click", { button: id });
+        } catch {
+          // 計測の失敗で画面を止めない
+        }
+      });
+    });
+
+    document.getElementById("resume-btn").addEventListener("click", () => {
+      if (resumeAction) resumeAction();
+    });
 
     document.getElementById("start-normal-btn").addEventListener("click", () => {
       localStorage.setItem("quizMode", "year");
@@ -232,11 +266,6 @@
     document.getElementById("start-review-btn").addEventListener("click", () => {
       localStorage.setItem("quizMode", "review");
       window.location.href = "quiz.html";
-    });
-
-    document.getElementById("resume-year-btn").addEventListener("click", () => {
-      const label = localStorage.getItem(YEAR_MODE_RESUME_KEY) || restartLabel;
-      if (label) startYearMode(label);
     });
 
     document.getElementById("start-timeattack-btn").addEventListener("click", () => {

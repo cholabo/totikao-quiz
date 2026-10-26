@@ -444,6 +444,36 @@ main {
   font-size: 1em;
 }
 
+/* ブックマーク（2026-10-23）。メタ行の右端 */
+.bookmark-btn {
+  margin-left: auto;
+  font: inherit;
+  font-size: 1.25em;
+  line-height: 1;
+  padding: 4px 8px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.bookmark-btn { display: inline-flex; align-items: center; gap: 4px; }
+.bookmark-label { font-size: 0.6em; letter-spacing: 0.05em; }
+.bookmark-btn.is-on { color: var(--bookmark, #d9a520); }
+.quiz-meta { position: relative; }
+.bookmark-toast {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 2px);
+  z-index: 5;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 0.78em;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
 .topic-chip {
   border: 1px solid var(--line);
   background: var(--surface);
@@ -907,6 +937,17 @@ main {
 .status-unanswered { background: var(--surface); color: var(--muted); }
 .status-correct { background: var(--correct-soft); border-color: var(--correct); color: var(--correct); }
 .status-wrong { background: var(--wrong-soft); border-color: var(--wrong); color: var(--wrong); }
+.legend-star { color: var(--bookmark, #d9a520); margin-right: 4px; }
+/* ブックマークの肢（2026-10-23）。状態の色はそのまま、右上に★ */
+.question-link.is-bookmarked { position: relative; box-shadow: inset 0 0 0 2px var(--bookmark, #d9a520); }
+.question-link.is-bookmarked::after {
+  content: "★";
+  position: absolute;
+  top: -7px;
+  right: -5px;
+  font-size: 0.7em;
+  color: var(--bookmark, #d9a520);
+}
 
 /* いま止まっている位置。朱で印をつける */
 .resume-position {
@@ -2625,3 +2666,55 @@ span.qa-ref { text-decoration: none; }
 .qa-vote-btn { width: auto; min-height: 32px; padding: 3px 12px; font-size: 0.85em; background: transparent; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; margin: 0; }
 .qa-vote-btn:hover { background: var(--surface); color: var(--primary); transform: none; }
 .qa-note { margin: 6px 0 0; font-size: 0.74em; color: var(--muted); line-height: 1.6; }
+
+/* ===== タグ分けモードの一覧（tagmode.html、2026-10-22）。行全体が押せるボタン ===== */
+.tagmode-area .topic-row { grid-template-columns: 1fr 3em 3.8em; gap: 8px; }   /* 名前が長い（最長 13 文字）ので名前に幅を渡す */
+.tagmode-row {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  padding: 6px 4px;
+  margin: 2px 0;
+  cursor: pointer;
+}
+.tagmode-row:hover { background: var(--soft); }
+.tagmode-row .topic-name { color: var(--primary); font-weight: 600; }
+.tagmode-resume {
+  display: block;
+  width: 100%;
+  font: inherit;
+  font-weight: 700;
+  padding: 14px 0;
+  margin: -10px 0 22px;
+  border: 1.5px solid var(--primary);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--primary);
+  cursor: pointer;
+}
+.tagmode-note { color: var(--muted); font-size: 0.85em; margin: 8px 0 24px; }
+
+/* テーマ別モードのボタン（2026-10-22）。年度順と同じ重さで、色は枠だけ */
+.theme-mode {
+  display: block;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
+  background: var(--surface);
+  border-color: var(--btn-primary-line);
+  color: var(--ink);
+}
+
+/* 判定の下の説明（復習の次の出題など、2026-10-26）。見出しの「正解」より小さく細く */
+.verdict-detail {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.78em;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--muted);
+}

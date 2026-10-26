@@ -130,6 +130,99 @@ function startYearMode(label) {
   window.location.href = "quiz.html";
 }
 
+// ===== 復習（2026-10-23 新仕様）=====
+// 間違えた肢（？を含む）は復習対象（lastResult = "wrong"）。「今日の復習」で日を変えて 3 回正解すると卒業。
+// 同じ日の 2 回目以降の正解は数えず、途中で間違えたら翌日から 0 回目に戻る。
+// 肢ごとの記録に足したもの: due（次に出す日 YYYY-MM-DD。無ければ今日）、hits（数えた正解 0〜2）、
+// reviewDay（「今日の復習」で最後に答えた日）。年度順・テーマ別・タイムアタックの正解は数えない。
+// ブックマーク（☆）の肢は卒業に関係なく毎日 1 回「今日の復習」に出る。
+const REVIEW_GRADUATE_HITS = 3;
+const BOOKMARK_KEY = "bookmarkedLabels";
+
+function dayString(date = new Date()) {
+  const p = n => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())}`;
+}
+
+function addDays(day, n) {
+  const [y, m, d] = day.split("-").map(Number);
+  return dayString(new Date(y, m - 1, d + n));
+}
+
+function loadBookmarks() {
+  try {
+    const v = JSON.parse(localStorage.getItem(BOOKMARK_KEY) || "[]");
+    return new Set(Array.isArray(v) ? v : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveBookmarks(set) {
+  try {
+    localStorage.setItem(BOOKMARK_KEY, JSON.stringify([...set]));
+  } catch {
+    // 保存できない環境でも出題は続ける
+  }
+}
+
+// その日に出す肢か。期限が来た復習対象とブックマークのうち、その日まだ「今日の復習」で答えていないもの
+function isDueOn(state, label, bookmarks, day) {
+  const st = state[label];
+  if (st && st.reviewDay === day) return false;
+  if (bookmarks.has(label)) return true;
+  return getResultOf(state, label) === "wrong" && (st.due || day) <= day;
+}
+
+// 並びは日付を種にしたシャッフル。読み込み直しても同じ順で、解いた肢だけが抜けていく
+function shuffleForDay(labels, day) {
+  let seed = 0;
+  for (const c of day) seed = (seed * 31 + c.charCodeAt(0)) >>> 0;
+  const rand = () => {
+    seed = (seed + 0x6D2B79F5) >>> 0;
+    let t = seed;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const out = [...labels].sort();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+function todayReviewLabels(questions, state, bookmarks, day = dayString()) {
+  return shuffleForDay(questions.map(q => q.label).filter(l => isDueOn(state, l, bookmarks, day)), day);
+}
+
+// テーマ別モード: 群（g）と、その群の中で次に出す肢（label）を覚える
+const TAG_MODE_RESUME_KEY = "tagModeResume";
+
+function loadTagResume() {
+  try {
+    const v = JSON.parse(localStorage.getItem(TAG_MODE_RESUME_KEY) || "null");
+    return v && v.g && v.label ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveTagResume(g, label) {
+  try {
+    localStorage.setItem(TAG_MODE_RESUME_KEY, JSON.stringify({ g, label }));
+  } catch {
+    // 保存できない環境でも出題は続ける
+  }
+}
+
+function startTagMode(g, label) {
+  localStorage.setItem("quizMode", "tag");
+  saveTagResume(g, label);
+  window.location.href = "quiz.html?mode=tag";
+}
+
 // ホーム画面から起動した状態（standalone）にはタブが無いため、target="_blank" でも
 // 同じ窓で開いてしまい、解いていた場所を見失う。そこだけ明示的に外へ出す。
 document.addEventListener("click", event => {

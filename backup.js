@@ -4,14 +4,16 @@
 // 素直に localStorage を JSON で出すと全肢で30万字になり、
 // LINE やメモに貼れる長さではない。要るのは肢ごとに
 //   ・最後の結果（未回答／正解／復習中／？）  2ビット
-//   ・復習の連続正解数（0〜3）              2ビット
+//   ・復習で数えた正解の回数（0〜2）        2ビット
 // の4ビットだけなので、そこまで削ってから圧縮する。回答回数や日時は表示に使っていない。
+// 形式 2（2026-10-23）: 復習が「日を変えて 3 回」になり、2 ビット目の中身を連続正解数から hits に。
+// 後ろにブックマーク（1 肢 1 ビット）を足した。次に出す日は持たない（入れた日を期限にする）。
 //
 // 並びは questions.json の順。ラベルを持たないぶん短くなるが、順番がずれると
 // 全部食い違うので、肢数と、ラベルから作った検査値を頭に入れて突き合わせる。
 
 const BACKUP = (() => {
-  const FORMAT = 1;
+  const FORMAT = 2;
 
   const RESULT = { none: 0, correct: 1, wrong: 2, unknown: 3 };
   const RESULT_NAME = [null, 'correct', 'wrong', 'unknown'];
@@ -65,9 +67,11 @@ const BACKUP = (() => {
   }
 
   // ===== 出す =====
-  async function encode(labels, state, passCount, resumeLabel) {
+  async function encode(labels, state, passCount, resumeLabel, bookmarks) {
     const n = labels.length;
-    const body = new Uint8Array(8 + Math.ceil(n / 2));
+    const marks = bookmarks || new Set();
+    const nib0 = 8, bm0 = 8 + Math.ceil(n / 2);
+    const body = new Uint8Array(bm0 + Math.ceil(n / 8));
     const sum = checksum(labels);
     const resumeIndex = resumeLabel ? labels.indexOf(resumeLabel) : -1;
     body[0] = n >> 8; body[1] = n & 0xFF;
@@ -79,10 +83,11 @@ const BACKUP = (() => {
     for (let i = 0; i < n; i++) {
       const st = state[labels[i]] || {};
       const r = RESULT[st.lastResult] || 0;
-      const streak = Math.max(0, Math.min(3, Number(st.reviewCorrectStreak) || 0));
-      const nib = (streak << 2) | r;
-      if (i % 2 === 0) body[8 + (i >> 1)] |= nib;
-      else body[8 + (i >> 1)] |= nib << 4;
+      const hits = Math.max(0, Math.min(2, Number(st.hits) || 0));
+      const nib = (hits << 2) | r;
+      if (i % 2 === 0) body[nib0 + (i >> 1)] |= nib;
+      else body[nib0 + (i >> 1)] |= nib << 4;
+      if (marks.has(labels[i])) body[bm0 + (i >> 3)] |= 1 << (i & 7);
     }
 
     const packed = await deflate(body);
@@ -99,7 +104,8 @@ const BACKUP = (() => {
   async function decode(code, labels) {
     const raw = fromBase64url(code);
     if (raw.length < 10) throw new Error('コードが短すぎます');
-    if (raw[0] !== FORMAT) throw new Error('見たことのない形式のコードです');
+    const format = raw[0];
+    if (format !== 1 && format !== 2) throw new Error('見たことのない形式のコードです');
     let body = raw.slice(2);
     if (raw[1] & 1) body = await inflate(body);
     if (body.length < 8) throw new Error('コードが壊れています');
@@ -114,10 +120,13 @@ const BACKUP = (() => {
     if (body.length < 8 + Math.ceil(n / 2)) throw new Error('コードが途中で切れています');
 
     const state = {};
+    const bookmarks = new Set();
+    const bm0 = 8 + Math.ceil(n / 2);
     let answered = 0;
     for (let i = 0; i < n; i++) {
       const byte = body[8 + (i >> 1)];
       const nib = (i % 2 === 0) ? (byte & 15) : (byte >> 4);
+      if (format === 2 && body.length > bm0 + (i >> 3) && (body[bm0 + (i >> 3)] >> (i & 7)) & 1) bookmarks.add(labels[i]);
       const r = nib & 3;
       if (!r) continue;
       answered++;
@@ -128,10 +137,10 @@ const BACKUP = (() => {
         wrongCount: name === 'correct' ? 0 : 1,
         lastResult: name,
         lastAnsweredAt: '',
-        reviewCorrectStreak: (nib >> 2) & 3,
+        hits: format === 2 ? Math.min(2, (nib >> 2) & 3) : 0,   // 形式 1 は旧仕様の連続正解数なので数えず 0 回目から（移行の決まりと同じ）
       };
     }
-    return { state, passCount, resumeLabel: ri > 0 ? labels[ri - 1] : '', answered, total: n };
+    return { state, bookmarks, passCount, resumeLabel: ri > 0 ? labels[ri - 1] : '', answered, total: n };
   }
 
   return { encode, decode, checksum };

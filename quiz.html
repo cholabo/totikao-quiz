@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=9.3">
+  <link rel="stylesheet" href="style.css?v=10.0">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -40,6 +40,9 @@
       <div class="quiz-meta">
         <span id="question-number"></span>
         <span id="topic-chip" class="topic-chip hidden"></span>
+        <!-- ブックマーク（2026-10-23）。印の肢は毎日「今日の復習」に出て、年度順の一覧で色が付く。答える前でも後でも押せる -->
+        <button id="bookmark-btn" class="bookmark-btn hidden" type="button" aria-pressed="false"><span class="bookmark-label">ブックマーク</span><span id="bookmark-star" class="bookmark-star">☆</span></button>
+        <div id="bookmark-toast" class="bookmark-toast hidden" role="status"></div>
       </div>
 
       <div class="q-card">
@@ -192,7 +195,7 @@
       </div>
     </template>
   </main>
-  <script src="common.js?v=1.6"></script>
-  <script src="script.js?v=4.22"></script>
+  <script src="common.js?v=1.9"></script>
+  <script src="script.js?v=4.30"></script>
 </body>
 </html>

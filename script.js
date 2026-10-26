@@ -78,7 +78,10 @@ fetch("data/topics.json")
 function updateTopicChip(question) {
   const chip = document.getElementById("topic-chip");
   if (!chip) return;
-  const topic = topicMap && question ? topicMap[question.label] : null;
+  // テーマ別モードでは、肢番号の横にいまのテーマ名を出す（テーマが変わったことが分かるように）
+  const topic = currentMode === "tag" && tagGroup && question
+    ? tagGroup.name
+    : topicMap && question ? topicMap[question.label] : null;
   chip.textContent = topic || "";
   chip.classList.toggle("hidden", !topic);
 }
@@ -88,7 +91,7 @@ const MAX_RESPONSE_TIME_MS = 60 * 60 * 1000;
 const QUIZ_FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbykTsPoM-VFHtSWZUmS-TTqZyi7gtJd637B94mw5i_rDgeNtd6_XCRLLTQQ7Z6Fj_x9/exec";
 const searchParams = new URLSearchParams(window.location.search);
 const requestedStartLabel = searchParams.get("start");
-const requestedMode = ["year", "review", "timeattack"].includes(searchParams.get("mode")) ? searchParams.get("mode") : null;
+const requestedMode = ["year", "review", "timeattack", "tag"].includes(searchParams.get("mode")) ? searchParams.get("mode") : null;
 let learningState = loadLearningState();
 
 let currentMode = requestedMode || localStorage.getItem("quizMode") || "year";
@@ -97,6 +100,10 @@ let yearPassJustFinished = false;
 let reviewSessionQuestions = [];
 let reviewSessionIndex = 0;
 let isTimeAttack = false;
+// テーマ別モード（2026-10-22）: 群（data/tagmode.json の 1 群）の代表肢を順に出す
+let tagGroups = [];
+let tagGroup = null;
+let tagIndex = 0;
 let timeLeft = 300;
 let timerInterval = null;
 let taCorrectCount = 0;
@@ -124,6 +131,8 @@ fetch(QUESTIONS_URL)
 
     if (currentMode === "timeattack") {
       initTimeAttack();
+    } else if (currentMode === "tag") {
+      initTagMode();
     } else {
       initStudyMode(currentMode);
     }
@@ -168,7 +177,7 @@ function getDefaultState() {
     wrongCount: 0,
     lastResult: null,
     lastAnsweredAt: "",
-    reviewCorrectStreak: 0
+    hits: 0
   };
 }
 
@@ -176,40 +185,43 @@ function getQuestionState(question) {
   return learningState[getQuestionKey(question)] || getDefaultState();
 }
 
+// 復習の規則は common.js の「復習（2026-10-23 新仕様）」。卒業の回数は「今日の復習」で答えたときだけ数える
 function setQuestionResult(question, result) {
   const key = getQuestionKey(question);
   const current = getQuestionState(question);
+  const today = dayString();
+  const inReview = currentMode === "review";
+  const wasTarget = ["wrong", "unknown"].includes(current.lastResult);
   const next = {
     attempts: (current.attempts || 0) + 1,
-    correctCount: current.correctCount || 0,
-    wrongCount: current.wrongCount || 0,
-    lastResult: result,
+    correctCount: (current.correctCount || 0) + (result === "correct" ? 1 : 0),
+    wrongCount: (current.wrongCount || 0) + (result === "wrong" ? 1 : 0),
+    lastResult: result === "unknown" ? "wrong" : result,
     lastAnsweredAt: new Date().toISOString(),
-    reviewCorrectStreak: current.reviewCorrectStreak || 0
+    hits: Math.max(0, Number(current.hits) || 0)
   };
+  if (current.due) next.due = current.due;
+  if (current.reviewDay) next.reviewDay = current.reviewDay;
+  if (inReview) next.reviewDay = today;
 
-  if (result === "correct") {
-    next.correctCount += 1;
-
-    if (["wrong", "unknown"].includes(current.lastResult) || next.reviewCorrectStreak > 0) {
-      next.reviewCorrectStreak += 1;
-      if (next.reviewCorrectStreak < 3) {
-        next.lastResult = "wrong";
+  if (result !== "correct") {
+    // 間違い・？はどのモードでも復習対象。翌日から 0 回目
+    next.hits = 0;
+    next.due = addDays(today, 1);
+  } else if (wasTarget) {
+    if (!inReview || current.reviewDay === today) {
+      // 復習対象を年度順などで正解した／同じ日の 2 回目: 数えずに復習対象のまま
+      next.lastResult = "wrong";
+    } else {
+      next.hits += 1;
+      if (next.hits >= REVIEW_GRADUATE_HITS) {
+        next.hits = 0;           // 卒業
+        delete next.due;
       } else {
-        next.lastResult = "correct";
-        next.reviewCorrectStreak = 0;
+        next.lastResult = "wrong";
+        next.due = addDays(today, 1);
       }
     }
-  }
-
-  if (result === "wrong") {
-    next.wrongCount += 1;
-    next.reviewCorrectStreak = 0;
-  }
-
-  if (result === "unknown") {
-    next.lastResult = "wrong";
-    next.reviewCorrectStreak = 0;
   }
 
   learningState[key] = next;
@@ -260,7 +272,7 @@ function sendQuizAnswerEvent(question, result, selectedAnswer, previousState, ne
     quiz_mode: currentMode,
     attempt_number: Number(nextState.attempts) || previousAttempts + 1,
     is_first_attempt: previousAttempts === 0 ? 1 : 0,
-    review_correct_streak: Math.max(0, Number(nextState.reviewCorrectStreak) || 0),
+    review_hits: Math.max(0, Number(nextState.hits) || 0),
     response_time_ms: getSafeResponseTime(),
     session_question_index: currentSessionQuestionIndex
   };
@@ -293,8 +305,19 @@ function updateProgress() {
   const progressInfo = document.getElementById("progress-info");
   if (!progressInfo || isTimeAttack) return;
 
+  if (currentMode === "tag" && tagGroup) {
+    const c = summarizeProgress(tagGroup.items.map(label => ({ label })), learningState);
+    const pos = currentQuestion ? tagGroup.items.indexOf(currentQuestion.label) + 1 : 0;
+    progressInfo.textContent = `厳選テーマ別｜${tagGroup.name}（${pos}問目 / 全${c.total}問・完了${c.completed}問）`;
+    return;
+  }
+  if (currentMode === "review") {
+    const left = reviewSessionQuestions.slice(Math.max(0, reviewSessionIndex - 1)).filter(q => getQuestionState(q).reviewDay !== dayString()).length;
+    progressInfo.textContent = `今日の復習｜残り ${left} 肢`;
+    return;
+  }
   const p = summarizeProgress(questions, learningState);
-  const modeName = currentMode === "review" ? "復習モード" : "年度順モード";
+  const modeName = "年度順モード";
   const pass = getPassCount();
   const shown = pass + (yearPassJustFinished ? 0 : 1);   // 一周し終えた肢の画面では、まだその周のまま
   progressInfo.textContent = `${modeName}${pass > 0 ? `（${shown}周目）` : ""}`
@@ -308,8 +331,10 @@ function initStudyMode(mode) {
     localStorage.getItem(YEAR_MODE_RESUME_KEY) || localStorage.getItem(YEAR_MODE_START_KEY)
   );
   usedQuestions = [];
+  // 今日の復習: 期限が来た肢とブックマークを、日付で決まる順に。今日もう答えた肢は入らない
   reviewSessionQuestions = currentMode === "review"
-    ? questions.filter(isReviewTarget).sort(compareQuestions)
+    ? todayReviewLabels(questions, learningState, loadBookmarks())
+        .map(label => questions.find(q => q.label === label)).filter(Boolean)
     : [];
   reviewSessionIndex = 0;
 
@@ -320,6 +345,74 @@ function initStudyMode(mode) {
   document.getElementById("list-btn").classList.toggle("hidden", currentMode !== "year");
 
   newQuestion();
+}
+
+function initTagMode() {
+  isTimeAttack = false;
+  currentMode = "tag";
+  fetch("data/tagmode.json?v=20261022a")
+    .then(res => (res.ok ? res.json() : Promise.reject()))
+    .then(data => {
+      const resume = loadTagResume();
+      tagGroups = data.groups;
+      tagGroup = resume && data.groups.find(g => g.id === resume.g);
+      if (!tagGroup) {
+        window.location.href = "tagmode.html";
+        return;
+      }
+      tagIndex = Math.max(0, tagGroup.items.indexOf(resume.label));
+      usedQuestions = [];
+      document.getElementById("timer-bar").classList.add("hidden");
+      document.getElementById("unknown-btn").classList.remove("hidden");
+      document.getElementById("controls").classList.remove("hidden");
+      document.getElementById("progress-info").classList.remove("hidden");
+      const listBtn = document.getElementById("list-btn");
+      listBtn.textContent = "テーマ一覧へ戻る";
+      listBtn.classList.remove("hidden");
+      newQuestion();
+    })
+    .catch(() => showNoQuestionMessage("テーマ別モードのデータを読み込めませんでした。"));
+}
+
+// テーマの最後まで来たら、一覧に戻さず次のテーマへ続ける（数問しかないテーマで毎回戻されないように。2026-10-22 管理人）
+function nextTagGroup(group) {
+  const i = tagGroups.indexOf(group);
+  return i >= 0 ? tagGroups[i + 1] || null : null;
+}
+
+function showTagQuestion() {
+  if (tagIndex >= tagGroup.items.length) {
+    const next = nextTagGroup(tagGroup);
+    if (!next) {
+      window.location.href = "tagmode.html";
+      return;
+    }
+    tagGroup = next;
+    tagIndex = 0;
+  }
+  const label = tagGroup.items[tagIndex];
+  currentQuestion = questions.find(q => q.label === label);
+  if (!currentQuestion) {   // データの食い違い。飛ばして次へ
+    tagIndex += 1;
+    showTagQuestion();
+    return;
+  }
+  saveTagResume(tagGroup.id, label);
+  renderQuestion(currentQuestion);
+  updateProgress();
+}
+
+// 解いたら次の肢を覚える。テーマの最後なら次のテーマの先頭、全部の最後なら「続きから」を消す
+function advanceTagResume() {
+  if (currentMode !== "tag" || !tagGroup) return;
+  tagIndex += 1;
+  if (tagIndex < tagGroup.items.length) {
+    saveTagResume(tagGroup.id, tagGroup.items[tagIndex]);
+    return;
+  }
+  const next = nextTagGroup(tagGroup);
+  if (next) saveTagResume(next.id, next.items[0]);
+  else localStorage.removeItem(TAG_MODE_RESUME_KEY);
 }
 
 function initTimeAttack() {
@@ -365,6 +458,11 @@ function newQuestion() {
     return;
   }
 
+  if (currentMode === "tag") {
+    showTagQuestion();
+    return;
+  }
+
   // 最後の肢まで解き終えた。次の周の先頭は残してあるので、トップから1タップで入れる。
   if (yearPassJustFinished) {
     window.location.href = "index.html";
@@ -389,14 +487,14 @@ function newQuestion() {
 }
 
 function showReviewQuestion() {
-  if (reviewSessionQuestions.length === 0) {
-    showNoQuestionMessage("復習対象の問題はありません。");
-    updateProgress();
-    return;
+  // 今日もう答えた肢は飛ばす（同じ画面で別の肢から戻ってきたときのため）
+  const today = dayString();
+  while (reviewSessionIndex < reviewSessionQuestions.length
+    && getQuestionState(reviewSessionQuestions[reviewSessionIndex]).reviewDay === today) {
+    reviewSessionIndex += 1;
   }
-
   if (reviewSessionIndex >= reviewSessionQuestions.length) {
-    window.location.href = "index.html";
+    showReviewDone();
     return;
   }
 
@@ -404,6 +502,17 @@ function showReviewQuestion() {
   reviewSessionIndex += 1;
   renderQuestion(currentQuestion);
   updateProgress();
+}
+
+// 今日の分が終わった（または最初から無い）。明日の肢数を予告する
+function showReviewDone() {
+  const tomorrow = addDays(dayString(), 1);
+  const bookmarks = loadBookmarks();
+  const n = questions.filter(q => isDueOn(learningState, q.label, bookmarks, tomorrow)).length;
+  showNoQuestionMessage(n > 0
+    ? `今日の復習は完了です。明日は ${n} 肢です。`
+    : "今日の復習は完了です。明日の復習はまだありません。");
+  document.getElementById("progress-info").textContent = "今日の復習｜完了";
 }
 
 function getYearModeQuestions() {
@@ -440,8 +549,21 @@ function showTimeAttackQuestion() {
   renderQuestion(currentQuestion);
 }
 
+function updateBookmarkButton(question) {
+  const btn = document.getElementById("bookmark-btn");
+  if (!btn) return;
+  const on = Boolean(question) && loadBookmarks().has(question.label);
+  document.getElementById("bookmark-star").textContent = on ? "★" : "☆";
+  btn.classList.toggle("is-on", on);
+  btn.setAttribute("aria-pressed", String(on));
+  btn.title = on ? "ブックマークを外す" : "ブックマークする（毎日の復習に出ます）";
+  btn.setAttribute("aria-label", btn.title);
+  btn.classList.toggle("hidden", !question);
+}
+
 function renderQuestion(question) {
   document.getElementById("question-number").textContent = question.label;
+  updateBookmarkButton(question);
   updateTopicChip(question);
   const context = document.getElementById("q-context");
   context.textContent = question.context || "";
@@ -490,9 +612,10 @@ function renderQuestion(question) {
 
   if (!isTimeAttack) {
     const nextButton = document.getElementById("next-btn");
-    const isReviewEnd = currentMode === "review" && reviewSessionIndex >= reviewSessionQuestions.length;
+    const isReviewEnd = false;   // 復習の最後は「今日の復習は完了」の画面へ進む
     const isYearEnd = currentMode === "year" && yearModeFromSelection && !getNextYearQuestion(question);
-    nextButton.textContent = isReviewEnd || isYearEnd ? "トップに戻る" : "次の問題へ";
+    const isTagEnd = currentMode === "tag" && tagGroup && tagIndex >= tagGroup.items.length - 1 && !nextTagGroup(tagGroup);
+    nextButton.textContent = isTagEnd ? "一覧に戻る" : isReviewEnd || isYearEnd ? "トップに戻る" : "次の問題へ";
   }
 }
 
@@ -518,7 +641,16 @@ function showVerdict(kind, mark, message) {
   stamp.style.animation = "none";
   void stamp.offsetWidth;
   stamp.style.animation = "";
-  document.getElementById("result").textContent = message;
+  // 「正解」「不正解」の後ろの説明（「　」で区切る）は、下の行に小さく出す
+  const result = document.getElementById("result");
+  const [head, ...rest] = String(message).split("　");
+  result.textContent = head;
+  if (rest.length) {
+    const detail = document.createElement("span");
+    detail.className = "verdict-detail";
+    detail.textContent = rest.join("　");
+    result.appendChild(detail);
+  }
 }
 
 function hideVerdict() {
@@ -556,6 +688,7 @@ function advanceYearModeResume(question) {
 
 function showNoQuestionMessage(message) {
   currentQuestion = null;
+  updateBookmarkButton(null);
   isAnswerLocked = true;
   setAnswerControlsDisabled(true);
   document.getElementById("question-number").textContent = "";
@@ -929,6 +1062,7 @@ function handleAnswer(userChoice) {
   const result = selected === correctAnswer ? "correct" : "wrong";
   const selectedAnswer = selected === "◯" ? "circle" : "cross";
 
+  const previousState = getQuestionState(currentQuestion);
   const nextState = recordQuestionAnswer(currentQuestion, result, selectedAnswer);
 
   if (isTimeAttack) {
@@ -937,15 +1071,10 @@ function handleAnswer(userChoice) {
   }
 
   advanceYearModeResume(currentQuestion);
+  advanceTagResume();
 
-  if (result === "correct" && nextState.lastResult === "wrong") {
-    const remaining = 3 - nextState.reviewCorrectStreak;
-    showVerdict("correct", "◯", `正解（復習完了まであと${remaining}回）`);
-  } else if (result === "correct") {
-    showVerdict("correct", "◯", "正解");
-  } else {
-    showVerdict("wrong", "✕", "不正解（連続正解数をリセット）");
-  }
+  showVerdict(result === "correct" ? "correct" : "wrong", result === "correct" ? "◯" : "✕",
+    verdictMessage(result, previousState, nextState));
   if (result === "wrong") {
     document.querySelectorAll(".choice").forEach(button => {
       if (normalizeAnswer(button.dataset.choice) === selected) button.classList.add("is-miss");
@@ -957,6 +1086,21 @@ function handleAnswer(userChoice) {
   updateProgress();
 }
 
+// 復習の規則は画面に常に書かず、答えた直後の 1 文で見せる（2026-10-26 管理人: ●●○ の印では意味が取れないので文に）
+function verdictMessage(result, previousState, nextState) {
+  const later = "次は明日以降に出題されます";
+  if (currentMode !== "review") {
+    return result === "correct" ? "正解" : `不正解　明日以降の復習に出題されます`;
+  }
+  if (result !== "correct") return `不正解　${later}`;
+  const wasTarget = ["wrong", "unknown"].includes(previousState.lastResult);
+  if (wasTarget && nextState.lastResult === "correct") return "正解　復習から消えました";
+  if (wasTarget) {
+    return `正解　あと ${REVIEW_GRADUATE_HITS - nextState.hits} 回正解すると復習から消えます。${later}`;
+  }
+  return "正解　ブックマーク中なので、明日以降も出題されます";
+}
+
 function handleUnknown() {
   if (!currentQuestion || isTimeAttack || isAnswerLocked) return;
 
@@ -964,8 +1108,10 @@ function handleUnknown() {
   setAnswerControlsDisabled(true);
   recordQuestionAnswer(currentQuestion, "unknown", "unknown");
   advanceYearModeResume(currentQuestion);
+  advanceTagResume();
   // 印は正解の側を押して見せる。答えを確かめたい場面なので。
-  showVerdict("unknown", normalizeAnswer(currentQuestion.answer), "復習対象にしました");
+  showVerdict("unknown", normalizeAnswer(currentQuestion.answer),
+    currentMode === "review" ? "復習に入れました　次は明日以降に出題されます" : "復習に入れました　明日以降の復習に出題されます");
   showNextButton(currentQuestion);
   showExplanation(currentQuestion, true);
   showFeedbackArea();
@@ -1091,12 +1237,40 @@ function renderTimeAttackWrongReview() {
 
 document.getElementById("next-btn").addEventListener("click", newQuestion);
 
+// 押したときだけ、ボタンの下に小さく 2.5 秒。規則を画面に常に書かずに伝える（2026-10-26 管理人）
+let bookmarkToastTimer = null;
+function showBookmarkToast(text) {
+  const toast = document.getElementById("bookmark-toast");
+  toast.textContent = text;
+  toast.classList.remove("hidden");
+  clearTimeout(bookmarkToastTimer);
+  bookmarkToastTimer = setTimeout(() => toast.classList.add("hidden"), 2500);
+}
+
+document.getElementById("bookmark-btn").addEventListener("click", () => {
+  if (!currentQuestion) return;
+  const marks = loadBookmarks();
+  const label = currentQuestion.label;
+  if (marks.has(label)) marks.delete(label);
+  else marks.add(label);
+  saveBookmarks(marks);
+  updateBookmarkButton(currentQuestion);
+  showBookmarkToast(marks.has(label)
+    ? "外すまで、毎日の復習に出ます"
+    : "ブックマークを外しました");
+  try {
+    if (typeof window.gtag === "function") window.gtag("event", "bookmark", { question_label: label, on: marks.has(label) ? 1 : 0 });
+  } catch {
+    // 計測の失敗で画面を止めない
+  }
+});
+
 document.getElementById("home-btn").addEventListener("click", () => {
   window.location.href = "index.html";
 });
 
 document.getElementById("list-btn").addEventListener("click", () => {
-  window.location.href = "question-list.html";
+  window.location.href = currentMode === "tag" ? "tagmode.html" : "question-list.html";
 });
 
 document.getElementById("ta-home-btn").addEventListener("click", () => {

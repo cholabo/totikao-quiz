@@ -14,7 +14,7 @@ const ROOT = __dirname;
 
 // クイズ本体と問題一覧は、中身を JavaScript で組み立てる操作画面なので載せない。
 // 検索から直接来ても読むものが無く、canonical も持たせていない。
-const EXCLUDE = new Set(['quiz.html', 'question-list.html']);
+const EXCLUDE = new Set(['quiz.html', 'question-list.html', 'tagmode.html']);   // tagmode は一覧を JS で組むので quiz・question-list と同じく外す
 
 const pages = [];
 (function walk(dir) {

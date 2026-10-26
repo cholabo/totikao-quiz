@@ -68,8 +68,8 @@
     </footer>
   </main>
 
-  <script src="common.js?v=1.6"></script>
-  <script src="backup.js?v=1.0"></script>
+  <script src="common.js?v=1.9"></script>
+  <script src="backup.js?v=2.1"></script>
   <script>
     const stat = document.getElementById("stat");
     const msg = document.getElementById("msg");
@@ -87,13 +87,13 @@
         stat.textContent = `${n(p.completed)}問 完了 ・ 復習 ${n(p.review)} ・ 未回答 ${n(p.unanswered)}`
           + (pass > 0 ? ` ・ ${pass}周完了` : "");
 
-        if (p.completed === 0 && p.review === 0) {
+        if (p.completed === 0 && p.review === 0 && loadBookmarks().size === 0) {
           stat.textContent += "　まだ記録がないので、引き継ぐものはありません。";
           return;
         }
 
         const code = await BACKUP.encode(
-          labels, state, pass, localStorage.getItem(YEAR_MODE_RESUME_KEY) || "");
+          labels, state, pass, localStorage.getItem(YEAR_MODE_RESUME_KEY) || "", loadBookmarks());
         const url = location.origin + location.pathname.replace(/backup\.html$/, "restore.html") + "#" + code;
 
         document.getElementById("code").value = url;
