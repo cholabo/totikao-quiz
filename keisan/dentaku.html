@@ -1,0 +1,167 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-C34PHRSJN4"></script>
+<script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag("js", new Date());gtag("config", "G-C34PHRSJN4");</script>
+<meta name="description" content="座標計算で使う Canon F-789SG のキーの場所（写真）、複素数モードの設定、点を 80＋60i の形で入れる方法、メモリの決まり。">
+<link rel="canonical" href="https://cholabo.jp/keisan/dentaku.html">
+<meta property="og:type" content="website"><meta property="og:site_name" content="土地家屋調査士 過去問アプリ"><meta property="og:title" content="電卓の使い方（Canon F-789SG）｜土地家屋調査士 記述式の座標計算"><meta property="og:description" content="座標計算で使う Canon F-789SG のキーの場所（写真）、複素数モードの設定、点を 80＋60i の形で入れる方法、メモリの決まり。"><meta property="og:url" content="https://cholabo.jp/keisan/dentaku.html"><meta property="og:image" content="https://cholabo.jp/ogimage.png"><meta property="og:locale" content="ja_JP"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>電卓の使い方（Canon F-789SG）｜土地家屋調査士 記述式の座標計算</title>
+<!-- 生成物。textbook/tools/keisan/build_dentaku.py で書き出す -->
+<style>
+:root{--bg:#fdfcf9;--ink:#222;--sub:#666;--line:#ddd;--accent:#2f6fb3;--accent2:#c0392b;--accent3:#2e8b57;--pt:#fff6d6;--ptl:#e6c75a;--ex:#eef4fb;--exl:#9cbbe0;--ng:#fdecea;--ngl:#e3a39b;--code:#f1f1f1}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1b1c1e;--ink:#e8e8e8;--sub:#aaa;--line:#444;--accent:#7fb2ea;--accent2:#ef8577;--accent3:#6fcf97;--pt:#3a3320;--ptl:#8c7630;--ex:#1f2a36;--exl:#3e5f86;--ng:#3a2422;--ngl:#8a4a42;--code:#2a2b2e}}
+:root[data-theme="dark"]{--bg:#1b1c1e;--ink:#e8e8e8;--sub:#aaa;--line:#444;--accent:#7fb2ea;--accent2:#ef8577;--accent3:#6fcf97;--pt:#3a3320;--ptl:#8c7630;--ex:#1f2a36;--exl:#3e5f86;--ng:#3a2422;--ngl:#8a4a42;--code:#2a2b2e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.85 "Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif}
+main{max-width:760px;margin:0 auto;padding:24px 16px 80px}
+h1{font-size:28px;margin:8px 0 4px}
+.lead{color:var(--sub);margin:0 0 24px}
+h2{font-size:23px;margin:64px 0 12px;padding-bottom:6px;border-bottom:3px solid var(--accent)}
+h2 small{display:block;font-size:14px;color:var(--sub);font-weight:normal}
+h3{font-size:19px;margin:36px 0 8px}
+p{margin:10px 0}
+.box{border-radius:10px;padding:12px 16px;margin:18px 0;border-left:6px solid}
+.point{background:var(--pt);border-color:var(--ptl)}
+.ex{background:var(--ex);border-color:var(--exl)}
+.ng{background:var(--ng);border-color:var(--ngl)}
+.box>b:first-child{display:block;margin-bottom:4px}
+.f{font-size:19px;text-align:center;margin:14px 0;font-family:"Times New Roman",serif}
+.f i{font-style:italic}
+table{border-collapse:collapse;margin:10px 0;font-size:16px;max-width:100%}
+th,td{border:1px solid var(--line);padding:4px 10px;text-align:left;vertical-align:top}
+th{background:var(--code)}
+kbd{display:inline-block;white-space:nowrap;min-width:1.7em;padding:0 5px;margin:1px;border:1px solid var(--sub);border-bottom-width:2px;border-radius:5px;font:14px/1.6 sans-serif;text-align:center;background:var(--bg)}
+code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:15px}
+.fig{text-align:center;margin:16px 0}
+.fig svg{max-width:100%;height:auto}
+.fig .cap{font-size:14px;color:var(--sub);margin-top:2px}
+.figs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.figs .fig{flex:1 1 220px;margin:6px 0}
+details{margin:8px 0 16px;border:1px solid var(--line);border-radius:8px;padding:6px 12px}
+summary{cursor:pointer;color:var(--accent)}
+ol.q>li{margin:10px 0}
+.toc{background:var(--code);border-radius:10px;padding:10px 18px}
+.toc a{color:var(--accent)}
+.steps{counter-reset:s;list-style:none;padding-left:0}
+.steps>li{counter-increment:s;margin:8px 0;padding-left:2.2em;position:relative}
+.steps>li::before{content:counter(s);position:absolute;left:0;top:2px;width:1.6em;height:1.6em;border-radius:50%;background:var(--accent);color:var(--bg);text-align:center;font-size:14px;line-height:1.6em}
+.keys td.scr{font-family:Consolas,"Courier New",monospace;font-size:15px;overflow-wrap:anywhere;min-width:10.5em}
+.keys{width:100%}
+@media (max-width:560px){.keys,.keys tbody{display:block}.keys tr{display:grid;grid-template-columns:auto 1fr;border-bottom:1px solid var(--line)}.keys th{display:none}.keys td{border:0;padding:3px 8px}.keys td:first-child{grid-column:1/3}.keys td.scr{min-width:0}.keys td.note{grid-column:1/3}}
+.keys td:first-child{overflow-wrap:anywhere}
+.keys tr.eq td{background:var(--code)}
+.keys td.note{color:var(--sub);font-size:15px}
+.yomi{font-size:11px;color:var(--sub);font-weight:normal;font-style:normal;margin:0 1px}
+.fname{display:inline-block;font:bold 13px/1.4 sans-serif;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:0 6px;margin-bottom:4px}
+.flist{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media (max-width:560px){.flist{grid-template-columns:1fr}}
+.fl{border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:8px;padding:8px 12px;background:var(--bg)}
+.fn{font-weight:bold;color:var(--accent);display:flex;justify-content:space-between}
+.fc{font-weight:normal;font-size:13px;color:var(--sub)}
+.fx{margin:4px 0;font-size:15px}
+.fu{font-size:13px;color:var(--sub)}
+.miss{margin:14px 0 20px}
+.miss>b{display:block;margin-bottom:2px;color:var(--accent2)}
+.chk{font-size:15px;margin-top:4px}
+ruby{position:relative;display:inline}
+ruby rt{position:absolute;left:50%;transform:translateX(-50%);top:-0.85em;display:block;white-space:nowrap;font-size:10px;line-height:1;color:var(--sub);font-weight:normal;font-style:normal;letter-spacing:0;font-family:sans-serif}
+svg text{font:13px sans-serif;fill:var(--ink)}
+svg .sub{fill:var(--sub)}
+svg .ax,svg .ax0{stroke:var(--ink);stroke-width:1.2}
+svg .ax0{stroke:var(--sub)}
+svg .ln{stroke:var(--ink);stroke-width:1.5;fill:none}
+svg .bl{stroke:var(--accent);stroke-width:2;fill:none}
+svg .rd{stroke:var(--accent2);stroke-width:2.2;fill:none}
+svg .gn{stroke:var(--accent3);stroke-width:2;fill:none}
+svg .dh{stroke:var(--sub);stroke-width:1.2;stroke-dasharray:5 4;fill:none}
+svg .dh0{stroke:var(--sub);stroke-width:1.2;fill:none}
+svg .dot{fill:var(--accent2)}
+svg .hbl,svg .tbl{fill:var(--accent)}
+svg .hrd,svg .trd{fill:var(--accent2)}
+svg .hgn,svg .tgn{fill:var(--accent3)}
+svg .hln,svg .tln,svg .hax0{fill:var(--ink)}
+svg .area{fill:var(--accent);fill-opacity:.18;stroke:var(--accent);stroke-width:1.5}
+svg .area2{fill:var(--accent2);fill-opacity:.15;stroke:var(--accent2);stroke-width:1}
+.c570{display:none}
+html[data-calc="570"] .c570{display:inline}
+html[data-calc="570"] .c789{display:none}
+.only570{display:none}
+html[data-calc="570"] .only570{display:table-row}
+.calcbar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:6px 0;margin:0 0 8px;font-size:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.calcbar button{font:inherit;padding:3px 12px;border:1px solid var(--accent);border-radius:16px;background:var(--bg);color:var(--accent);cursor:pointer}
+.calcbar button[aria-pressed="true"]{background:var(--accent);color:var(--bg)}
+main a{color:var(--accent)}
+h2,h3,.toc{scroll-margin-top:64px}
+.knav{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;font-size:14px;margin:4px 0 0;padding:6px 0;border-bottom:1px solid var(--line)}
+.knav a{padding:2px 10px;border-radius:14px;text-decoration:none;color:var(--accent)}
+.knav a[aria-current="page"]{background:var(--accent);color:var(--bg);font-weight:bold}
+.knav .sep{color:var(--sub)}
+.kfoot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:48px 0 24px;padding-top:12px;border-top:1px solid var(--line)}
+.kfoot a{text-decoration:none;color:var(--accent);font-weight:bold}
+h2 .totop{float:right;font-size:13px;font-weight:normal;text-decoration:none;color:var(--sub);margin-top:6px}
+</style></head><body><main><nav class="knav" aria-label="座標計算の教材"><a href="../index.html">‹ アプリ</a><span class="sep">|</span><a href="index.html">座標計算</a><span class="sep">›</span><a href="dentaku.html" aria-current="page">電卓の使い方</a><a href="nyumon.html">入門</a><a href="oyo.html">応用編</a><a href="drill.html">ドリル</a></nav><h1>電卓の使い方</h1>
+<p class="lead"><a href="nyumon.html">座標計算 入門</a>の前に読むページです。この本の押し方は Canon F-789SG で書いています。使うキーの場所、最初の設定、点の入れ方、メモリの決まり、電卓の表の読み方をまとめました。</p>
+<div class="toc" id="top"><b>もくじ</b><ol><li><a href="#keys">使うキー</a></li><li><a href="#setup">最初の設定</a></li><li><a href="#point">点の入れ方</a></li><li><a href="#mem">メモリの決まり</a></li><li><a href="#table">電卓の表の読み方</a></li></ol></div>
+
+<h2 id="keys"><a class="totop" href="#top">もくじ ↑</a>使うキー</h2>
+<div class="fig"><svg viewBox="0 0 600 1168" width="600" style="max-width:100%;height:auto" role="img" aria-label="Canon F-789SG のキーと番号"><image href="img/f789sg_keys.jpg" x="0" y="0" width="600" height="1168"/><circle cx="31" cy="345" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="31" y="350" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">1</text><circle cx="31" cy="425" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="31" y="430" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">2</text><circle cx="411" cy="348" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="411" y="353" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">3</text><circle cx="269" cy="425" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="269" y="430" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">4</text><circle cx="408" cy="506" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="408" y="511" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">5</text><circle cx="508" cy="506" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="508" y="511" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">6</text><circle cx="124" cy="580" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="124" y="585" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">7</text><circle cx="314" cy="580" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="314" y="585" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">8</text><circle cx="27" cy="661" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="27" y="666" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">9</text><circle cx="124" cy="661" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="124" y="666" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">10</text><circle cx="411" cy="661" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="411" y="666" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">11</text><circle cx="27" cy="741" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="27" y="746" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">12</text><circle cx="124" cy="741" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="124" y="746" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">13</text><circle cx="266" cy="741" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="266" y="746" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">14</text><circle cx="379" cy="832" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="379" y="837" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">15</text><circle cx="492" cy="832" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="492" y="837" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">16</text><circle cx="379" cy="1106" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="379" y="1111" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">17</text><circle cx="492" cy="1106" r="12" style="fill:#c0392b;stroke:#fff;stroke-width:2"/><text x="492" y="1111" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">18</text><circle cx="382" cy="741" r="12" style="fill:#1f6fd1;stroke:#fff;stroke-width:2"/><text x="382" y="746" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">X</text><circle cx="479" cy="741" r="12" style="fill:#1f6fd1;stroke:#fff;stroke-width:2"/><text x="479" y="746" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">Y</text><circle cx="576" cy="741" r="12" style="fill:#1f6fd1;stroke:#fff;stroke-width:2"/><text x="576" y="746" text-anchor="middle" style="fill:#fff;font:bold 13px sans-serif">Z</text></svg><div class="cap">Canon F-789SG。赤い番号は下の表のキー。青い丸は X・Y・Z（M）のメモリのキー。数字キーの横の手書き（G〜P）は、点の名前とメモリの対応のメモ</div></div>
+<table><tr><th>番号</th><th>キー</th><th>使い方</th></tr><tr><td>1</td><td>Shift</td><td>キーの<b>上に茶色で書いてある機能</b>を使う（例：<span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span> で STO）</td></tr><tr><td>2</td><td>Apps</td><td>Arg<span class="yomi">（アーギュメント）</span>（向き）・Real<span class="yomi">（リアル）</span>・Imag<span class="yomi">（イマジナリー）</span>・Conjg<span class="yomi">（コンジュゲート）</span>（面積）などを出す。押したあと番号を選ぶ</td></tr><tr><td>3</td><td>MODE</td><td>最初の設定（複素数モード・角度の単位）</td></tr><tr><td>4</td><td>◀ ▶</td><td>式の中でカーソルを動かす（打ち間違いを直す）</td></tr><tr><td>5</td><td>∫</td><td>∠<span class="yomi">（かく）</span>（かく）を打つ（複素数モードでは、このキーだけで ∠ が出る）。「距離 ∠ 向き」で、その向きにその距離だけ進む矢印を作る</td></tr><tr><td>6</td><td>ENG</td><td>i（アイ）を打つ（このキーだけで i が出る）。座標の Y の方の目印</td></tr><tr><td>7</td><td>√<span class="yomi">（ルート）</span></td><td>ルート</td></tr><tr><td>8</td><td>x²</td><td>2 乗</td></tr><tr><td>9</td><td>(−)</td><td>マイナスの数を打つ（引き算の − とは別のキー）</td></tr><tr><td>10</td><td>°′″</td><td>度・分・秒を打つ。答えのあとに押すと度分秒に直す</td></tr><tr><td>11</td><td>sin cos tan</td><td>三角比</td></tr><tr><td>12</td><td>RCL（上に STO）</td><td><span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span>（STO）でメモリに<b>しまう</b>。<kbd>RCL</kbd> で式の中にメモリを<b>呼ぶ</b></td></tr><tr><td>13</td><td>Abs<span class="yomi">（アブソリュート）</span></td><td>長さ（距離）</td></tr><tr><td>14</td><td>( )</td><td>かっこ</td></tr><tr><td>15</td><td>DEL</td><td>1 文字消す</td></tr><tr><td>16</td><td>CA</td><td>全部消す</td></tr><tr><td>17</td><td>Ans<span class="yomi">（アンサー）</span></td><td>さっきの答え</td></tr><tr><td>18</td><td>=</td><td>計算する</td></tr></table>
+<p>小さく書いてある機能は、<b>上に茶色で書いてあるものは <kbd>Shift</kbd> を押してから</b>そのキーを押します。</p>
+
+<h2 id="setup"><a class="totop" href="#top">もくじ ↑</a>最初の設定（1 回だけ）</h2>
+<table class="keys">
+<tr><th>押すキー</th><th>何のため</th></tr>
+<tr><td><span class="c789"><kbd>MODE</kbd> <kbd>2</kbd></span></td><td>「複素数モード」にする（画面の上に CPLX と出る）</td></tr>
+<tr><td><span class="c789"><kbd>Shift</kbd> <kbd>MODE</kbd> <kbd>3</kbd></span></td><td>角度の単位を「度」にする（画面の上に D と出る）</td></tr>
+</table>
+
+<h2 id="point"><a class="totop" href="#top">もくじ ↑</a>点の入れ方</h2>
+<p>土地の点には、X と Y の 2 つの数（座標）があります。この電卓では、その 2 つを<b>くっつけて 1 つの数</b>として入れます。</p>
+<div class="f">点 A（X ＝ 80、Y ＝ 60）　→　80 ＋ 60<i><ruby>i<rt>アイ</rt></ruby></i></div>
+<div class="fig"><svg viewBox="8 12 282 277" width="282"><line class="ax0" x1="40.0" y1="260.0" x2="40.0" y2="40.0"/><polygon class="hax0" points="40.0,40.0 44.5,50.0 35.5,50.0"/><line class="ax0" x1="40.0" y1="260.0" x2="227.0" y2="260.0"/><polygon class="hax0" points="227.0,260.0 217.0,264.5 217.0,255.5"/><line class="dh" x1="172.0" y1="84.0" x2="172.0" y2="260.0"/><line class="dh" x1="172.0" y1="84.0" x2="40.0" y2="84.0"/><circle class="dot" cx="172.0" cy="84.0" r="4"/><text x="231.3" y="89.0" text-anchor="middle">A（80 ＋ 60<tspan font-style="italic">i</tspan>）</text><text x="40.0" y="33.0" text-anchor="middle">X（北）</text><text x="258.1" y="265.0" text-anchor="middle">Y（東）</text><text x="70.5" y="79.0" text-anchor="middle">X ＝ 80</text><text x="172.0" y="279.0" text-anchor="middle">Y ＝ 60</text></svg><div class="cap">図0　点 A（X＝80、Y＝60）は、電卓では 80 ＋ 60<i>i</i> と 1 つの数で入れる</div></div>
+<p><i>i</i> は「ここが Y ですよ」という<b>目印</b>だと思ってください。<i>i</i> の付いていない方が X、<i>i</i> の付いている方が Y です。これを数学では「複素数」と呼びますが、高校で習っていなくても大丈夫です。この本では、<b>点を 1 つの数で持つための入れ物</b>としてだけ使います。</p>
+<table>
+<tr><th>呼び名</th><th>意味</th><th>80 ＋ 60<i>i</i> なら</th></tr>
+<tr><td>実部（じつぶ）</td><td><i>i</i> の付いていない方 ＝ <b>X</b></td><td>80</td></tr>
+<tr><td>虚部（きょぶ）</td><td><i>i</i> の付いている方 ＝ <b>Y</b></td><td>60</td></tr>
+</table>
+
+<h2 id="mem"><a class="totop" href="#top">もくじ ↑</a>メモリの決まり</h2>
+<p>メモリは、<b>数を入れておく箱</b>です。A〜F・X・Y・M と、数字の 0〜9 の 19 個あります。点の座標を<b>点の名前のまま</b>しまうと、どれに何を入れたか迷いません。</p>
+<table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>80 <kbd>+</kbd> 60 <span class="c789"><kbd>ENG</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span> <kbd>A</kbd></td><td class="scr">80+60<i>i</i>→A</td><td>点 A の座標を、メモリ A にしまう</td></tr>
+<tr><td><span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span></td><td class="scr">A</td><td>式の中で、メモリ A を使う</td></tr>
+<tr><td>117.32 <kbd>+</kbd> 110 <span class="c789"><kbd>ENG</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span> <kbd>0</kbd></td><td class="scr">117.32+110<i>i</i>→<u>0</u></td><td>点 P の座標を、メモリ 0 にしまう</td></tr>
+<tr><td><kbd>RCL</kbd> <kbd>0</kbd></td><td class="scr"><u>0</u></td><td>式の中で、メモリ 0（P）を使う。画面では 0 に下線が付く</td></tr>
+</table>
+<div class="box point"><b>点とメモリの対応</b>
+<ul>
+<li>点 A〜F → メモリ A〜F</li>
+<li>点 G〜P → 数字のメモリ 1〜9・0（<b>P ＝ 0</b>）。数字キーの横に G〜P と書いておくと迷わない（上の写真）</li>
+<li>X・Y は交点の公式で「傾き ＋ <i>i</i>」をしまうのに使う（点 X・Y はほとんど出ない）</li>
+<li>Z のメモリはこの電卓に無い。<b>M+ キーの横に「Z」と書き込んで、メモリ M を Z として使う</b>（上の写真の M+ の右上の手書き）</li>
+<li>Q・R・S が出たときは、その問題で空いている 9・8・7 を使う（Q ＝ 9 など）</li>
+</ul></div>
+<p>しまうとき（<span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span> のあと）も、呼ぶとき（<kbd>RCL</kbd> のあと）も、押すのはその文字が<b>右上に書いてあるキー</b>です。</p>
+<p><b>文字のメモリ</b>（RCL のあとに押すキー）</p><ul style="list-style:none;padding:0;margin:8px 0 16px;display:flex;flex-wrap:wrap;gap:6px 14px"><li>A → <kbd>(−)</kbd></li><li>B → <kbd>°′″</kbd></li><li>C → <kbd>hyp</kbd></li><li>D → <kbd>sin</kbd></li><li>E → <kbd>cos</kbd></li><li>F → <kbd>tan</kbd></li><li>X → <kbd>)</kbd></li><li>Y → <kbd>F↔D</kbd></li><li>M → <kbd>M+</kbd></li></ul>
+<div class="box point"><b>X・Y・Z の場所</b>X は <kbd>)</kbd>、Y は <kbd>F↔D</kbd> の右上に小さく書いてあります（写真の青い丸）。Z のメモリは無いので、M（<kbd>M+</kbd> の右上）を Z として使います。M のままだと、数字の 7（点 M）と紛らわしいので、<kbd>M+</kbd> の横に「Z」と書いておきます。
+<table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>0.5 <kbd>+</kbd> <span class="c789"><kbd>ENG</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span> <kbd>X</kbd></td><td class="scr">0.5+<i>i</i>→X</td><td>交点の公式の「傾き ＋ <i>i</i>」を、メモリ X にしまう（押すのは <kbd>)</kbd>）</td></tr>
+<tr><td><span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span></td><td class="scr">X</td><td>式の中で、メモリ X を使う</td></tr>
+<tr><td><span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span> <kbd>M</kbd></td><td class="scr">…→M</td><td>メモリ M（Z）にしまう（押すのは <kbd>M+</kbd>）</td></tr>
+</table></div>
+<p><b>数字のメモリ</b>（点 G〜P）</p><ul style="list-style:none;padding:0;margin:8px 0 16px;display:flex;flex-wrap:wrap;gap:6px 14px"><li>G → <kbd>1</kbd></li><li>H → <kbd>2</kbd></li><li>I → <kbd>3</kbd></li><li>J → <kbd>4</kbd></li><li>K → <kbd>5</kbd></li><li>L → <kbd>6</kbd></li><li>M → <kbd>7</kbd></li><li>N → <kbd>8</kbd></li><li>O → <kbd>9</kbd></li><li>P → <kbd>0</kbd></li></ul>
+
+<h2 id="table"><a class="totop" href="#top">もくじ ↑</a>電卓の表の読み方</h2>
+<div class="box point"><b>表の見方</b>式を打つと、画面の上の行に式が出ます。<kbd>=</kbd> を押すと下の行に答えが出て、<b>式は上の行にそのまま残ります</b>。表では、この「式」と「答え」を 2 行に分けて書いています。「画面」の欄は、その時点で電卓に見えているものです。式のいちばん最後の <kbd>)</kbd> は打たなくても同じ答えになります（表では、式の形を分かりやすくするために書いています）。<b>答えが出たら、上の行の式が思ったとおりかも見る</b>癖をつけてください。</div>
+<div class="box point"><b>最後の桁のずれ</b><b>計算が何段も続くと、表の数の最後の 2〜3 桁が、自分の電卓とずれることがあります</b>（この表はパソコンで計算していて、電卓の中で持っている桁数とちがうため）。小数第 4 位くらいまで合っていれば、打ち方は合っています。答え（小数第 2 位）は変わりません。</div>
+<div class="box ng"><b>打ち間違えたとき</b>
+<ul>
+<li>式は、<kbd>=</kbd> を押す前でも後でも、<kbd>◀</kbd> <kbd>▶</kbd> でカーソルを動かして直せます。直したら、もう一度 <kbd>=</kbd>。最初から打ち直す必要はありません。</li>
+<li>この本の表の「画面」の数字と、自分の電卓の数字を 1 行ずつ比べてください。<b>合っている行までは正しく、最初にずれた行に打ち間違いがあります</b>。</li>
+</ul></div>
+<p>準備ができたら、<a href="nyumon.html">座標計算 入門</a>へ進んでください。</p>
+<div class="kfoot"><a href="index.html">‹ 座標計算のはじめに</a><a href="nyumon.html">入門 ›</a></div></main><script>(function(){var r=document.documentElement;function set(c){r.setAttribute('data-calc',c);document.querySelectorAll('.calcbar button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-c')===c?'true':'false')});try{localStorage.setItem('keisan-calc',c)}catch(e){}}
+var c='789';try{c=localStorage.getItem('keisan-calc')||'789'}catch(e){}set(c);document.querySelectorAll('.calcbar button').forEach(function(b){b.addEventListener('click',function(){set(b.getAttribute('data-c'))})})})();</script></body></html>

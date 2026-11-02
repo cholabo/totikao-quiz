@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-C34PHRSJN4"></script>
+<script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag("js", new Date());gtag("config", "G-C34PHRSJN4");</script>
+<meta name="description" content="測量の座標と方向角、三角比と正弦定理、2 点から距離と向き、放射、2 本の線の交点、面積を、図と電卓の押し方で 1 つずつ。">
+<link rel="canonical" href="https://cholabo.jp/keisan/nyumon.html">
+<meta property="og:type" content="website"><meta property="og:site_name" content="土地家屋調査士 過去問アプリ"><meta property="og:title" content="座標計算 入門｜土地家屋調査士 記述式の座標計算"><meta property="og:description" content="測量の座標と方向角、三角比と正弦定理、2 点から距離と向き、放射、2 本の線の交点、面積を、図と電卓の押し方で 1 つずつ。"><meta property="og:url" content="https://cholabo.jp/keisan/nyumon.html"><meta property="og:image" content="https://cholabo.jp/ogimage.png"><meta property="og:locale" content="ja_JP"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>座標計算 入門｜土地家屋調査士 記述式の座標計算</title>
+<!-- 生成物。直すときは textbook/tools/keisan/nyumon_body.html（本文）と build_nyumon.py（図）を直して python build_nyumon.py -->
+<style>
+:root{--bg:#fdfcf9;--ink:#222;--sub:#666;--line:#ddd;--accent:#2f6fb3;--accent2:#c0392b;--accent3:#2e8b57;--pt:#fff6d6;--ptl:#e6c75a;--ex:#eef4fb;--exl:#9cbbe0;--ng:#fdecea;--ngl:#e3a39b;--code:#f1f1f1}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1b1c1e;--ink:#e8e8e8;--sub:#aaa;--line:#444;--accent:#7fb2ea;--accent2:#ef8577;--accent3:#6fcf97;--pt:#3a3320;--ptl:#8c7630;--ex:#1f2a36;--exl:#3e5f86;--ng:#3a2422;--ngl:#8a4a42;--code:#2a2b2e}}
+:root[data-theme="dark"]{--bg:#1b1c1e;--ink:#e8e8e8;--sub:#aaa;--line:#444;--accent:#7fb2ea;--accent2:#ef8577;--accent3:#6fcf97;--pt:#3a3320;--ptl:#8c7630;--ex:#1f2a36;--exl:#3e5f86;--ng:#3a2422;--ngl:#8a4a42;--code:#2a2b2e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.85 "Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif}
+main{max-width:760px;margin:0 auto;padding:24px 16px 80px}
+h1{font-size:28px;margin:8px 0 4px}
+.lead{color:var(--sub);margin:0 0 24px}
+h2{font-size:23px;margin:64px 0 12px;padding-bottom:6px;border-bottom:3px solid var(--accent)}
+h2 small{display:block;font-size:14px;color:var(--sub);font-weight:normal}
+h3{font-size:19px;margin:36px 0 8px}
+p{margin:10px 0}
+.box{border-radius:10px;padding:12px 16px;margin:18px 0;border-left:6px solid}
+.point{background:var(--pt);border-color:var(--ptl)}
+.ex{background:var(--ex);border-color:var(--exl)}
+.ng{background:var(--ng);border-color:var(--ngl)}
+.box>b:first-child{display:block;margin-bottom:4px}
+.f{font-size:19px;text-align:center;margin:14px 0;font-family:"Times New Roman",serif}
+.f i{font-style:italic}
+table{border-collapse:collapse;margin:10px 0;font-size:16px;max-width:100%}
+th,td{border:1px solid var(--line);padding:4px 10px;text-align:left;vertical-align:top}
+th{background:var(--code)}
+kbd{display:inline-block;white-space:nowrap;min-width:1.7em;padding:0 5px;margin:1px;border:1px solid var(--sub);border-bottom-width:2px;border-radius:5px;font:14px/1.6 sans-serif;text-align:center;background:var(--bg)}
+code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:15px}
+.fig{text-align:center;margin:16px 0}
+.fig svg{max-width:100%;height:auto}
+.fig .cap{font-size:14px;color:var(--sub);margin-top:2px}
+.figs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.figs .fig{flex:1 1 220px;margin:6px 0}
+details{margin:8px 0 16px;border:1px solid var(--line);border-radius:8px;padding:6px 12px}
+summary{cursor:pointer;color:var(--accent)}
+ol.q>li{margin:10px 0}
+.toc{background:var(--code);border-radius:10px;padding:10px 18px}
+.toc a{color:var(--accent)}
+.steps{counter-reset:s;list-style:none;padding-left:0}
+.steps>li{counter-increment:s;margin:8px 0;padding-left:2.2em;position:relative}
+.steps>li::before{content:counter(s);position:absolute;left:0;top:2px;width:1.6em;height:1.6em;border-radius:50%;background:var(--accent);color:var(--bg);text-align:center;font-size:14px;line-height:1.6em}
+.keys td.scr{font-family:Consolas,"Courier New",monospace;font-size:15px;overflow-wrap:anywhere;min-width:10.5em}
+.keys{width:100%}
+@media (max-width:560px){.keys,.keys tbody{display:block}.keys tr{display:grid;grid-template-columns:auto 1fr;border-bottom:1px solid var(--line)}.keys th{display:none}.keys td{border:0;padding:3px 8px}.keys td:first-child{grid-column:1/3}.keys td.scr{min-width:0}.keys td.note{grid-column:1/3}}
+.keys td:first-child{overflow-wrap:anywhere}
+.keys tr.eq td{background:var(--code)}
+.keys td.note{color:var(--sub);font-size:15px}
+.yomi{font-size:11px;color:var(--sub);font-weight:normal;font-style:normal;margin:0 1px}
+.fname{display:inline-block;font:bold 13px/1.4 sans-serif;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:0 6px;margin-bottom:4px}
+.flist{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media (max-width:560px){.flist{grid-template-columns:1fr}}
+.fl{border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:8px;padding:8px 12px;background:var(--bg)}
+.fn{font-weight:bold;color:var(--accent);display:flex;justify-content:space-between}
+.fc{font-weight:normal;font-size:13px;color:var(--sub)}
+.fx{margin:4px 0;font-size:15px}
+.fu{font-size:13px;color:var(--sub)}
+.miss{margin:14px 0 20px}
+.miss>b{display:block;margin-bottom:2px;color:var(--accent2)}
+.chk{font-size:15px;margin-top:4px}
+ruby{position:relative;display:inline}
+ruby rt{position:absolute;left:50%;transform:translateX(-50%);top:-0.85em;display:block;white-space:nowrap;font-size:10px;line-height:1;color:var(--sub);font-weight:normal;font-style:normal;letter-spacing:0;font-family:sans-serif}
+svg text{font:13px sans-serif;fill:var(--ink)}
+svg .sub{fill:var(--sub)}
+svg .ax,svg .ax0{stroke:var(--ink);stroke-width:1.2}
+svg .ax0{stroke:var(--sub)}
+svg .ln{stroke:var(--ink);stroke-width:1.5;fill:none}
+svg .bl{stroke:var(--accent);stroke-width:2;fill:none}
+svg .rd{stroke:var(--accent2);stroke-width:2.2;fill:none}
+svg .gn{stroke:var(--accent3);stroke-width:2;fill:none}
+svg .dh{stroke:var(--sub);stroke-width:1.2;stroke-dasharray:5 4;fill:none}
+svg .dh0{stroke:var(--sub);stroke-width:1.2;fill:none}
+svg .dot{fill:var(--accent2)}
+svg .hbl,svg .tbl{fill:var(--accent)}
+svg .hrd,svg .trd{fill:var(--accent2)}
+svg .hgn,svg .tgn{fill:var(--accent3)}
+svg .hln,svg .tln,svg .hax0{fill:var(--ink)}
+svg .area{fill:var(--accent);fill-opacity:.18;stroke:var(--accent);stroke-width:1.5}
+svg .area2{fill:var(--accent2);fill-opacity:.15;stroke:var(--accent2);stroke-width:1}
+.c570{display:none}
+html[data-calc="570"] .c570{display:inline}
+html[data-calc="570"] .c789{display:none}
+.only570{display:none}
+html[data-calc="570"] .only570{display:table-row}
+.calcbar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:6px 0;margin:0 0 8px;font-size:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.calcbar button{font:inherit;padding:3px 12px;border:1px solid var(--accent);border-radius:16px;background:var(--bg);color:var(--accent);cursor:pointer}
+.calcbar button[aria-pressed="true"]{background:var(--accent);color:var(--bg)}
+main a{color:var(--accent)}
+h2,h3,.toc{scroll-margin-top:64px}
+.knav{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;font-size:14px;margin:4px 0 0;padding:6px 0;border-bottom:1px solid var(--line)}
+.knav a{padding:2px 10px;border-radius:14px;text-decoration:none;color:var(--accent)}
+.knav a[aria-current="page"]{background:var(--accent);color:var(--bg);font-weight:bold}
+.knav .sep{color:var(--sub)}
+.kfoot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:48px 0 24px;padding-top:12px;border-top:1px solid var(--line)}
+.kfoot a{text-decoration:none;color:var(--accent);font-weight:bold}
+h2 .totop{float:right;font-size:13px;font-weight:normal;text-decoration:none;color:var(--sub);margin-top:6px}
+</style>
+</head>
+<body>
+<main><nav class="knav" aria-label="座標計算の教材"><a href="../index.html">‹ アプリ</a><span class="sep">|</span><a href="index.html">座標計算</a><span class="sep">›</span><a href="dentaku.html">電卓の使い方</a><a href="nyumon.html" aria-current="page">入門</a><a href="oyo.html">応用編</a><a href="drill.html">ドリル</a></nav><div class="calcbar"><span>電卓：</span><button type="button" data-c="789" aria-pressed="true">Canon F-789SG</button><button type="button" data-c="570" aria-pressed="false">Canon F-570X</button><span class="sub" style="color:var(--sub)">表のキーが、選んだ電卓の押し方に変わります</span><span class="sub c570" style="color:var(--sub)">※F-570X の押し方は取扱説明書から読み替えたもの</span></div>
+<h1>座標計算 入門</h1>
+<p class="lead">土地家屋調査士の記述式（土地）で使う計算の、いちばん最初の部分です。高校の数学Ⅰ（三角比・三平方の定理）を少し覚えていれば読めるように（三角比は 1-4 で見直します）、図をたくさん使って書きました。電卓は Canon F-789SG を使います（<a href="dentaku.html">電卓の使い方</a>）。</p>
+
+<div class="toc" id="top">
+<b>もくじ</b>
+<ol>
+<li><a href="#c0">準備 ─ 電卓の使い方（別ページ）</a></li>
+<li><a href="#c1">第1章 測量の座標と方向角</a></li>
+<li><a href="#c2">第2章 2 点から「距離」と「向き」を出す</a></li>
+<li><a href="#c3">第3章 「向き」と「距離」で点を動かす（放射）</a></li>
+<li><a href="#c4">第4章 2 本の線の交点</a></li>
+<li><a href="#c5">第5章 面積</a></li>
+<li><a href="#c6">公式一覧</a></li>
+<li><a href="#c7">この先へ</a></li>
+</ol>
+</div>
+
+<!-- ================================================================ -->
+<h2 id="c0"><a class="totop" href="#top">もくじ ↑</a>準備<small>電卓の使い方</small></h2>
+<div class="box point"><b>先に読むページ</b>使うキーの場所（写真）、最初の設定、点の入れ方（80 ＋ 60<i>i</i><span class="yomi">（アイ）</span> の形）、メモリの決まり、電卓の表の読み方は、<a href="dentaku.html">電卓の使い方</a>のページにまとめました。まだなら、先にそちらを読んでください。</div>
+
+<!-- ================================================================ -->
+<h2 id="c1"><a class="totop" href="#top">もくじ ↑</a>第1章 測量の座標と方向角<small>この章では電卓を使いません</small></h2>
+
+<h3 id="s1-1">1-1 X が北、Y が東</h3>
+<p>数学の授業では、横が <i>x</i>、縦が <i>y</i> でした。測量では反対で、<b>縦（北）が X、横（東）が Y</b> です。</p>
+<div class="fig"><svg viewBox="0 0 560 230" width="560">
+  <g transform="translate(30,20)">
+    <text x="60" y="0" text-anchor="middle">数学の座標</text>
+    <line class="ax" x1="20" y1="180" x2="200" y2="180"/><line class="ax" x1="40" y1="200" x2="40" y2="20"/>
+    <text x="205" y="185">x</text><text x="35" y="15">y</text>
+    <path class="rd" d="M110,180 A70,70 0 0,0 89.5,130.5"/><polygon class="hrd" points="89.5,130.5 99,131 92,140"/>
+    <text x="112" y="150">角は左回り</text>
+  </g>
+  <g transform="translate(310,20)">
+    <text x="90" y="0" text-anchor="middle">測量の座標</text>
+    <line class="ax" x1="20" y1="180" x2="200" y2="180"/><line class="ax" x1="40" y1="200" x2="40" y2="20"/>
+    <text x="150" y="200">Y（東）</text><text x="46" y="15">X（北）</text>
+    <path class="bl" d="M40,110 A70,70 0 0,1 89.5,130.5"/><polygon class="hbl" points="89.5,130.5 80,131 87,121"/>
+    <text x="95" y="115">角は北から右回り</text>
+  </g>
+</svg><div class="cap">図0　縦と横が入れ替わり、角の回り方も逆になる</div></div>
+<p>角度の測り方もちがいます。数学では <i>x</i> 軸から<b>左回り</b>でしたが、測量では<b>北から右回り（時計回り）</b>に測ります。方位磁石や地図と同じ感覚です。</p>
+
+<h3 id="s1-2">1-2 方向角</h3>
+<p><b>方向角</b>は、「北から右回りに何度か」で表した向きです。0° から 360° まで使います。</p>
+<div class="fig"><svg viewBox="-15 27 323 245" width="323"><line class="ax0" x1="150.0" y1="150.0" x2="150.0" y2="150.0"/><line class="ax0" x1="150.0" y1="150.0" x2="150.0" y2="150.0"/><line class="bl" x1="150.0" y1="150.0" x2="150.0" y2="55.0"/><polygon class="hbl" points="150.0,55.0 154.5,65.0 145.5,65.0"/><line class="ln" x1="150.0" y1="150.0" x2="217.2" y2="82.8"/><polygon class="hln" points="217.2,82.8 213.3,93.1 206.9,86.7"/><line class="bl" x1="150.0" y1="150.0" x2="245.0" y2="150.0"/><polygon class="hbl" points="245.0,150.0 235.0,154.5 235.0,145.5"/><line class="ln" x1="150.0" y1="150.0" x2="217.2" y2="217.2"/><polygon class="hln" points="217.2,217.2 206.9,213.3 213.3,206.9"/><line class="bl" x1="150.0" y1="150.0" x2="150.0" y2="245.0"/><polygon class="hbl" points="150.0,245.0 145.5,235.0 154.5,235.0"/><line class="ln" x1="150.0" y1="150.0" x2="82.8" y2="217.2"/><polygon class="hln" points="82.8,217.2 86.7,206.9 93.1,213.3"/><line class="bl" x1="150.0" y1="150.0" x2="55.0" y2="150.0"/><polygon class="hbl" points="55.0,150.0 65.0,145.5 65.0,154.5"/><line class="ln" x1="150.0" y1="150.0" x2="82.8" y2="82.8"/><polygon class="hln" points="82.8,82.8 93.1,86.7 86.7,93.1"/><text x="150.0" y="48.0" text-anchor="middle">北 0°</text><text x="253.1" y="79.3" text-anchor="middle">北東 45°</text><text x="277.9" y="155.0" text-anchor="middle">東 90°</text><text x="256.7" y="230.7" text-anchor="middle">南東 135°</text><text x="150.0" y="262.0" text-anchor="middle">南 180°</text><text x="43.3" y="230.7" text-anchor="middle">南西 225°</text><text x="18.5" y="155.0" text-anchor="middle">西 270°</text><text x="43.3" y="79.3" text-anchor="middle">北西 315°</text></svg><div class="cap">図1　方向角と方角。北が 0°、そこから右回りに 360° まで</div></div>
+<table>
+<tr><th>方向角</th><th>0°</th><th>90°</th><th>180°</th><th>270°</th></tr>
+<tr><td>方角</td><td>北</td><td>東</td><td>南</td><td>西</td></tr>
+</table>
+<p>たとえば A から B を見たときの方向角 θ<span class="yomi">（シータ）</span> は、下の図のように、北の向きから右回りに B の向きまで回った角です。</p>
+<div class="fig"><svg viewBox="25 24 250 254" width="250"><line class="ax0" x1="150.0" y1="250.0" x2="150.0" y2="50.0"/><line class="ax0" x1="50.0" y1="150.0" x2="250.0" y2="150.0"/><text x="150.0" y="44.0" text-anchor="middle">北</text><text x="254.0" y="154.0">東</text><text x="150.0" y="266.0" text-anchor="middle">南</text><text x="46.0" y="154.0" text-anchor="end">西</text><line class="rd" x1="150.0" y1="150.0" x2="218.9" y2="92.1"/><polygon class="hrd" points="218.9,92.1 214.2,102.0 208.4,95.1"/><circle class="dot" cx="150.0" cy="150.0" r="4"/><text x="224.9" y="92.1">B</text><path class="bl" d="M150.0,105.0 A45,45 0 0,1 184.5,121.1"/><polygon class="hbl" points="184.5,121.1 174.6,116.3 181.5,110.5"/><text x="163.1" y="166.5" text-anchor="middle">A</text><text class="tbl" x="174.5" y="102.4" text-anchor="middle">θ</text></svg><div class="cap">図2　A から B への方向角 θ（北から右回り）</div></div>
+
+<h3 id="s1-3">1-3 観測角（水平角）</h3>
+<p>現場では、器械を立てた点（<b>器械点</b>）から、向きの分かっている点（<b>後視点</b>）をまず見て、その向きを 0° にします。そこから右回りに、測りたい点まで回した角が<b>観測角</b>です（水平角ともいいます）。</p>
+<div class="fig"><svg viewBox="-64 8 445 154" width="445"><line class="ln" x1="40.0" y1="118.0" x2="300.0" y2="144.0"/><line class="rd" x1="40.0" y1="118.0" x2="102.4" y2="40.0"/><circle class="dot" cx="40.0" cy="118.0" r="4"/><circle class="dot" cx="300.0" cy="144.0" r="4"/><circle class="dot" cx="102.4" cy="40.0" r="4"/><path class="bl" d="M69.9,121.0 A30,30 0 1,1 58.7,94.6"/><polygon class="hbl" points="58.7,94.6 48.1,91.8 53.7,84.8"/><text x="-25.1" y="132.3" text-anchor="middle">器械点 T1</text><text x="340.9" y="151.8" text-anchor="middle">後視点 T2</text><text x="93.3" y="29.5" text-anchor="middle">P</text><text class="tbl" x="-13.9" y="152.2" text-anchor="middle">観測角</text><text x="170.0" y="124.0" text-anchor="middle">ここが 0°</text></svg><div class="cap">図3　T2 を 0° にして、右回りに P まで回した角が観測角</div></div>
+<p>北から後視点までの角（後視点への方向角）と、後視点から P までの角（観測角）を<b>つなげる</b>と、北から P までの角、つまり P への方向角になります。</p>
+<div class="f">P への方向角 ＝ 後視点への方向角 ＋ 観測角</div>
+
+<div class="box ex"><b>例 1</b>後視点への方向角が 60°、観測角が 250° のとき。
+<div class="fig"><svg viewBox="20 19 262 264" width="262"><line class="ax0" x1="150.0" y1="255.0" x2="150.0" y2="45.0"/><line class="ax0" x1="45.0" y1="150.0" x2="255.0" y2="150.0"/><text x="150.0" y="39.0" text-anchor="middle">北</text><text x="259.0" y="154.0">東</text><text x="150.0" y="271.0" text-anchor="middle">南</text><text x="41.0" y="154.0" text-anchor="end">西</text><line class="ln" x1="150.0" y1="150.0" x2="232.3" y2="102.5"/><polygon class="hln" points="232.3,102.5 225.9,111.4 221.4,103.6"/><line class="rd" x1="150.0" y1="150.0" x2="77.2" y2="88.9"/><polygon class="hrd" points="77.2,88.9 87.8,91.9 82.0,98.8"/><path class="gn" d="M150.0,114.0 A36,36 0 0,1 181.2,132.0"/><polygon class="hgn" points="181.2,132.0 172.3,125.6 180.1,121.1"/><path class="bl" d="M200.2,121.0 A58,58 0 1,1 105.6,112.7"/><polygon class="hbl" points="105.6,112.7 102.6,123.3 95.7,117.5"/><circle class="dot" cx="150.0" cy="150.0" r="4"/><text x="253.1" y="95.5" text-anchor="middle">後視点</text><text x="68.0" y="86.2" text-anchor="middle">P</text><text class="tgn" x="167.1" y="108.0" text-anchor="middle">60°</text><text class="tbl" x="109.2" y="243.8" text-anchor="middle">観測角 250°</text></svg><div class="cap">図4　後視点が 60°、観測角 250° → 60° ＋ 250° ＝ 310°</div></div>
+<p>緑の弧（60°）と青の弧（250°）をつなげて、60° ＋ 250° ＝ <b>310°</b>。北西寄りの向きです。</p></div>
+
+<div class="box ex"><b>例 2</b>後視点への方向角が 300°、観測角が 120° のとき。
+<div class="fig"><svg viewBox="18 19 262 264" width="262"><line class="ax0" x1="150.0" y1="255.0" x2="150.0" y2="45.0"/><line class="ax0" x1="45.0" y1="150.0" x2="255.0" y2="150.0"/><text x="150.0" y="39.0" text-anchor="middle">北</text><text x="259.0" y="154.0">東</text><text x="150.0" y="271.0" text-anchor="middle">南</text><text x="41.0" y="154.0" text-anchor="end">西</text><line class="ln" x1="150.0" y1="150.0" x2="67.7" y2="102.5"/><polygon class="hln" points="67.7,102.5 78.6,103.6 74.1,111.4"/><line class="rd" x1="150.0" y1="150.0" x2="232.3" y2="102.5"/><polygon class="hrd" points="232.3,102.5 225.9,111.4 221.4,103.6"/><path class="gn" d="M150.0,114.0 A36,36 0 1,1 118.8,132.0"/><polygon class="hgn" points="118.8,132.0 117.7,142.9 109.9,138.4"/><path class="bl" d="M99.8,121.0 A58,58 0 0,1 200.2,121.0"/><polygon class="hbl" points="200.2,121.0 191.3,114.6 199.1,110.1"/><circle class="dot" cx="150.0" cy="150.0" r="4"/><text x="46.9" y="95.5" text-anchor="middle">後視点</text><text x="242.7" y="101.5" text-anchor="middle">P</text><text class="tgn" x="132.9" y="202.0" text-anchor="middle">300°</text><text class="tbl" x="195.0" y="75.0" text-anchor="middle">観測角 120°</text></svg><div class="cap">図5　後視点が 300°、観測角 120° → 420°。北（360°）を通り越したので 360° 引いて 60°</div></div>
+<p>300° ＋ 120° ＝ 420°。図を見ると、青の弧が<b>北（0°）を通り越して</b>もう一周目に入っています。1 周は 360° なので、420° − 360° ＝ <b>60°</b>。北東寄りの向きです。</p></div>
+
+<div class="box point"><b>ポイント</b>足して 360° を超えたら、360° を引く。「北を通り越したら 1 周分引く」と覚えます。</div>
+
+<h3 id="s1-4">1-4 三角比（sin・cos・tan）</h3>
+<p>このあと sin・cos・tan を使います。数学Ⅰの<b>三角比</b>を、教科書と同じ半径 1 の円で見直しておきます。</p>
+<p>中心 O、半径 1 の円をかきます。横の軸（<i>x</i> 軸）から<b>左回り</b>に θ だけ回った所の、円の上の点を U とします。</p>
+<div class="fig"><svg viewBox="28 -2 303 274" width="303"><line class="ax0" x1="36.0" y1="150.0" x2="273.5" y2="150.0"/><polygon class="hax0" points="273.5,150.0 263.5,154.5 263.5,145.5"/><line class="ax0" x1="150.0" y1="264.0" x2="150.0" y2="26.5"/><polygon class="hax0" points="150.0,26.5 154.5,36.5 145.5,36.5"/><path class="ln" d="M55.0,150.0 a95.0,95.0 0 1,0 190.0,0 a95.0,95.0 0 1,0 -190.0,0" style="fill:none"/><line class="bl" x1="150.0" y1="150.0" x2="227.8" y2="150.0"/><line class="gn" x1="227.8" y1="150.0" x2="227.8" y2="95.5"/><line class="rd" x1="150.0" y1="150.0" x2="227.8" y2="95.5"/><circle class="dot" cx="227.8" cy="95.5" r="4"/><circle class="dot" cx="150.0" cy="150.0" r="4"/><path class="gn" d="M171.3,135.1 A26,26 0 0,1 176.0,150.0"/><text x="240.9" y="89.0" text-anchor="middle">U</text><text x="136.9" y="166.5" text-anchor="middle">O</text><text x="287.1" y="155.0" text-anchor="middle">x</text><text x="150.0" y="19.5" text-anchor="middle">y</text><text x="193.9" y="167.0" text-anchor="middle">cos θ（横）</text><text x="284.3" y="127.8" text-anchor="middle">sin θ（縦）</text><text x="180.2" y="121.4" text-anchor="middle">1</text><text class="tgn" x="186.2" y="143.6" text-anchor="middle">θ</text></svg><div class="cap">図6　半径 1 の円（数学の教科書と同じ向き）。斜め 1 のときの縦が sin θ（緑）、横が cos θ（青）</div></div>
+<div class="f">cos θ ＝ U の横（<i>x</i>）　　sin θ ＝ U の縦（<i>y</i>）　　tan θ ＝ 縦 ÷ 横</div>
+<p>斜め（OU）の長さが 1 なので、<b>sin θ は「斜め 1 のときの縦」、cos θ は「斜め 1 のときの横」</b>です。値は電卓の <kbd>sin</kbd> <kbd>cos</kbd> <kbd>tan</kbd> で出るので、覚える数はありません。</p>
+<p>斜めが 1 ではなく L なら、三角形は形が同じまま L 倍になるので、縦も横も L 倍です。</p>
+<div class="f">縦 ＝ 斜め × sin θ　　横 ＝ 斜め × cos θ　　（逆に、sin θ ＝ 縦 ÷ 斜め、cos θ ＝ 横 ÷ 斜め）</div>
+<p>直角三角形の言葉で言うと、θ と向かい合う辺（<b>向かいの辺</b>、図の縦）が sin、θ のとなりの辺（<b>となりの辺</b>、図の横）が cos、斜めの辺が<b>斜辺</b>です。</p>
+<p><b>測量では</b>、角を横の軸からではなく、<b>北から右回り</b>に測ります（1-2）。そのため θ のとなりの辺が北向き、向かいの辺が東向きになり、縦と横の役が入れ替わります。「となりが cos、向かいが sin」は同じです。</p>
+<div class="fig"><svg viewBox="-78 28 283 224" width="283"><line class="bl" x1="56.0" y1="244.0" x2="56.0" y2="56.0"/><line class="gn" x1="56.0" y1="56.0" x2="197.0" y2="56.0"/><line class="rd" x1="56.0" y1="244.0" x2="197.0" y2="56.0"/><path class="dh0" d="M56.0,64.0 L64.0,64.0 L64.0,56.0"/><line class="dh" x1="56.0" y1="244.0" x2="56.0" y2="244.0"/><path class="bl" d="M56.0,210.0 A34,34 0 0,1 76.4,216.8"/><text x="-10.5" y="155.0" text-anchor="middle">となりの辺（北へ）</text><text x="126.5" y="49.0" text-anchor="middle">向かいの辺（東へ）</text><text x="143.8" y="161.0" text-anchor="middle">斜辺</text><text class="tbl" x="70.5" y="205.4" text-anchor="middle">θ</text></svg><div class="cap">図7　角 θ から見て、となりの辺（青）・向かいの辺（緑）・斜辺（赤）</div></div>
+<div class="f">北へ ＝ 斜辺 × cos θ　　東へ ＝ 斜辺 × sin θ</div>
+
+<h3 id="s1-5">1-5 正弦定理（直角でない三角形）</h3>
+<p>直角三角形でない三角形の辺の長さは、数学Ⅰの<b>正弦定理</b>で出します。なぜそうなるかは数学Ⅰの教科書にあります。ここでは使い方だけ覚えます。</p>
+<p>三角形の辺には、それぞれ<b>向かいの角</b>（その辺の両端ではない、残りの頂点の角）があります。図では、同じ色の辺と角が向かい合っています。</p>
+<div class="fig"><svg viewBox="18 11 287 227" width="287"><line class="rd" x1="44.0" y1="211.2" x2="256.0" y2="211.2"/><line class="bl" x1="211.2" y1="44.0" x2="256.0" y2="211.2"/><line class="gn" x1="211.2" y1="44.0" x2="44.0" y2="211.2"/><path class="rd" d="M216.9,65.3 A22,22 0 0,1 195.6,59.6"/><path class="bl" d="M59.6,195.6 A22,22 0 0,1 66.0,211.2"/><path class="gn" d="M234.0,211.2 A22,22 0 0,1 250.3,189.9"/><circle class="dot" cx="211.2" cy="44.0" r="4"/><circle class="dot" cx="44.0" cy="211.2" r="4"/><circle class="dot" cx="256.0" cy="211.2" r="4"/><text x="214.0" y="32.4" text-anchor="middle">A</text><text x="30.9" y="227.7" text-anchor="middle">B</text><text x="269.1" y="227.7" text-anchor="middle">C</text><text class="trd" x="201.9" y="83.8" text-anchor="middle">60°</text><text class="tbl" x="82.3" y="202.4" text-anchor="middle">45°</text><text x="150.0" y="228.2" text-anchor="middle">BC ＝ 10</text><text x="268.6" y="128.6" text-anchor="middle">AC ＝ ？</text></svg><div class="cap">図8　赤い辺 BC の向かいは A の角、青い辺 AC の向かいは B の角、緑の辺 AB の向かいは C の角</div></div>
+<div class="f">辺 ÷ sin(向かいの角) は、3 つの辺のどれで計算しても同じ</div>
+<p>だから、<b>1 つの辺とその向かいの角</b>が分かっていれば、ほかの辺は次の形で出せます。</p>
+<div class="f">知りたい辺 ＝ 分かっている辺 × sin(知りたい辺の向かいの角) ÷ sin(分かっている辺の向かいの角)</div>
+<div class="box ex"><b>例</b>BC ＝ 10、A の角 60°、B の角 45° のとき、AC は？
+<p>知りたい AC の向かいの角は B（45°）。分かっている BC の向かいの角は A（60°）。<br>AC ＝ 10 × sin 45° ÷ sin 60° ＝ 10 × 0.707… ÷ 0.866… ＝ 8.16…</p></div>
+<p>三角形の角は 3 つ足すと 180° なので、2 つ分かれば残りも出ます。三角形がどんな形・どんな向きでも、この決まりは同じです。応用編の隅切りや三角形のパターンで使います。</p>
+
+<h3>練習 1</h3>
+<ol class="q">
+<li>方向角 90° はどの方角？　180° は？　270° は？</li>
+<li>方向角 225° の向きは、北東・南東・南西・北西のどれ？</li>
+<li>後視点への方向角が 135°、観測角が 300° のとき、測った点への方向角は？</li>
+</ol>
+<details><summary>答えと解説</summary>
+<div class="box ex"><b>1. 90°・180°・270° の方角</b>
+<p><b>考え方</b>　方向角は北が 0° で、右回りに 1 周 360°。4 分の 1 周（90°）ずつ回ると、東 → 南 → 西 です。図2 で確かめましょう。</p><p><b>答え</b>　90° は<b>東</b>、180° は<b>南</b>、270° は<b>西</b>。</p>
+</div>
+<div class="box ex"><b>2. 225° の方角</b>
+<p><b>考え方</b>　225° は 180°（南）と 270°（西）のあいだ。225 − 180 ＝ 45、270 − 225 ＝ 45 なので、ちょうどまん中です。</p>
+<div class="fig"><svg viewBox="15 14 250 254" width="250"><line class="ax0" x1="140.0" y1="240.0" x2="140.0" y2="40.0"/><line class="ax0" x1="40.0" y1="140.0" x2="240.0" y2="140.0"/><text x="140.0" y="34.0" text-anchor="middle">北</text><text x="244.0" y="144.0">東</text><text x="140.0" y="256.0" text-anchor="middle">南</text><text x="36.0" y="144.0" text-anchor="end">西</text><line class="rd" x1="140.0" y1="140.0" x2="76.4" y2="203.6"/><polygon class="hrd" points="76.4,203.6 80.2,193.4 86.6,199.8"/><path class="bl" d="M140.0,100.0 A40,40 0 1,1 111.7,168.3"/><polygon class="hbl" points="111.7,168.3 122.0,172.2 115.6,178.5"/><circle class="dot" cx="140.0" cy="140.0" r="4"/><text x="60.8" y="224.2" text-anchor="middle">225°</text></svg><div class="cap">225° は南（180°）と西（270°）のまん中 → 南西</div></div>
+<p><b>答え</b>　<b>南西</b></p>
+</div>
+<div class="box ex"><b>3. 135° ＋ 300°</b>
+<p><b>考え方</b></p><ol class="steps"><li>後視点への方向角と観測角を足す：135° ＋ 300° ＝ 435°</li><li>360° を超えたか見る：435° は超えている（図で、青の弧が北を通り越している）</li><li>360° を引く：435° − 360° ＝ 75°</li></ol>
+<div class="fig"><svg viewBox="6 19 274 264" width="274"><line class="ax0" x1="150.0" y1="255.0" x2="150.0" y2="45.0"/><line class="ax0" x1="45.0" y1="150.0" x2="255.0" y2="150.0"/><text x="150.0" y="39.0" text-anchor="middle">北</text><text x="259.0" y="154.0">東</text><text x="150.0" y="271.0" text-anchor="middle">南</text><text x="41.0" y="154.0" text-anchor="end">西</text><line class="ln" x1="150.0" y1="150.0" x2="217.2" y2="217.2"/><polygon class="hln" points="217.2,217.2 206.9,213.3 213.3,206.9"/><line class="rd" x1="150.0" y1="150.0" x2="241.8" y2="125.4"/><polygon class="hrd" points="241.8,125.4 233.3,132.3 230.9,123.7"/><path class="gn" d="M150.0,114.0 A36,36 0 0,1 175.5,175.5"/><polygon class="hgn" points="175.5,175.5 179.3,165.2 185.7,171.6"/><path class="bl" d="M191.0,191.0 A58,58 0 1,1 206.0,135.0"/><polygon class="hbl" points="206.0,135.0 199.1,126.5 207.8,124.2"/><circle class="dot" cx="150.0" cy="150.0" r="4"/><text x="234.1" y="239.1" text-anchor="middle">後視点</text><text x="253.4" y="127.3" text-anchor="middle">P</text><text class="tgn" x="226.8" y="168.5" text-anchor="middle">135°</text><text class="tbl" x="52.7" y="134.3" text-anchor="middle">観測角 300°</text></svg><div class="cap">135° ＋ 300° ＝ 435° → 北を通り越したので 360° を引いて 75°</div></div>
+<p><b>答え</b>　<b>75°</b>（北東寄り。東に近い向き）</p>
+</div>
+</details>
+
+<!-- ================================================================ -->
+<h2 id="c2"><a class="totop" href="#top">もくじ ↑</a>第2章 2 点から「距離」と「向き」を出す</h2>
+
+<h3 id="s2-1">2-1 ΔX と ΔY（どれだけ動いたか）</h3>
+<p>A（100.00, 100.00）から B（112.00, 109.00）へ行くと、X は 100 → 112 で <b>12 増え</b>、Y は 100 → 109 で <b>9 増え</b>ます。この「増えた分」を <b>ΔX<span class="yomi">（デルタエックス）</span></b>、<b>ΔY<span class="yomi">（デルタワイ）</span></b> と書きます（Δ は「デルタ」と読み、「差」の意味です）。</p>
+<div class="f">ΔX ＝ B の X − A の X ＝ 112 − 100 ＝ 12<br>ΔY ＝ B の Y − A の Y ＝ 109 − 100 ＝ 9</div>
+<p>引き算はいつも<b>「行き先 − 出発点」</b>です。図にすると、A から北へ 12、東へ 9 進むと B に着く、ということです。</p>
+<div class="fig"><svg viewBox="-21 18 243 262" width="243"><line class="dh" x1="50.0" y1="250.0" x2="50.0" y2="50.0"/><line class="dh" x1="50.0" y1="50.0" x2="200.0" y2="50.0"/><line class="rd" x1="50.0" y1="250.0" x2="200.0" y2="50.0"/><circle class="dot" cx="50.0" cy="250.0" r="4"/><circle class="dot" cx="200.0" cy="50.0" r="4"/><line class="dh" x1="50.0" y1="250.0" x2="50.0" y2="250.0"/><path class="bl" d="M50.0,204.0 A46,46 0 0,1 77.6,213.2"/><polygon class="hbl" points="77.6,213.2 66.9,210.8 72.3,203.6"/><text x="40.9" y="270.5" text-anchor="middle">A</text><text x="209.1" y="39.5" text-anchor="middle">B</text><text x="15.9" y="155.0" text-anchor="middle">ΔX ＝ 12</text><text x="125.0" y="44.0" text-anchor="middle">ΔY ＝ 9</text><text x="151.0" y="161.0" text-anchor="middle">距離</text><text class="tbl" x="69.0" y="198.1" text-anchor="middle">θ</text></svg><div class="cap">図9　A（100, 100）から B（112, 109）へ。北へ 12、東へ 9</div></div>
+
+<h3 id="s2-2">2-2 距離は三平方の定理</h3>
+<p>図の破線と赤い線は、直角三角形になっています。赤い線（斜辺）が A と B の距離です。</p>
+<div class="f">距離 ＝ <ruby>√<rt>ルート</rt></ruby>(ΔX² ＋ ΔY²) ＝ √(12² ＋ 9²) ＝ √(144 ＋ 81) ＝ √225 ＝ 15</div>
+
+<h3 id="s2-3">2-3 向きは tan から</h3>
+<p>同じ三角形を、角 θ から見ます。θ は北から測るので、θ の<b>となりの辺は北向きの ΔX</b>、<b>向かいの辺は東向きの ΔY</b> です（1-4 の図と同じ形）。</p>
+<div class="fig"><svg viewBox="-54 22 262 236" width="262"><line class="ln" x1="50.0" y1="250.0" x2="50.0" y2="50.0"/><line class="ln" x1="50.0" y1="50.0" x2="200.0" y2="50.0"/><line class="rd" x1="50.0" y1="250.0" x2="200.0" y2="50.0"/><path class="dh0" d="M50.0,58.0 L58.0,58.0 L58.0,50.0"/><path class="bl" d="M50.0,210.0 A40,40 0 0,1 74.0,218.0"/><polygon class="hbl" points="74.0,218.0 63.3,215.6 68.7,208.4"/><text class="tbl" x="67.1" y="203.8" text-anchor="middle">θ</text><text x="-1.3" y="155.0" text-anchor="middle">となりの辺 12</text><text x="125.0" y="43.0" text-anchor="middle">向かいの辺 9</text><text x="141.0" y="169.0" text-anchor="middle">斜辺</text></svg><div class="cap">図10　θ のとなりの辺が北向きの 12、向かいの辺が東向きの 9</div></div>
+<p>1-4 のとおり、tan θ ＝ 向かいの辺 ÷ となりの辺 ＝ 東へ ÷ 北へ なので、</p>
+<div class="f">tan θ ＝ ΔY ÷ ΔX ＝ 9 ÷ 12 ＝ 0.75</div>
+<p>さて、tan θ ＝ 0.75 になる θ は何度でしょう。</p>
+
+<h3 id="s2-4">2-4 tan⁻¹（タンジェント・インバース）─ tan を逆にたどる</h3>
+<p>数学Ⅰでは「角度から tan の値を出す」ことをしました（tan 45° ＝ 1 など）。ここでは<b>逆に、tan の値から角度を出したい</b>のです。この逆向きの計算を <b>tan⁻¹<span class="yomi">（タンジェント・インバース）</span></b> と書きます（アークタンジェントとも呼びます）。</p>
+<table>
+<tr><th>向き</th><th>やること</th><th>例</th></tr>
+<tr><td>tan</td><td>角度 → 値</td><td>tan 36.87° ＝ 0.75</td></tr>
+<tr><td>tan⁻¹</td><td>値 → 角度</td><td>tan⁻¹ 0.75 ＝ 36.87°</td></tr>
+</table>
+<p>電卓では <kbd>Shift</kbd> <kbd>tan</kbd> で tan⁻¹ になります。</p>
+<table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td><kbd>Shift</kbd> <kbd>tan</kbd> 0.75</td><td class="scr">tan⁻¹(0.75</td><td>式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">36.86989765</td><td>度（小数で出る）</td></tr>
+<tr><td><kbd>°′″</kbd></td><td class="scr">36°52′11.6″</td><td>度分秒に直す</td></tr>
+</table>
+
+<div class="box point"><b>度・分・秒</b>測量では角度を「度・分・秒」で書きます。時計の時間と同じで、<b>1° ＝ 60′（分）</b>、<b>1′ ＝ 60″（秒）</b>です。<br>
+36.86989765° の端数 0.86989765° を分に直すと × 60 で 52.1938…′、その端数 0.1938…′ を秒に直すと × 60 で 11.6″。<br>
+だから 36.86989765° ＝ 36°52′11.6″。電卓の <kbd>°′″</kbd> キーがこの直しをしてくれます。</div>
+
+<h3 id="s2-5">2-5 tan⁻¹ の落とし穴：向きが南や西のとき</h3>
+<p>A から見て、北東・南東・南西・北西の 4 つの点を考えます。</p>
+<div class="fig"><svg viewBox="-52 4 403 294" width="403"><line class="ax0" x1="150.0" y1="270.0" x2="150.0" y2="30.0"/><line class="ax0" x1="30.0" y1="150.0" x2="270.0" y2="150.0"/><text x="150.0" y="24.0" text-anchor="middle">北</text><text x="274.0" y="154.0">東</text><text x="150.0" y="286.0" text-anchor="middle">南</text><text x="26.0" y="154.0" text-anchor="end">西</text><line class="rd" x1="150.0" y1="150.0" x2="216.0" y2="62.0"/><polygon class="hrd" points="216.0,62.0 213.6,72.7 206.4,67.3"/><circle class="dot" cx="216.0" cy="62.0" r="4"/><line class="rd" x1="150.0" y1="150.0" x2="238.0" y2="216.0"/><polygon class="hrd" points="238.0,216.0 227.3,213.6 232.7,206.4"/><circle class="dot" cx="238.0" cy="216.0" r="4"/><line class="rd" x1="150.0" y1="150.0" x2="84.0" y2="238.0"/><polygon class="hrd" points="84.0,238.0 86.4,227.3 93.6,232.7"/><circle class="dot" cx="84.0" cy="238.0" r="4"/><line class="rd" x1="150.0" y1="150.0" x2="62.0" y2="84.0"/><polygon class="hrd" points="62.0,84.0 72.7,86.4 67.3,93.6"/><circle class="dot" cx="62.0" cy="84.0" r="4"/><circle class="dot" cx="150.0" cy="150.0" r="4"/><text x="269.1" y="51.5" text-anchor="middle">B（ΔX＋ ΔY＋）</text><text x="295.1" y="232.5" text-anchor="middle">D（ΔX− ΔY＋）</text><text x="30.9" y="258.5" text-anchor="middle">C（ΔX− ΔY−）</text><text x="4.9" y="77.5" text-anchor="middle">E（ΔX＋ ΔY−）</text><text x="136.4" y="131.7" text-anchor="middle">A</text></svg><div class="cap">図11　A から見た 4 つの向き。ΔX・ΔY の符号で、どの方角か決まる</div></div>
+<p>たとえば C（88.00, 91.00）は A の<b>南西</b>にあり、ΔX ＝ −12、ΔY ＝ −9 です。ΔY ÷ ΔX ＝ (−9) ÷ (−12) ＝ 0.75 で、B のときと<b>同じ 0.75</b> になってしまいます。tan⁻¹ も同じ 36°52′11.6″ を返します。でも本当の向きは南西で、方向角は <b>216°52′11.6″</b> です。</p>
+<p>tan⁻¹ は −90°〜90°（北寄りの半分）の答えしか返さないので、南寄りの向きのときは自分で直す必要があります。</p>
+<table>
+<tr><th>点</th><th>ΔX</th><th>ΔY</th><th>向き</th><th>方向角の出し方</th></tr>
+<tr><td>B</td><td>＋</td><td>＋</td><td>北東</td><td>tan⁻¹ の答えのまま</td></tr>
+<tr><td>D</td><td>−</td><td>＋</td><td>南東</td><td>tan⁻¹ の答え ＋ 180°</td></tr>
+<tr><td>C</td><td>−</td><td>−</td><td>南西</td><td>tan⁻¹ の答え ＋ 180°</td></tr>
+<tr><td>E</td><td>＋</td><td>−</td><td>北西</td><td>tan⁻¹ の答え ＋ 360°</td></tr>
+</table>
+<div class="f">方向角 ＝ tan⁻¹(ΔY ÷ ΔX)　（南寄り・北西なら上の表で直す）</div>
+<p>こんな表を毎回思い出すのは大変です。そこで電卓の出番です。</p>
+
+<h3 id="s2-6">2-6 電卓なら Abs と Arg で一発</h3>
+<p>点を <i>i</i> 付きの 1 つの数で入れておくと、<code>B − A</code> と打つだけで「ΔX ＋ ΔY<i>i</i>」が一度に出ます（X どうし、Y どうしが別々に引き算されます）。</p>
+<div class="f">B − A ＝ (112 ＋ 109<i>i</i>) − (100 ＋ 100<i>i</i>) ＝ 12 ＋ 9<i>i</i></div>
+<p>これは「A から B へ行く矢印」を 1 つの数で表したものです。この矢印に、次の 2 つのキーを使います。</p>
+<table>
+<tr><th>キー</th><th>出るもの</th></tr>
+<tr><td><kbd>Abs</kbd></td><td>矢印の長さ ＝ <b>距離</b>（三平方を自動でやってくれる）</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>3</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>1</kbd></span>（Arg<span class="yomi">（アーギュメント）</span>）</td><td>矢印の向き ＝ <b>方向角</b>（南や西の直しも自動）</td></tr>
+</table>
+<div class="f"><span class="fname">距離の公式</span><br>距離 ＝ <ruby>Abs<rt>アブソリュート</rt></ruby>(B − A)</div>
+<div class="f"><span class="fname">方向角の公式</span><br>方向角 ＝ Arg(B − A)　（マイナスで出たら ＋ 360°）</div>
+
+<div class="box ex"><b>例題 1</b>A（100.00, 100.00）から B（112.00, 109.00）へ。2-1〜2-4 で手で計算したのと同じ問題です。
+<table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>100 <kbd>+</kbd> 100 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>A</kbd></td><td class="scr">100+100<i>i</i>→A</td><td>A の座標を、メモリ A にしまう</td></tr>
+<tr><td>112 <kbd>+</kbd> 109 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>B</kbd></td><td class="scr">112+109<i>i</i>→B</td><td>B の座標を、メモリ B にしまう</td></tr>
+<tr><td><kbd>Abs</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>B</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>B</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd></td><td class="scr">Abs(B−A)</td><td><b>B − A</b> の長さ。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">15</td><td>距離</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>3</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>1</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>B</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>B</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd></td><td class="scr">Arg(B−A)</td><td><b>B − A</b> の向き。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">36.86989765</td><td>方向角（度）</td></tr>
+<tr><td><kbd>°′″</kbd></td><td class="scr">36°52′11.6″</td><td>度分秒に直す</td></tr>
+</table>
+<p>手計算と同じ答えです。</p></div>
+
+<div class="box ex"><b>例題 2</b>同じ A から、南西の C（88.00, 91.00）へ。今度は <code>C − A</code> です（行き先が C だから）。
+<table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>88 <kbd>+</kbd> 91 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>C</kbd></td><td class="scr">88+91<i>i</i>→C</td><td>C の座標を、メモリ C にしまう</td></tr>
+<tr><td><kbd>Abs</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>C</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>C</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd></td><td class="scr">Abs(C−A)</td><td><b>C − A</b> の長さ。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">15</td><td>距離</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>3</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>1</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>C</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>C</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd></td><td class="scr">Arg(C−A)</td><td><b>C − A</b> の向き。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">−143.1301024</td><td>マイナスで出た</td></tr>
+<tr><td><kbd>+</kbd> 360</td><td class="scr">Ans+360</td><td>さっきの答え（Ans）に 360 を足す式</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">216.8698976</td><td></td></tr>
+<tr><td><kbd>°′″</kbd></td><td class="scr">216°52′11.6″</td><td>方向角</td></tr>
+</table>
+<p>Arg は、北から<b>左回り</b>の向きをマイナスで返します。−143.13° は「北から左回りに 143.13°」という意味です。右回りに直すには 360° を足します。</p>
+<div class="fig"><svg viewBox="-48 32 399 251" width="399"><line class="ax0" x1="150.0" y1="260.0" x2="150.0" y2="40.0"/><line class="ax0" x1="40.0" y1="150.0" x2="260.0" y2="150.0"/><line class="rd" x1="150.0" y1="150.0" x2="72.9" y2="252.9"/><polygon class="hrd" points="72.9,252.9 75.3,242.2 82.5,247.6"/><circle class="dot" cx="72.9" cy="252.9" r="4"/><circle class="dot" cx="150.0" cy="150.0" r="4"/><path class="gn" d="M150.0,110.0 A40,40 0 0,0 126.0,182.0"/><polygon class="hgn" points="126.0,182.0 115.3,179.6 120.7,172.4"/><path class="bl" d="M150.0,88.0 A62,62 0 1,1 112.8,199.6"/><polygon class="hbl" points="112.8,199.6 123.5,202.0 118.1,209.2"/><text x="63.8" y="273.4" text-anchor="middle">C</text><text x="159.1" y="139.5" text-anchor="middle">A</text><text class="tgn" x="25.7" y="133.1" text-anchor="middle">－143.13°（左回り）</text><text class="tbl" x="284.8" y="183.0" text-anchor="middle">216.87°（右回り）</text></svg><div class="cap">図12　Arg は左回りをマイナスで返す。360° を足すと右回りの方向角になる</div></div>
+</div>
+
+<div class="box point"><b>ポイント</b>引き算は<b>「行き先 − 出発点」</b>。A から B を見るなら <code>B − A</code>、A から C を見るなら <code>C − A</code>。逆に <code>A − B</code> と打つと、B から A を見た向きになり、180° ずれます。</div>
+<p class="chk"><b>合わないときに見る順番</b>：① 方向角が見当（北東・南東…）の範囲か → ② 引き算の順 → ③ マイナスなら ＋360°</p>
+
+<h3>練習 2</h3>
+<ol class="q">
+<li>A（50.00, 50.00）から B（58.00, 56.00）への距離と方向角。</li>
+<li>A（50.00, 50.00）から D（45.00, 62.00）への距離と方向角。</li>
+<li>P（200.00, 300.00）から Q（191.50, 288.40）への距離と方向角（P はメモリ 0、Q はメモリ 9 にしまう）。</li>
+</ol>
+<details><summary>答えと解説</summary>
+<div class="figs"><div class="fig"><svg viewBox="-38 19 240 239" width="240"><line class="dh" x1="46.0" y1="243.3" x2="46.0" y2="46.0"/><line class="dh" x1="46.0" y1="46.0" x2="194.0" y2="46.0"/><line class="rd" x1="46.0" y1="243.3" x2="194.0" y2="46.0"/><polygon class="hrd" points="194.0,46.0 191.6,56.7 184.4,51.3"/><circle class="dot" cx="46.0" cy="243.3" r="4"/><text x="76.5" y="248.3" text-anchor="middle">出発点</text><text x="5.4" y="149.7" text-anchor="middle">ΔX＝＋8.00</text><text x="120.0" y="40.0" text-anchor="middle">ΔY＝＋6.00</text></svg><div class="cap">1. 北東向き</div></div><div class="fig"><svg viewBox="-35 33 237 103" width="237"><line class="dh" x1="46.0" y1="46.0" x2="46.0" y2="107.7"/><line class="dh" x1="46.0" y1="107.7" x2="194.0" y2="107.7"/><line class="rd" x1="46.0" y1="46.0" x2="194.0" y2="107.7"/><polygon class="hrd" points="194.0,107.7 183.0,108.0 186.5,99.7"/><circle class="dot" cx="46.0" cy="46.0" r="4"/><text x="21.0" y="66.5" text-anchor="middle">出発点</text><text x="8.9" y="85.4" text-anchor="middle">ΔX＝－5.00</text><text x="120.0" y="125.7" text-anchor="middle">ΔY＝＋12.00</text></svg><div class="cap">2. 南東向き（ΔX がマイナス）</div></div><div class="fig"><svg viewBox="38 30 240 152" width="240"><line class="dh" x1="194.0" y1="46.0" x2="194.0" y2="154.4"/><line class="dh" x1="194.0" y1="154.4" x2="46.0" y2="154.4"/><line class="rd" x1="194.0" y1="46.0" x2="46.0" y2="154.4"/><polygon class="hrd" points="46.0,154.4 51.4,144.9 56.7,152.2"/><circle class="dot" cx="194.0" cy="46.0" r="4"/><text x="224.5" y="51.0" text-anchor="middle">出発点</text><text x="234.6" y="105.2" text-anchor="middle">ΔX＝－8.50</text><text x="120.0" y="172.4" text-anchor="middle">ΔY＝－11.60</text></svg><div class="cap">3. 南西向き（どちらもマイナス）</div></div></div>
+<div class="box ex"><b>1. A（50.00, 50.00）から B（58.00, 56.00）</b>
+<ol class="steps"><li><b>向きの見当</b>：ΔX ＝ ＋8.00、ΔY ＝ ＋6.00 → <b>北東</b>（方向角は 0°〜90° のはず）</li><li><b>距離の公式</b> Abs(B − A)、<b>方向角の公式</b> Arg(B − A)</li></ol><table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>50 <kbd>+</kbd> 50 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>A</kbd></td><td class="scr">50+50<i>i</i>→A</td><td>A の座標を、メモリ A にしまう</td></tr>
+<tr><td>58 <kbd>+</kbd> 56 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>B</kbd></td><td class="scr">58+56<i>i</i>→B</td><td>B の座標を、メモリ B にしまう</td></tr>
+<tr><td><kbd>Abs</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>B</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>B</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd></td><td class="scr">Abs(B−A)</td><td><b>B − A</b> の長さ。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">10</td><td>距離</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>3</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>1</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>B</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>B</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd></td><td class="scr">Arg(B−A)</td><td><b>B − A</b> の向き。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">36.86989765</td><td>方向角（度）</td></tr>
+<tr><td><kbd>°′″</kbd></td><td class="scr">36°52′11.6″</td><td>度分秒に直す</td></tr>
+</table><p><b>答え</b>　距離 10.00、方向角 36°52′11.6″（北東）</p><p><b>検算</b>　方向角が見当（0°〜90°）に入っているか。</p>
+</div>
+<div class="box ex"><b>2. A（50.00, 50.00）から D（45.00, 62.00）</b>
+<ol class="steps"><li><b>向きの見当</b>：ΔX ＝ −5.00、ΔY ＝ ＋12.00 → <b>南東</b>（方向角は 90°〜180° のはず）</li><li><b>距離の公式</b> Abs(D − A)、<b>方向角の公式</b> Arg(D − A)</li></ol><table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>50 <kbd>+</kbd> 50 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>A</kbd></td><td class="scr">50+50<i>i</i>→A</td><td>A の座標を、メモリ A にしまう</td></tr>
+<tr><td>45 <kbd>+</kbd> 62 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>D</kbd></td><td class="scr">45+62<i>i</i>→D</td><td>D の座標を、メモリ D にしまう</td></tr>
+<tr><td><kbd>Abs</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>D</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>D</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd></td><td class="scr">Abs(D−A)</td><td><b>D − A</b> の長さ。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">13</td><td>距離</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>3</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>1</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>D</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>D</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd></td><td class="scr">Arg(D−A)</td><td><b>D − A</b> の向き。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">112.6198649</td><td>方向角（度）</td></tr>
+<tr><td><kbd>°′″</kbd></td><td class="scr">112°37′11.5″</td><td>度分秒に直す</td></tr>
+</table><p><b>答え</b>　距離 13.00、方向角 112°37′11.5″（南東）</p><p><b>検算</b>　方向角が見当（90°〜180°）に入っているか。</p>
+</div>
+<div class="box ex"><b>3. P（200.00, 300.00）から Q（191.50, 288.40）</b>
+<ol class="steps"><li><b>向きの見当</b>：ΔX ＝ −8.50、ΔY ＝ −11.60 → <b>南西</b>（方向角は 180°〜270° のはず）</li><li><b>距離の公式</b> Abs(Q − P)、<b>方向角の公式</b> Arg(Q − P)（マイナスなら ＋ 360°）</li></ol><table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>200 <kbd>+</kbd> 300 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>0</kbd></td><td class="scr">200+300<i>i</i>→<u>0</u></td><td>P の座標を、メモリ 0 にしまう</td></tr>
+<tr><td>191.5 <kbd>+</kbd> 288.4 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>9</kbd></td><td class="scr">191.5+288.4<i>i</i>→<u>9</u></td><td>Q の座標を、メモリ 9 にしまう</td></tr>
+<tr><td><kbd>Abs</kbd> <kbd>RCL</kbd> <kbd>9</kbd> <kbd>−</kbd> <kbd>RCL</kbd> <kbd>0</kbd> <kbd>)</kbd></td><td class="scr">Abs(<u>9</u>−<u>0</u>)</td><td><b>Q − P</b> の長さ。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">14.3808901</td><td>距離</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>3</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>1</kbd></span> <kbd>RCL</kbd> <kbd>9</kbd> <kbd>−</kbd> <kbd>RCL</kbd> <kbd>0</kbd> <kbd>)</kbd></td><td class="scr">Arg(<u>9</u>−<u>0</u>)</td><td><b>Q − P</b> の向き。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">−126.2324188</td><td>マイナスで出た</td></tr>
+<tr><td><kbd>+</kbd> 360</td><td class="scr">Ans+360</td><td>360 を足す式</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">233.7675812</td><td></td></tr>
+<tr><td><kbd>°′″</kbd></td><td class="scr">233°46′3.3″</td><td>度分秒に直す</td></tr>
+</table><p><b>答え</b>　距離 14.38、方向角 233°46′3.3″（南西）</p><p><b>検算</b>　方向角が見当（180°〜270°）に入っているか。</p>
+</div>
+</details>
+
+<div class="box point"><b>この章の練習</b><a href="drill.html#inverse">ドリル「2 点から距離と向き」</a>で、数字のちがう問題を解けます。</div>
+
+<!-- ================================================================ -->
+<h2 id="c3"><a class="totop" href="#top">もくじ ↑</a>第3章 「向き」と「距離」で点を動かす（放射）</h2>
+
+<h3 id="s3-1">3-1 まず手で計算する</h3>
+<p>第2章の逆です。A から、方向角 θ の向きに距離 L だけ進んだ点 P を出します。第2章と同じ直角三角形で、今度は<b>斜辺 L と角 θ が分かっていて、ΔX と ΔY を出したい</b>のです。</p>
+<div class="fig"><svg viewBox="-112 26 298 245" width="298"><line class="dh" x1="60.0" y1="240.0" x2="60.0" y2="60.0"/><line class="dh" x1="60.0" y1="60.0" x2="163.9" y2="60.0"/><line class="rd" x1="60.0" y1="240.0" x2="163.9" y2="60.0"/><circle class="dot" cx="60.0" cy="240.0" r="4"/><circle class="dot" cx="163.9" cy="60.0" r="4"/><path class="bl" d="M60.0,196.0 A44,44 0 0,1 82.0,201.9"/><polygon class="hbl" points="82.0,201.9 71.1,200.8 75.6,193.0"/><text x="50.9" y="260.5" text-anchor="middle">A</text><text x="173.0" y="49.5" text-anchor="middle">P</text><text x="-24.6" y="155.0" text-anchor="middle">ΔX ＝ L cos θ（となり）</text><text x="85.9" y="47.0" text-anchor="middle">ΔY ＝ L sin θ（向かい）</text><text x="146.0" y="165.0" text-anchor="middle">L（斜辺）</text><text class="tbl" x="75.0" y="189.0" text-anchor="middle">θ</text></svg><div class="cap">図13　θ は北から測るので、北向きの辺が θ のとなり（cos）、東向きの辺が向かい（sin）</div></div>
+<p>1-4 のとおり、斜辺が L なら、となりの辺（北へ）＝ L × cos θ、向かいの辺（東へ）＝ L × sin θ なので、</p>
+<div class="f">ΔX（北へ）＝ L cos θ　　ΔY（東へ）＝ L sin θ</div>
+
+<div class="box ex"><b>例</b>A（100.00, 100.00）から方向角 30° の向きに 20 m。
+<p>ΔX ＝ 20 × cos 30° ＝ 20 × 0.8660… ＝ 17.3205…<br>
+ΔY ＝ 20 × sin 30° ＝ 20 × 0.5 ＝ 10<br>
+P ＝（100 ＋ 17.3205…, 100 ＋ 10）＝（117.32, 110.00）</p></div>
+
+<div class="box point"><b>南や西へ進むとき</b>θ が 90° を超えると cos はマイナスになり、ΔX がマイナス（南へ）になります。180° を超えると sin もマイナス（西へ）。<b>符号は sin・cos が自動で付けてくれる</b>ので、直しは要りません（練習 3 の 1 で確かめます）。</div>
+
+<h3 id="s3-2">3-2 電卓では ∠ を使う</h3>
+<p>電卓の ∠<span class="yomi">（かく）</span>（F-789SG では <span class="c789"><kbd>∫</kbd></span><span class="c570"><kbd>Shift</kbd> <kbd>∠</kbd></span> のキー。複素数モードでは押すだけで ∠ が出る）は、「距離 ∠ 向き」と書くと、L cos θ と L sin θ を<b>一度に作ってくれる</b>キーです。つまり「その向きにその距離だけ進む矢印」を 1 つの数で作ります。それを A に足せば P です。</p>
+<div class="f"><span class="fname">移動の公式</span><br>P ＝ A ＋ L∠θ<br>（この例では P ＝ A ＋ 20∠30）</div>
+<table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td colspan="3" class="note">（A の座標 100 ＋ 100<i>i</i> は、メモリ A にしまってある）</td></tr>
+<tr><td><span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>+</kbd> 20 <span class="c789"><kbd>∫</kbd></span><span class="c570"><kbd>Shift</kbd> <kbd>∠</kbd></span> 30</td><td class="scr">A+20∠30</td><td>A から 30° の向きに 20 進む。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">117.3205081+110<i>i</i></td><td>P の座標</td></tr>
+</table>
+<p>画面の答えは <b>117.3205081 ＋ 110<i>i</i></b>。<i>i</i> の付いていない方が X、付いている方が Y なので、P ＝（117.32, 110.00）です。</p>
+<p class="chk"><b>合わないときに見る順番</b>：① 画面の上の D（度）の表示 → ② 距離 Abs(P − A) が 20 か</p>
+
+<div class="box point"><b>丸めの約束</b>点の座標は、<b>小数第 3 位を四捨五入して第 2 位まで</b>にします（試験の注意書きでほぼ毎年こう指定されます）。117.3205081 → 117.32。次の計算には、丸めた値を入れ直して使います。</div>
+
+<h3 id="s3-3">3-3 放射：観測の表から点を出す</h3>
+<p>試験では、次のような表で出てきます。第1章の「方向角 ＝ 後視点への方向角 ＋ 観測角」と、第2章の Arg、3-2 の ∠ を組み合わせます。</p>
+<div class="f"><span class="fname">放射の公式</span><br>P ＝ 器械点 ＋ 距離∠( Arg(後視点 − 器械点) ＋ 観測角 )</div>
+
+<div class="box ex"><b>例題</b>
+<table>
+<tr><th>点</th><th>X</th><th>Y</th></tr>
+<tr><td>T1</td><td>85.37</td><td>113.90</td></tr>
+<tr><td>T2</td><td>84.28</td><td>147.98</td></tr>
+</table>
+<table>
+<tr><th>器械点</th><th>後視点</th><th>観測点</th><th>観測角</th><th>距離</th></tr>
+<tr><td>T1</td><td>T2</td><td>P</td><td>253°48′28″</td><td>16.81</td></tr>
+</table>
+<p>表は「T1 に器械を立て、T2 を 0° にして、右回りに 253°48′28″ 回したところに、16.81 m 先の P があった」と読みます。</p>
+<div class="fig"><svg viewBox="-102 16 495 213" width="495"><line class="dh" x1="73.0" y1="151.6" x2="73.0" y2="56.6"/><text x="73.0" y="51.6" text-anchor="middle">北</text><line class="ln" x1="73.0" y1="151.6" x2="294.0" y2="158.6"/><line class="rd" x1="73.0" y1="151.6" x2="46.0" y2="46.0"/><circle class="dot" cx="73.0" cy="151.6" r="4"/><circle class="dot" cx="294.0" cy="158.6" r="4"/><circle class="dot" cx="46.0" cy="46.0" r="4"/><path class="gn" d="M73.0,121.6 A30,30 0 0,1 103.0,152.5"/><polygon class="hgn" points="103.0,152.5 98.8,142.4 107.8,142.7"/><path class="bl" d="M129.0,153.3 A56,56 0 1,1 59.1,97.3"/><polygon class="hbl" points="59.1,97.3 50.6,104.1 48.3,95.4"/><text x="70.2" y="173.2" text-anchor="middle">T1（器械点）</text><text x="344.3" y="166.5" text-anchor="middle">T2（後視点）</text><text x="34.6" y="37.2" text-anchor="middle">P</text><text class="tgn" x="149.6" y="122.8" text-anchor="middle">① 91°49′55″</text><text class="tbl" x="-27.9" y="218.9" text-anchor="middle">観測角 253°48′28″</text><text x="26.7" y="98.5" text-anchor="middle">16.81</text></svg><div class="cap">図14　① T1 から T2 への方向角に、観測角を足すと P への方向角（345°38′23″）</div></div>
+<p><b>考え方</b></p>
+<ol class="steps">
+<li>T1 から T2 への方向角を出す：Arg(T2 − T1) ＝ 91°49′55″（図の緑の弧）</li>
+<li>観測角を足して P への方向角：① ＋ 253°48′28″（図の青の弧）</li>
+<li>T1 から、その向きに 16.81 m 進む：P ＝ T1 ＋ 16.81∠②</li>
+</ol>
+<p><b>電卓</b>（T1 の座標はメモリ X に、T2 の座標はメモリ Y にしまいます）</p>
+<table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>85.37 <kbd>+</kbd> 113.9 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>X</kbd></td><td class="scr">85.37+113.9<i>i</i>→X</td><td>T1 の座標を、メモリ X にしまう</td></tr>
+<tr><td>84.28 <kbd>+</kbd> 147.98 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>Y</kbd></td><td class="scr">84.28+147.98<i>i</i>→Y</td><td>T2 の座標を、メモリ Y にしまう</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>3</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>1</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>Y</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>Y</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>)</kbd></td><td class="scr">Arg(Y−X)</td><td><b>T2 − T1</b> の向き。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">91.83189899</td><td>①</td></tr>
+<tr><td><span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>+</kbd> 16.81 <span class="c789"><kbd>∫</kbd></span><span class="c570"><kbd>Shift</kbd> <kbd>∠</kbd></span> <kbd>(</kbd> <kbd>Ans</kbd> <kbd>+</kbd> 253 <kbd>°′″</kbd> 48 <kbd>°′″</kbd> 28 <kbd>°′″</kbd> <kbd>)</kbd></td><td class="scr">X+16.81∠(Ans+253°48′28″)</td><td><b>T1 ＋ 16.81∠(① ＋ 観測角)</b>。式を確かめる。かっこを忘れていないか</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">101.654774+109.730799<i>i</i></td><td>P の座標</td></tr>
+</table>
+<p><b>答え</b>　P（101.65, 109.73）</p>
+</div>
+
+<div class="box point"><b>ポイント</b>
+<ul>
+<li><kbd>Ans</kbd> は「さっきの答え」（①の方向角）。そこに観測角を<b>そのまま足して</b> ∠ に入れます。91°49′55″ ＋ 253°48′28″ ＝ 345°38′23″ を書き出したり、360° を超えたときに引いたりしなくても、電卓が正しく扱います。</li>
+<li><span class="c789"><kbd>∫</kbd></span><span class="c570"><kbd>Shift</kbd> <kbd>∠</kbd></span> の後ろの <kbd>(</kbd> を忘れないこと。忘れると「16.81∠Ans<span class="yomi">（アンサー）</span>」に 253°… を足す、という別の計算になります。</li>
+</ul></div>
+
+<div class="box ng"><b>よくある間違い</b>表の「器械点」と「後視点」を逆に読む。器械点が T2、後視点が T1 なら、出発点は T2 です。①は <code>Arg(T1 − T2)</code>、③は <code>T2 ＋ 距離∠(Ans ＋ 観測角)</code> になります。いつも「行き先（後視点）− 出発点（器械点）」です（練習 3 の 3）。</div>
+<p class="chk"><b>合わないときに見る順番</b>：① Arg の答え（①）が、この本の表と同じか（引き算の順） → ② Abs(P − 器械点) が距離に戻るか（かっこ・器械点） → ③ 戻るのに座標がずれるなら、観測角の <kbd>°′″</kbd></p>
+
+<h3>練習 3</h3>
+<ol class="q">
+<li>A（50.00, 50.00）から方向角 135° に 10.00 m 進んだ点。</li>
+<li>T1（120.00, 80.00）、T2（135.00, 100.00）。器械点 T1・後視点 T2、観測角 120°30′00″、距離 12.50 で観測した点 P は？</li>
+<li>同じ T1・T2 で、器械点 <b>T2</b>・後視点 <b>T1</b>、観測角 95°00′00″、距離 10.00 で観測した点 D は？</li>
+</ol>
+<details><summary>答えと解説</summary>
+<div class="box ex"><b>1. A（50.00, 50.00）から方向角 135° に 10.00 m</b>
+<ol class="steps"><li><b>見当</b>：135° は南東。南へ（X が減る）、東へ（Y が増える）進むはず</li><li><b>移動の公式</b>：A ＋ 10∠135</li></ol><div class="fig"><svg viewBox="-119 16 338 262" width="338"><line class="ax0" x1="50.0" y1="164.1" x2="50.0" y2="24.1"/><line class="ax0" x1="-20.0" y1="94.1" x2="120.0" y2="94.1"/><line class="dh" x1="50.0" y1="94.1" x2="50.0" y2="250.0"/><line class="dh" x1="50.0" y1="250.0" x2="205.9" y2="250.0"/><line class="rd" x1="50.0" y1="94.1" x2="205.9" y2="250.0"/><polygon class="hrd" points="205.9,250.0 195.7,246.1 202.0,239.7"/><circle class="dot" cx="50.0" cy="94.1" r="4"/><circle class="dot" cx="205.9" cy="250.0" r="4"/><path class="bl" d="M50.0,64.1 A30,30 0 0,1 71.2,115.3"/><polygon class="hbl" points="71.2,115.3 75.1,105.1 81.5,111.4"/><text x="38.6" y="85.3" text-anchor="middle">A</text><text x="-33.1" y="177.0" text-anchor="middle">ΔX＝10 cos135°＝－7.07</text><text x="128.0" y="268.0" text-anchor="middle">ΔY＝10 sin135°＝＋7.07</text><text class="tbl" x="94.8" y="76.1" text-anchor="middle">135°</text></svg><div class="cap">cos 135° はマイナス → 南へ進む。符号は電卓が自動で付ける</div></div><table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>50 <kbd>+</kbd> 50 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>A</kbd></td><td class="scr">50+50<i>i</i>→A</td><td>A の座標を、メモリ A にしまう</td></tr>
+<tr><td><span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>+</kbd> 10 <span class="c789"><kbd>∫</kbd></span><span class="c570"><kbd>Shift</kbd> <kbd>∠</kbd></span> 135</td><td class="scr">A+10∠135</td><td>式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">42.92893219+57.07106781<i>i</i></td><td>点の座標</td></tr>
+</table><p><b>答え</b>　（42.93, 57.07）</p>
+</div>
+<div class="box ex"><b>2. 器械点 T1・後視点 T2、観測角 120°30′00″、距離 12.50</b>
+<p><b>考え方</b>（3-3 の例題と同じ 3 段）</p><ol class="steps"><li>T1 から T2 への方向角：Arg(T2 − T1) ＝ 53.13010235°（53°07′48″）</li><li>観測角を足して P への方向角：53°07′48″ ＋ 120°30′00″ ＝ 173°37′48″</li><li>P ＝ T1 ＋ 12.50∠②</li></ol><div class="fig"><svg viewBox="-53 16 347 268" width="347"><line class="dh" x1="46.0" y1="159.8" x2="46.0" y2="89.8"/><text x="46.0" y="84.8" text-anchor="middle">北</text><line class="ln" x1="46.0" y1="159.8" x2="197.7" y2="46.0"/><line class="rd" x1="46.0" y1="159.8" x2="56.5" y2="254.0"/><circle class="dot" cx="46.0" cy="159.8" r="4"/><circle class="dot" cx="197.7" cy="46.0" r="4"/><circle class="dot" cx="56.5" cy="254.0" r="4"/><path class="bl" d="M73.2,139.4 A34,34 0 0,1 49.8,193.6"/><polygon class="hbl" points="49.8,193.6 59.2,188.0 60.2,196.9"/><text x="-4.7" y="164.8" text-anchor="middle">T1（器械点）</text><text x="245.2" y="37.2" text-anchor="middle">T2（後視点）</text><text x="47.4" y="274.5" text-anchor="middle">P</text><text class="tbl" x="98.5" y="191.6" text-anchor="middle">観測角</text></svg><div class="cap">2. 器械点 T1、後視点 T2</div></div><p><b>電卓</b></p><table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>120 <kbd>+</kbd> 80 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>X</kbd></td><td class="scr">120+80<i>i</i>→X</td><td>T1 の座標を、メモリ X にしまう</td></tr>
+<tr><td>135 <kbd>+</kbd> 100 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>Y</kbd></td><td class="scr">135+100<i>i</i>→Y</td><td>T2 の座標を、メモリ Y にしまう</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>3</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>1</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>Y</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>Y</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>)</kbd></td><td class="scr">Arg(Y−X)</td><td><b>T2 − T1</b> の向き。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">53.13010235</td><td>①</td></tr>
+<tr><td><span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>+</kbd> 12.5 <span class="c789"><kbd>∫</kbd></span><span class="c570"><kbd>Shift</kbd> <kbd>∠</kbd></span> <kbd>(</kbd> <kbd>Ans</kbd> <kbd>+</kbd> 120 <kbd>°′″</kbd> 30 <kbd>°′″</kbd> 0 <kbd>°′″</kbd> <kbd>)</kbd></td><td class="scr">X+12.5∠(Ans+120°30′0″)</td><td><b>T1 ＋ 12.5∠(① ＋ 観測角)</b>。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">107.5771707+81.38683507<i>i</i></td><td>P の座標</td></tr>
+</table><p><b>答え</b>　P（107.58, 81.39）</p>
+</div>
+<div class="box ex"><b>3. 器械点 T2・後視点 T1、観測角 95°00′00″、距離 10.00</b>
+<p><b>考え方</b>　今度は<b>器械点が T2</b>。出発点は T2、行き先（後視点）は T1 です。</p><ol class="steps"><li>T2 から T1 への方向角：Arg(T1 − T2) ＝ −126.8698976°（マイナスのままでよい。∠ は −126.87° を 233.13° と同じ向きとして扱う）</li><li>観測角を足して D への方向角：① ＋ 95°</li><li>D ＝ <b>T2</b> ＋ 10.00∠②</li></ol><div class="fig"><svg viewBox="-50 13 372 269" width="372"><line class="dh" x1="223.1" y1="121.2" x2="223.1" y2="51.2"/><text x="223.1" y="46.2" text-anchor="middle">北</text><line class="ln" x1="223.1" y1="121.2" x2="46.0" y2="254.0"/><line class="rd" x1="223.1" y1="121.2" x2="176.3" y2="46.0"/><circle class="dot" cx="223.1" cy="121.2" r="4"/><circle class="dot" cx="46.0" cy="254.0" r="4"/><circle class="dot" cx="176.3" cy="46.0" r="4"/><path class="bl" d="M195.9,141.6 A34,34 0 0,1 205.1,92.3"/><polygon class="hbl" points="205.1,92.3 199.0,101.4 194.3,93.8"/><text x="273.4" y="123.3" text-anchor="middle">T2（器械点）</text><text x="-1.5" y="272.8" text-anchor="middle">T1（後視点）</text><text x="179.2" y="34.4" text-anchor="middle">D</text><text class="tbl" x="154.5" y="117.0" text-anchor="middle">観測角</text></svg><div class="cap">3. 器械点が T2、後視点が T1。出発点は T2</div></div><p><b>電卓</b>（T1・T2 は 2 の続きでメモリ X・Y にしまってある）</p><table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>3</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>1</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>Y</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>Y</kbd></span> <kbd>)</kbd></td><td class="scr">Arg(X−Y)</td><td><b>T1 − T2</b> の向き（2 と逆）。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">−126.8698976</td><td>①</td></tr>
+<tr><td><span class="c789"><kbd>RCL</kbd> <kbd>Y</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>Y</kbd></span> <kbd>+</kbd> 10 <span class="c789"><kbd>∫</kbd></span><span class="c570"><kbd>Shift</kbd> <kbd>∠</kbd></span> <kbd>(</kbd> <kbd>Ans</kbd> <kbd>+</kbd> 95 <kbd>)</kbd></td><td class="scr">Y+10∠(Ans+95)</td><td><b>T2 ＋ 10∠(① ＋ 95°)</b>。出発点が Y（T2）になっているか式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">143.492492+94.72007775<i>i</i></td><td>D の座標</td></tr>
+</table><p><b>答え</b>　D（143.49, 94.72）</p>
+</div>
+</details>
+
+<div class="box point"><b>この章の練習</b><a href="drill.html#radial">ドリル「放射」</a>で、数字のちがう問題を解けます。</div>
+
+<!-- ================================================================ -->
+<h2 id="c4"><a class="totop" href="#top">もくじ ↑</a>第4章 2 本の線の交点</h2>
+
+<h3 id="s4-1">4-1 方向角から「傾き」を作る</h3>
+<p>第2章で、tan θ ＝ ΔY ÷ ΔX でした。ΔX が 1 のときを考えると、ΔY ＝ tan θ です。つまり方向角 θ の直線は、<b>「X が 1 増えると、Y が tan θ 増える」</b>直線です。</p>
+<div class="figs"><div class="fig"><svg viewBox="10 22 221 210" width="221"><line class="dh" x1="129.0" y1="217.0" x2="129.0" y2="107.0"/><line class="dh" x1="129.0" y1="107.0" x2="184.0" y2="107.0"/><line class="rd" x1="129.0" y1="217.0" x2="222.5" y2="30.0"/><polygon class="hrd" points="222.5,30.0 222.1,41.0 214.0,36.9"/><circle class="dot" cx="129.0" cy="217.0" r="4"/><text x="143.6" y="222.0" text-anchor="middle">A</text><text x="79.0" y="167.0" text-anchor="middle">X が 1 増える</text><text x="69.8" y="100.0" text-anchor="middle">Y が 0.5 増える</text></svg><div class="cap">傾き 0.5（tan θ ＝ 0.5）</div></div><div class="fig"><svg viewBox="22 22 227 210" width="227"><line class="dh" x1="142.2" y1="217.0" x2="142.2" y2="107.0"/><line class="dh" x1="142.2" y1="107.0" x2="76.2" y2="107.0"/><line class="rd" x1="142.2" y1="217.0" x2="30.0" y2="30.0"/><polygon class="hrd" points="30.0,30.0 39.0,36.3 31.3,40.9"/><circle class="dot" cx="142.2" cy="217.0" r="4"/><text x="156.8" y="222.0" text-anchor="middle">A</text><text x="192.2" y="167.0" text-anchor="middle">X が 1 増える</text><text x="194.9" y="100.0" text-anchor="middle">Y が 0.6 減る</text></svg><div class="cap">傾き －0.6（tan θ ＝ －0.6）</div></div></div>
+<p>この本では、この tan θ を、その直線の<b>傾き</b>と呼ぶことにします。数学の傾き（<i>x</i> が 1 増えると <i>y</i> がいくつ増えるか）の、<i>x</i> を X、<i>y</i> を Y に置きかえたものです。</p>
+<div class="f">傾き ＝ tan θ ＝ ΔY ÷ ΔX</div>
+<p>傾きがマイナスなら、X が増えると Y が減る（北へ行くほど西へずれる）線です。</p>
+
+<h3 id="s4-2">4-2 直線の式</h3>
+<p>点 A を通る、傾き m の直線を考えます。線の上の点 (X, Y) は、A から X が (X − A<sub>X</sub><span class="yomi">（A の X 座標）</span>) 増えたところにあります。X が 1 増えるごとに Y は m 増えるので、Y は m × (X − A<sub>X</sub>) だけ増えています。</p>
+<div class="fig"><svg viewBox="-8 1 293 274" width="293"><line class="dh" x1="56.0" y1="244.0" x2="56.0" y2="56.0"/><line class="dh" x1="56.0" y1="56.0" x2="150.0" y2="56.0"/><line class="rd" x1="56.0" y1="244.0" x2="173.5" y2="9.0"/><circle class="dot" cx="56.0" cy="244.0" r="4"/><circle class="dot" cx="150.0" cy="56.0" r="4"/><text x="46.9" y="264.5" text-anchor="middle">A</text><text x="218.3" y="58.2" text-anchor="middle">線の上の点 (X, Y)</text><text x="25.5" y="155.0" text-anchor="middle">X − A<tspan font-size="10" dy="4">X</tspan></text><text x="103.0" y="50.0" text-anchor="middle">m (X − A<tspan font-size="10" dy="4">X</tspan><tspan dy="-4">)</tspan></text></svg><div class="cap">図15　X が (X − A<sub>X</sub>) 増えると、Y は m 倍の m (X − A<sub>X</sub>) 増える。だから Y ＝ A<sub>Y</sub> ＋ m (X − A<sub>X</sub>)</div></div>
+<div class="f">Y ＝ <ruby>A<sub>Y</sub><rt>A の Y 座標</rt></ruby> ＋ m (X − A<sub>X</sub>)</div>
+<p>（A<sub>X</sub>・A<sub>Y</sub> は A の X 座標・Y 座標のことです。）</p>
+
+<h3 id="s4-3">4-3 連立方程式を思い出す</h3>
+<p>中学で習った連立方程式を、ここで思い出しておきます。</p>
+<p><b>連立方程式</b>とは、「2 つの式を<b>両方とも</b>成り立たせる X と Y を探す」ことです。直線の式は「その線の上の点ならこの式が成り立つ」という意味なので、2 本の直線の式を両方とも成り立たせる点は、<b>2 本の線の両方の上にある点 ＝ 交点</b>です。</p>
+
+<div class="box ex"><b>小さな例で練習</b>直線 ① Y ＝ 2X と、直線 ② Y ＝ 6 − X の交点を求める。
+<div class="fig"><svg viewBox="8 10 326 269" width="326"><line class="ax0" x1="30.0" y1="250.0" x2="30.0" y2="30.0"/><polygon class="hax0" points="30.0,30.0 34.5,40.0 25.5,40.0"/><line class="ax0" x1="30.0" y1="250.0" x2="286.7" y2="250.0"/><polygon class="hax0" points="286.7,250.0 276.7,254.5 276.7,245.5"/><line class="bl" x1="30.0" y1="250.0" x2="264.7" y2="132.7"/><line class="rd" x1="250.0" y1="250.0" x2="30.0" y2="30.0"/><circle class="dot" cx="176.7" cy="176.7" r="4"/><text x="231.6" y="185.5" text-anchor="middle">交点（2, 4）</text><text x="43.6" y="31.0" text-anchor="middle">X</text><text x="286.7" y="269.0" text-anchor="middle">Y</text><text class="tbl" x="289.8" y="152.5" text-anchor="middle">① Y ＝ 2X</text><text class="trd" x="117.6" y="60.3" text-anchor="middle">② Y ＝ 6 − X</text><text class="sub" x="20.4" y="218.3" text-anchor="middle">1</text><text class="sub" x="66.7" y="267.0" text-anchor="middle">1</text><text class="sub" x="20.4" y="181.7" text-anchor="middle">2</text><text class="sub" x="103.3" y="267.0" text-anchor="middle">2</text><text class="sub" x="20.4" y="145.0" text-anchor="middle">3</text><text class="sub" x="140.0" y="267.0" text-anchor="middle">3</text><text class="sub" x="20.4" y="108.3" text-anchor="middle">4</text><text class="sub" x="176.7" y="267.0" text-anchor="middle">4</text><text class="sub" x="20.4" y="71.7" text-anchor="middle">5</text><text class="sub" x="213.3" y="267.0" text-anchor="middle">5</text><text class="sub" x="20.4" y="35.0" text-anchor="middle">6</text><text class="sub" x="250.0" y="267.0" text-anchor="middle">6</text></svg><div class="cap">2 本の線の交点だけが、① と ② の両方の式を満たす</div></div>
+<ol class="steps"><li><b>交点では、① の Y と ② の Y が同じ数</b>。だから右辺どうしを「＝」で結べる。<div class="f">2X ＝ 6 − X</div></li><li><b>X を左側に集める</b>。右辺の「− X」を左辺に移すと「＋ X」になる（これを<b>移項</b>といいます。両辺に X を足したのと同じ）。<div class="f">2X ＋ X ＝ 6</div></li><li><b>まとめる</b>。2X ＋ X は 3X。<div class="f">3X ＝ 6</div></li><li><b>両辺を 3 で割る</b>。<div class="f">X ＝ 2</div></li><li><b>Y を出す</b>。X ＝ 2 を ① に入れる（<b>代入</b>する）。<div class="f">Y ＝ 2 × 2 ＝ 4</div></li><li><b>確かめ</b>。② にも入れて同じ Y になるか。6 − 2 ＝ 4。合っている。</li></ol>
+<p><b>答え</b>　交点（2, 4）</p></div>
+
+<div class="box point"><b>連立方程式の手順（まとめ）</b>
+<ol>
+<li>2 つの式の右辺を「＝」で結ぶ（Y を消す）</li>
+<li>X の入った項を左に、数だけの項を右に移項する（移すと符号が変わる）</li>
+<li>まとめて、X の前の数で割る</li>
+<li>出た X をどちらかの式に代入して Y を出す</li>
+<li>もう一方の式でも確かめる</li>
+</ol></div>
+
+<h3 id="s4-4">4-4 交点を連立方程式で出す（例題）</h3>
+<div class="box ex"><b>例題</b>A（100, 100）から B（110, 105）へ向かう直線①と、C（100, 110）から D（110, 104）へ向かう直線②の交点 E を求めよ。
+<div class="fig"><svg viewBox="16 -1 268 290" width="268"><line class="bl" x1="40.0" y1="260.0" x2="166.5" y2="7.0"/><line class="rd" x1="260.0" y1="260.0" x2="108.2" y2="7.0"/><circle class="dot" cx="40.0" cy="260.0" r="4"/><circle class="dot" cx="150.0" cy="40.0" r="4"/><circle class="dot" cx="260.0" cy="260.0" r="4"/><circle class="dot" cx="128.0" cy="40.0" r="4"/><circle class="dot" cx="140.0" cy="60.0" r="4"/><text x="28.6" y="278.8" text-anchor="middle">A</text><text x="147.2" y="28.4" text-anchor="middle">B</text><text x="271.4" y="278.8" text-anchor="middle">C</text><text x="130.8" y="28.4" text-anchor="middle">D</text><text x="99.8" y="62.2" text-anchor="middle">E（交点）</text></svg><div class="cap">図16　直線①（A から B へ）と直線②（C から D へ）。北が上</div></div>
+<ol class="steps"><li><b>傾き</b>（ΔY ÷ ΔX）<br>直線①：A から B へ ΔX ＝ 10、ΔY ＝ 5 → 5 ÷ 10 ＝ <b>0.5</b><br>直線②：C から D へ ΔX ＝ 10、ΔY ＝ −6 → (−6) ÷ 10 ＝ <b>−0.6</b></li><li><b>直線の式</b>（4-2 の Y ＝ A<sub>Y</sub> ＋ m (X − A<sub>X</sub>) に入れる）<div class="f">① Y ＝ 100 ＋ 0.5 (X − 100)<br>② Y ＝ 110 − 0.6 (X − 100)</div>② は C（100, 110）を通るので、A<sub>X</sub>・A<sub>Y</sub> のところに C の 100・110 を入れます。傾きが −0.6 なので、「＋ (−0.6)」は「− 0.6」になります。</li><li><b>右辺どうしを「＝」で結ぶ</b><div class="f">100 ＋ 0.5 (X − 100) ＝ 110 − 0.6 (X − 100)</div></li><li><b>「X − 100」をひとかたまりで見る</b>。どちらの式にも同じ「X − 100」が出てくるので、これを □ と書くと見やすくなります。<div class="f">100 ＋ 0.5 □ ＝ 110 − 0.6 □</div></li><li><b>□ を左に、数を右に移項</b>（移すと符号が変わる）<div class="f">0.5 □ ＋ 0.6 □ ＝ 110 − 100</div></li><li><b>まとめる</b><div class="f">1.1 □ ＝ 10</div></li><li><b>1.1 で割る</b><div class="f">□ ＝ 10 ÷ 1.1 ＝ 9.0909…</div></li><li><b>□ を X に戻す</b>。□ は X − 100 だったので<div class="f">X − 100 ＝ 9.0909…　→　X ＝ 109.0909…</div></li><li><b>Y を出す</b>。① に代入（□ ＝ 9.0909… をそのまま使うと楽）<div class="f">Y ＝ 100 ＋ 0.5 × 9.0909… ＝ 104.5454…</div></li><li><b>確かめ</b>。② にも代入：110 − 0.6 × 9.0909… ＝ 104.5454…。同じなので合っている。</li></ol>
+<p><b>答え</b>　E（109.09, 104.55）</p>
+</div>
+
+<h3 id="s4-5">4-5 電卓では「傾き ＋ <i>i</i>」で機械的に</h3>
+<p>4-4 のとおり、連立方程式は手順が多く、移項の符号も間違えやすいです。電卓では、同じ計算を<b>いつも同じ形の 2 行</b>で済ませます。</p>
+<div class="box point"><b>交点の公式 ─ この 2 行は、理由は考えずにそのまま覚えてしまいましょう</b>
+<p><b>準備</b>：直線①の「傾き ＋ <i>i</i>」をメモリ X に、直線②の「傾き ＋ <i>i</i>」をメモリ Y にしまう。A は直線①の上の点、C は直線②の上の点。<br>（ここでの X・Y は<b>メモリの名前</b>です。座標の X・Y とは別物なので注意。「A X」は「A × メモリ X」のかけ算で、4-2 の A<sub>X</sub>（A の X 座標）とは別物です。）</p>
+<div class="f">1 行目　交点の X ＝ <ruby>Real<rt>リアル</rt></ruby>( (A X − C Y) ÷ (X − Y) )　→ 答えを紙にメモ</div>
+<div class="f">2 行目　交点の Y ＝ Real( (Ans − A) X )</div>
+<p><b>覚え方</b>：1 行目は「A と X、C と Y がペア」で、÷ の前も後ろも引き算。2 行目は「いま出た答え（Ans）から A を引いて、メモリ X を掛ける」。</p>
+<p>1 行目の答え（交点の X）は、<b>メモリにしまわず紙にメモ</b>します。メモリ E などにしまうと、点 E の座標を消してしまうことがあるからです。2 行目は Ans（さっきの答え）でそのまま続けられます。</p>
+<p>なぜこれで交点が出るのかは 4-6 に書きましたが、<b>読み飛ばしてかまいません</b>。この 2 行を覚えて、正しく打てれば十分です。</p>
+</div>
+<p>例題（4-4 と同じ直線）でやってみます。傾きは ① 0.5、② −0.6 です。</p>
+
+<table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td colspan="3" class="note">（A・C の座標は、メモリ A・C にしまってある）</td></tr>
+<tr><td>0.5 <kbd>+</kbd> <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>X</kbd></td><td class="scr">0.5+i→X</td><td>直線①の「傾き ＋ <i>i</i>」を、メモリ X にしまう</td></tr>
+<tr><td><kbd>(−)</kbd> 0.6 <kbd>+</kbd> <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>Y</kbd></td><td class="scr">−0.6+i→Y</td><td>直線②の「傾き ＋ <i>i</i>」を、メモリ Y にしまう</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>5</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>3</kbd></span> <kbd>(</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>C</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>C</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>Y</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>Y</kbd></span> <kbd>)</kbd> <kbd>÷</kbd> <kbd>(</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>Y</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>Y</kbd></span> <kbd>)</kbd> <kbd>)</kbd></td><td class="scr">Real((AX−CY)÷(X−Y))</td><td>式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">109.0909091</td><td>交点の X（紙にメモ）</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>5</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>3</kbd></span> <kbd>(</kbd> <kbd>Ans</kbd> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>)</kbd></td><td class="scr">Real((Ans−A)X)</td><td>交点の公式 2 行目。Ans は 1 行目の答え。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">104.5454545</td><td>交点の Y</td></tr>
+</table>
+<p>4-4 の連立方程式と同じ答えになりました。</p>
+<p class="chk"><b>合わないときに見る順番</b>：① メモリ X・Y に <i>i</i> が付いているか（画面に 0.5+i）→ ② 1 行目のかっこ → ③ <b>確かめ算</b>：紙にメモした交点の X を使って <code>Real((メモした X − C) Y)</code>（直線②の点とその傾き）でも計算し、同じ Y になるか</p>
+
+<h3 id="s4-6">4-6 なぜ連立方程式と同じになるのか（読み飛ばしてもよい）</h3>
+<p>複素数のかけ算は、ふつうの文字式の展開と同じです。ただ 1 つだけ、<b><i>i</i> × <i>i</i> ＝ −1</b> というルールがあります。これで「A × (傾き ＋ <i>i</i>)」を展開してみます。</p>
+<div class="f">(100 ＋ 100<i>i</i>)(0.5 ＋ <i>i</i>)<br>＝ 100 × 0.5 ＋ 100<i>i</i> ＋ 100<i>i</i> × 0.5 ＋ 100<i>i</i> × <i>i</i><br>＝ 50 ＋ 100<i>i</i> ＋ 50<i>i</i> − 100<br>＝ <b>−50</b> ＋ 150<i>i</i></div>
+<p>実部の −50 は「A<sub>X</sub> × 傾き − A<sub>Y</sub>」＝ 100 × 0.5 − 100 です。直線①の式 Y ＝ A<sub>Y</sub> ＋ m (X − A<sub>X</sub>) を移項したときに出てくる<b>定数の部分</b>と同じものです。C も同じように展開すると、</p>
+<div class="f">(100 ＋ 110<i>i</i>)(−0.6 ＋ <i>i</i>) ＝ <b>−170</b> ＋ 34<i>i</i></div>
+<p>分母の X − Y は (0.5 ＋ <i>i</i>) − (−0.6 ＋ <i>i</i>) ＝ 1.1。<i>i</i> どうしは打ち消し合って、<b>傾きの差</b>だけが残ります。実部だけを見ると、</p>
+<div class="f">(−50 − (−170)) ÷ 1.1 ＝ 120 ÷ 1.1 ＝ 109.0909…</div>
+<p>4-4 の連立方程式と同じ 109.0909… が出ました。つまりこの 1 行は、<b>連立方程式の解き方を、点と傾きを入れるだけの形に詰めたもの</b>です。虚部の数には意味がないので、Real で実部だけを取ります。</p>
+
+<div class="box point"><b>実際の試験では</b>傾きは、点の引き算から <code>tan(Arg(B − A)) ＋ i</code> と打てば作れます。ΔY ÷ ΔX を自分で計算しなくて済みます。</div>
+
+<div class="box ng"><b>使えないとき</b>真東・真西に走る線（方向角 90° や 270°、つまり 2 点の X 座標が同じ線）は、北へ 1 も進まないので<b>傾きが無限大</b>になります。連立方程式でも電卓の式でも使えません。でもこのときは、交点の X が<b>線の 2 点と同じ X にもう決まっています</b>。だから 1 行目は要らず、2 行目（交点の X から Y を出す式）を、もう一方の線で使うだけで済みます（<a href="oyo.html#axis">応用編の軸平行パターン</a>で扱います）。</div>
+
+<h3>練習 4</h3>
+<ol class="q">
+<li>直線①が A（10, 20）から B（20, 25）へ、直線②が C（10, 30）から D（20, 26）へ。交点を、傾きを自分で出して交点の公式で。</li>
+<li>A（64.70, 90.05）、B（85.95, 97.30）、C（70.20, 101.40）、D（79.80, 88.10）。直線 AB と直線 CD の交点を電卓で。</li>
+</ol>
+<details><summary>答えと解説</summary>
+<div class="box ex"><b>1. 傾きを自分で出して、交点の公式で</b>
+<ol class="steps"><li><b>傾き</b>（ΔY ÷ ΔX）：① 5 ÷ 10 ＝ 0.5、② (−4) ÷ 10 ＝ −0.4</li><li><b>交点の公式</b>：傾き ＋ <i>i</i> をメモリ X・Y に → 1 行目（紙にメモ）→ 2 行目</li></ol><table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>10 <kbd>+</kbd> 20 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>A</kbd></td><td class="scr">10+20<i>i</i>→A</td><td>A の座標を、メモリ A にしまう</td></tr>
+<tr><td>10 <kbd>+</kbd> 30 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>C</kbd></td><td class="scr">10+30<i>i</i>→C</td><td>C の座標を、メモリ C にしまう</td></tr>
+<tr><td>0.5 <kbd>+</kbd> <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>X</kbd></td><td class="scr">0.5+i→X</td><td>直線①の「傾き ＋ <i>i</i>」</td></tr>
+<tr><td><kbd>(−)</kbd> 0.4 <kbd>+</kbd> <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>Y</kbd></td><td class="scr">−0.4+i→Y</td><td>直線②の「傾き ＋ <i>i</i>」</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>5</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>3</kbd></span> <kbd>(</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>C</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>C</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>Y</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>Y</kbd></span> <kbd>)</kbd> <kbd>÷</kbd> <kbd>(</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>Y</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>Y</kbd></span> <kbd>)</kbd> <kbd>)</kbd></td><td class="scr">Real((AX−CY)÷(X−Y))</td><td>式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">21.11111111</td><td>交点の X（紙にメモ）</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>5</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>3</kbd></span> <kbd>(</kbd> <kbd>Ans</kbd> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>)</kbd></td><td class="scr">Real((Ans−A)X)</td><td>交点の公式 2 行目。式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">25.55555556</td><td>交点の Y</td></tr>
+</table><p><b>答え</b>　（21.11, 25.56）</p>
+</div>
+<div class="box ex"><b>2. 電卓で</b>
+<div class="fig"><svg viewBox="11 -1 192 293" width="192"><line class="bl" x1="60.2" y1="260.0" x2="146.5" y2="7.0"/><line class="rd" x1="177.7" y1="203.1" x2="19.3" y2="88.8"/><circle class="dot" cx="60.2" cy="260.0" r="4"/><circle class="dot" cx="135.2" cy="40.0" r="4"/><circle class="dot" cx="177.7" cy="203.1" r="4"/><circle class="dot" cx="40.0" cy="103.7" r="4"/><circle class="dot" cx="99.0" cy="146.3" r="4"/><text x="57.3" y="281.6" text-anchor="middle">A</text><text x="132.4" y="28.4" text-anchor="middle">B</text><text x="190.8" y="219.6" text-anchor="middle">C</text><text x="37.2" y="92.0" text-anchor="middle">D</text><text x="58.8" y="154.1" text-anchor="middle">E（交点）</text></svg><div class="cap">練習 4-2 の図</div></div><p><b>考え方</b>　傾きは tan(Arg(B − A)) で作れる（ΔY ÷ ΔX を手で割らなくてよい）。あとは 4-5 の手順。</p><table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>64.7 <kbd>+</kbd> 90.05 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>A</kbd></td><td class="scr">64.7+90.05<i>i</i>→A</td><td>A の座標を、メモリ A にしまう</td></tr>
+<tr><td>85.95 <kbd>+</kbd> 97.3 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>B</kbd></td><td class="scr">85.95+97.3<i>i</i>→B</td><td>B の座標を、メモリ B にしまう</td></tr>
+<tr><td>70.2 <kbd>+</kbd> 101.4 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>C</kbd></td><td class="scr">70.2+101.4<i>i</i>→C</td><td>C の座標を、メモリ C にしまう</td></tr>
+<tr><td>79.8 <kbd>+</kbd> 88.1 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>D</kbd></td><td class="scr">79.8+88.1<i>i</i>→D</td><td>D の座標を、メモリ D にしまう</td></tr>
+<tr><td><kbd>tan</kbd> <span class="c789"><kbd>Apps</kbd> <kbd>3</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>1</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>B</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>B</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd> <kbd>)</kbd> <kbd>+</kbd> <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>X</kbd></td><td class="scr">tan(Arg(B−A))+i→X</td><td>直線①の「傾き ＋ <i>i</i>」を、メモリ X に（傾き 0.3411764706）</td></tr>
+<tr><td><kbd>tan</kbd> <span class="c789"><kbd>Apps</kbd> <kbd>3</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>1</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>D</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>D</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>C</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>C</kbd></span> <kbd>)</kbd> <kbd>)</kbd> <kbd>+</kbd> <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>Y</kbd></td><td class="scr">tan(Arg(D−C))+i→Y</td><td>直線②の「傾き ＋ <i>i</i>」を、メモリ Y に（傾き −1.385416667）</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>5</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>3</kbd></span> <kbd>(</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>C</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>C</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>Y</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>Y</kbd></span> <kbd>)</kbd> <kbd>÷</kbd> <kbd>(</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>Y</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>Y</kbd></span> <kbd>)</kbd> <kbd>)</kbd></td><td class="scr">Real((AX−CY)÷(X−Y))</td><td>式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">75.6868337</td><td>交点の X（紙にメモ）</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>5</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>3</kbd></span> <kbd>(</kbd> <kbd>Ans</kbd> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>X</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>X</kbd></span> <kbd>)</kbd></td><td class="scr">Real((Ans−A)X)</td><td>式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">93.79844914</td><td>交点の Y</td></tr>
+</table><p><b>答え</b>　（75.69, 93.80）</p>
+</div>
+</details>
+
+<div class="box point"><b>この章の練習</b><a href="drill.html#intersection">ドリル「2 本の線の交点」</a>で、数字のちがう問題を解けます。</div>
+
+<!-- ================================================================ -->
+<h2 id="c5"><a class="totop" href="#top">もくじ ↑</a>第5章 面積</h2>
+
+<h3 id="s5-1">5-1 面積は Conjg の公式で</h3>
+<p>座標から面積を出すときは、電卓の <span class="c789"><kbd>Apps</kbd> <kbd>4</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>2</kbd></span>（Conjg<span class="yomi">（コンジュゲート）</span>。i の付いた方の符号を反対にするキー）を使います。何角形でも同じ形です。</p>
+<ol class="steps">
+<li>点を<b>右回り</b>（北から見て時計回り）の順に並べる。</li>
+<li>「Conjg(前の点) × 次の点」を、<b>点の数だけ</b>足す。最後は最初の点に戻る。</li>
+<li>÷ 2 して、<b>虚部</b>（<i>i</i> の付いた方）が面積。</li>
+</ol>
+<div class="fig"><svg viewBox="22 14 219 200" width="219"><polygon class="area" points="46.0,186.0 74.0,46.0 214.0,130.0"/><line class="bl" x1="46.0" y1="186.0" x2="74.0" y2="46.0"/><polygon class="hbl" points="74.0,46.0 76.5,56.7 67.6,54.9"/><line class="bl" x1="74.0" y1="46.0" x2="214.0" y2="130.0"/><polygon class="hbl" points="214.0,130.0 203.1,128.7 207.7,121.0"/><line class="bl" x1="214.0" y1="130.0" x2="46.0" y2="186.0"/><polygon class="hbl" points="46.0,186.0 54.1,178.6 56.9,187.1"/><circle class="dot" cx="46.0" cy="186.0" r="4"/><circle class="dot" cx="74.0" cy="46.0" r="4"/><circle class="dot" cx="214.0" cy="130.0" r="4"/><text x="34.6" y="204.8" text-anchor="middle">A</text><text x="64.9" y="35.5" text-anchor="middle">B</text><text x="228.6" y="135.0" text-anchor="middle">C</text></svg><div class="cap">図17　A → B → C → A と、北から見て時計回り（右回り）に回る順に並べる</div></div>
+<div class="f"><span class="fname">Conjg の公式</span><br>面積 ＝ ( Conjg(A) B ＋ Conjg(B) C ＋ Conjg(C) A ) ÷ 2 の虚部</div>
+<div class="box ex"><b>例題</b>A（10, 10）、B（20, 12）、C（14, 22）の三角形の面積。
+<table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td colspan="3" class="note">（A・B・C の座標は、メモリ A・B・C にしまってある）</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>4</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>2</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>B</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>B</kbd></span> <kbd>+</kbd> <span class="c789"><kbd>Apps</kbd> <kbd>4</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>2</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>B</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>B</kbd></span> <kbd>)</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>C</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>C</kbd></span> <kbd>+</kbd> <span class="c789"><kbd>Apps</kbd> <kbd>4</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>2</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>C</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>C</kbd></span> <kbd>)</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span></td><td class="scr">Conjg(A)B+Conjg(B)C+Conjg(C)A</td><td>式を確かめる。最後が A に戻っているか</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">1224+112<i>i</i></td><td></td></tr>
+<tr><td><kbd>÷</kbd> 2</td><td class="scr">Ans÷2</td><td></td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">612+56<i>i</i></td><td>虚部の 56 が面積</td></tr>
+</table>
+<p><b>答え</b>　56（実部の 612 には意味がないので見ない）</p></div>
+<div class="box point"><b>五角形・六角形でも同じ</b>
+<div class="f">五角形：Conjg(A) B ＋ Conjg(B) C ＋ Conjg(C) D ＋ Conjg(D) E ＋ Conjg(E) A</div>
+<p>項の数は<b>点の数と同じ</b>（五角形なら 5 項）。打ち終わったら数えて確かめます。</p></div>
+<div class="box point"><b>点の順番</b>左回りに並べると、虚部がマイナスで出ます（大きさは同じ）。そのときは正の値で読みます。</div>
+<details><summary>しくみ（読み飛ばしてよい）</summary>
+<p>三角形の面積は、三角形を囲む長方形から、まわりの直角三角形を引けば出ます（下の図なら 120 − 10 − 30 − 24 ＝ 56）。何角形でも三角形に分ければ出せます。Conjg の足し算は、この計算を電卓がすべての辺についてまとめてやっているのと同じです。</p>
+<div class="fig"><svg viewBox="-106 18 452 249" width="452"><polygon class="area2" points="50.0,216.7 83.3,50.0 50.0,50.0"/><polygon class="area2" points="83.3,50.0 250.0,150.0 250.0,50.0"/><polygon class="area2" points="250.0,150.0 50.0,216.7 250.0,216.7"/><polygon class="area" points="50.0,216.7 83.3,50.0 250.0,150.0"/><line class="dh" x1="50.0" y1="216.7" x2="50.0" y2="50.0"/><line class="dh" x1="50.0" y1="50.0" x2="250.0" y2="50.0"/><line class="dh" x1="250.0" y1="50.0" x2="250.0" y2="216.7"/><line class="dh" x1="250.0" y1="216.7" x2="50.0" y2="216.7"/><circle class="dot" cx="50.0" cy="216.7" r="4"/><circle class="dot" cx="83.3" cy="50.0" r="4"/><circle class="dot" cx="250.0" cy="150.0" r="4"/><text x="4.0" y="235.4" text-anchor="middle">A（10, 10）</text><text x="39.6" y="39.5" text-anchor="middle">B（20, 12）</text><text x="299.2" y="155.0" text-anchor="middle">C（14, 22）</text><text x="59.5" y="118.9" text-anchor="middle">10</text><text x="194.4" y="88.3" text-anchor="middle">30</text><text x="183.3" y="203.4" text-anchor="middle">24</text><text x="-28.5" y="134.3" text-anchor="middle">X が 10〜20（縦 10）</text><text x="150.0" y="257.7" text-anchor="middle">Y が 10〜22（横 12）</text></svg><div class="cap">図18　長方形 120 から、まわりの 3 つ（10・30・24）を引くと、まん中の三角形 56</div></div>
+<div class="fig"><svg viewBox="13 7 274 210" width="274"><polygon class="area" points="40.0,81.9 165.7,40.0 260.0,102.9"/><polygon class="area2" points="40.0,81.9 260.0,102.9 197.1,186.7"/><polygon class="area" points="40.0,81.9 197.1,186.7 71.4,176.2"/><circle class="dot" cx="40.0" cy="81.9" r="4"/><circle class="dot" cx="165.7" cy="40.0" r="4"/><circle class="dot" cx="260.0" cy="102.9" r="4"/><circle class="dot" cx="197.1" cy="186.7" r="4"/><circle class="dot" cx="71.4" cy="176.2" r="4"/><text x="25.8" y="84.1" text-anchor="middle">A</text><text x="168.6" y="28.4" text-anchor="middle">B</text><text x="274.6" y="107.9" text-anchor="middle">C</text><text x="206.2" y="207.2" text-anchor="middle">D</text><text x="60.1" y="195.0" text-anchor="middle">E</text></svg><div class="cap">図19　五角形は、A から線を引いて三角形 3 つに分けられる。三角形の面積を足せばよい</div></div>
+</details>
+<p class="chk"><b>合わないときに見る順番</b>：① 項の数 ＝ 点の数か、最後が最初の点に戻っているか → ② 各 Conjg の後に <kbd>)</kbd> があるか → ③ ÷ 2 したか</p>
+
+<h3 id="s5-2">5-2 四角形は対角線で一発</h3>
+<p>土地は四角形がとても多いので、四角形だけの近道を使います。<b>対角線は「1 つおきの点どうし」</b>、つまり A − C と B − D です。</p>
+<div class="fig"><svg viewBox="16 10 248 242" width="248"><polygon class="area" points="40.0,223.3 56.7,56.7 240.0,40.0 223.3,206.7"/><line class="rd" x1="40.0" y1="223.3" x2="240.0" y2="40.0"/><line class="rd" x1="56.7" y1="56.7" x2="223.3" y2="206.7"/><path class="bl" d="M156.2,116.8 A22,22 0 0,1 156.4,146.4"/><polygon class="hbl" points="156.4,146.4 159.7,135.9 166.4,142.0"/><circle class="dot" cx="40.0" cy="223.3" r="4"/><circle class="dot" cx="56.7" cy="56.7" r="4"/><circle class="dot" cx="240.0" cy="40.0" r="4"/><circle class="dot" cx="223.3" cy="206.7" r="4"/><text x="28.6" y="242.1" text-anchor="middle">A</text><text x="45.3" y="47.9" text-anchor="middle">B</text><text x="251.4" y="31.2" text-anchor="middle">C</text><text x="234.7" y="225.4" text-anchor="middle">D</text><text class="tbl" x="176.0" y="136.5" text-anchor="middle">θ</text></svg><div class="cap">図20　対角線 AC と BD（赤）、そのなす角 θ。四角形 ＝ ½ × AC × BD × sin θ</div></div>
+<div class="f"><span class="fname">対角線の公式</span><br>四角形の面積 ＝ Conjg(A − C) × (B − D) ÷ 2 の虚部</div>
+<p>（中身は「½ × 対角線 × 対角線 × sin θ」という四角形の面積の式と同じ値です。）</p>
+<div class="box ex"><b>例題</b>A（10, 10）、B（20, 11）、C（21, 22）、D（11, 21）の四角形の面積。
+<ol class="steps"><li><b>並び順</b>：A → B → C → D が右回りで、辺が交差していないことを図で確かめる（対角線が「1 つおき」になるため）</li><li><b>対角線の公式</b>：Conjg(A − C)(B − D) ÷ 2 の虚部</li></ol><table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td colspan="3" class="note">（A・B・C・D の座標は、メモリ A・B・C・D にしまってある）</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>4</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>2</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>C</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>C</kbd></span> <kbd>)</kbd> <kbd>(</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>B</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>B</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>D</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>D</kbd></span> <kbd>)</kbd></td><td class="scr">Conjg(A−C)(B−D)</td><td>式を確かめる。A − C と B − D になっているか</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">21+218<i>i</i></td><td></td></tr>
+<tr><td><kbd>÷</kbd> 2</td><td class="scr">Ans÷2</td><td></td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">10.5+109<i>i</i></td><td>虚部の 109 が面積</td></tr>
+</table>
+<p><b>答え</b>　109（Conjg の公式で 4 項足しても同じ 109 になる）</p></div>
+<div class="box point"><b>どちらを使う？</b>四角形なら対角線の公式（1 項）、五角形以上なら Conjg の公式。</div>
+<p class="chk"><b>合わないときに見る順番</b>：① 対角線は「1 つおきの点」（A − C と B − D）か → ② Conjg のかっこが A − C だけを囲んでいるか → ③ 虚部を読んでいるか</p>
+
+<h3 id="s5-3">5-3 地積（登記に書く面積）の書き方</h3>
+<p>登記の申請書に書く面積（地積）は、計算結果を<b>切り捨て</b>ます。</p>
+<table>
+<tr><th>地目</th><th>書き方</th><th>例：196.578 ㎡</th></tr>
+<tr><td>宅地・鉱泉地</td><td>小数第 2 位まで（第 3 位以下は切り捨て）</td><td>196.57 ㎡</td></tr>
+<tr><td>それ以外（畑・雑種地・公衆用道路など）</td><td>整数まで（小数は切り捨て）</td><td>196 ㎡</td></tr>
+</table>
+<p>ただし、宅地以外でも 10 ㎡以下なら小数第 2 位まで書きます。</p>
+
+<h3>練習 5</h3>
+<ol class="q">
+<li>次の五角形の面積を Conjg の公式で求め、宅地の場合と畑の場合の地積を答えよ。<br>
+A（100.00, 100.00）、B（104.00, 112.00）、C（98.00, 121.00）、D（90.00, 115.00）、E（91.00, 103.00）</li>
+<li>次の四角形（宅地）の地積を、対角線の公式で求めよ。<br>A（200.00, 200.00）、B（209.00, 204.00）、C（206.00, 217.00）、D（198.00, 213.00）</li>
+</ol>
+<details><summary>答えと解説</summary>
+<div class="box ex"><b>1. 五角形 ABCDE</b>
+<div class="fig"><svg viewBox="13 7 254 196" width="254"><polygon class="area" points="40.0,78.1 154.3,40.0 240.0,97.1 182.9,173.3 68.6,163.8"/><line class="bl" x1="40.0" y1="78.1" x2="154.3" y2="40.0"/><polygon class="hbl" points="154.3,40.0 146.2,47.4 143.4,38.9"/><line class="bl" x1="154.3" y1="40.0" x2="240.0" y2="97.1"/><polygon class="hbl" points="240.0,97.1 229.2,95.3 234.2,87.9"/><line class="bl" x1="240.0" y1="97.1" x2="182.9" y2="173.3"/><polygon class="hbl" points="182.9,173.3 185.3,162.6 192.5,168.0"/><line class="bl" x1="182.9" y1="173.3" x2="68.6" y2="163.8"/><polygon class="hbl" points="68.6,163.8 78.9,160.2 78.2,169.1"/><line class="bl" x1="68.6" y1="163.8" x2="40.0" y2="78.1"/><polygon class="hbl" points="40.0,78.1 47.4,86.2 38.9,89.0"/><circle class="dot" cx="40.0" cy="78.1" r="4"/><circle class="dot" cx="154.3" cy="40.0" r="4"/><circle class="dot" cx="240.0" cy="97.1" r="4"/><circle class="dot" cx="182.9" cy="173.3" r="4"/><circle class="dot" cx="68.6" cy="163.8" r="4"/><text x="25.8" y="80.2" text-anchor="middle">A</text><text x="157.1" y="28.4" text-anchor="middle">B</text><text x="254.6" y="102.1" text-anchor="middle">C</text><text x="192.0" y="193.9" text-anchor="middle">D</text><text x="57.2" y="182.6" text-anchor="middle">E</text></svg><div class="cap">A → B → C → D → E → A と右回り</div></div><p><b>考え方</b>　A → B → C → D → E が右回りになっているのを図で確かめてから、Conjg の式を作る。最後は A に戻る。</p><table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>100 <kbd>+</kbd> 100 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>A</kbd></td><td class="scr">100+100<i>i</i>→A</td><td>A の座標を、メモリ A にしまう</td></tr>
+<tr><td>104 <kbd>+</kbd> 112 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>B</kbd></td><td class="scr">104+112<i>i</i>→B</td><td>B の座標を、メモリ B にしまう</td></tr>
+<tr><td>98 <kbd>+</kbd> 121 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>C</kbd></td><td class="scr">98+121<i>i</i>→C</td><td>C の座標を、メモリ C にしまう</td></tr>
+<tr><td>90 <kbd>+</kbd> 115 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>D</kbd></td><td class="scr">90+115<i>i</i>→D</td><td>D の座標を、メモリ D にしまう</td></tr>
+<tr><td>91 <kbd>+</kbd> 103 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>E</kbd></td><td class="scr">91+103<i>i</i>→E</td><td>E の座標を、メモリ E にしまう</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>4</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>2</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>)</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>B</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>B</kbd></span> <kbd>+</kbd> <span class="c789"><kbd>Apps</kbd> <kbd>4</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>2</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>B</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>B</kbd></span> <kbd>)</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>C</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>C</kbd></span> <kbd>+</kbd> <span class="c789"><kbd>Apps</kbd> <kbd>4</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>2</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>C</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>C</kbd></span> <kbd>)</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>D</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>D</kbd></span> <kbd>+</kbd> <span class="c789"><kbd>Apps</kbd> <kbd>4</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>2</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>D</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>D</kbd></span> <kbd>)</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>E</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>E</kbd></span> <kbd>+</kbd> <span class="c789"><kbd>Apps</kbd> <kbd>4</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>2</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>E</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>E</kbd></span> <kbd>)</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span></td><td class="scr">Conjg(A)B+Conjg(B)C+Conjg(C)D+Conjg(D)E+Conjg(E)A</td><td>式を確かめる。5 項あるか、最後が A に戻っているか</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">107514+393<i>i</i></td><td></td></tr>
+<tr><td><kbd>÷</kbd> 2</td><td class="scr">Ans÷2</td><td>2 で割る</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">53757+196.5<i>i</i></td><td>虚部の 196.5 が面積</td></tr>
+</table><p><b>地積</b>　面積 196.5 ㎡。宅地なら第 2 位まで → <b>196.50 ㎡</b>。畑なら整数まで切り捨て → <b>196 ㎡</b>。</p>
+</div>
+<div class="box ex"><b>2. 四角形 ABCD（対角線の公式で）</b>
+<div class="fig"><svg viewBox="13 10 254 188" width="254"><polygon class="area" points="40.0,145.9 87.1,40.0 240.0,75.3 192.9,169.4"/><line class="rd" x1="40.0" y1="145.9" x2="240.0" y2="75.3"/><line class="rd" x1="87.1" y1="40.0" x2="192.9" y2="169.4"/><circle class="dot" cx="40.0" cy="145.9" r="4"/><circle class="dot" cx="87.1" cy="40.0" r="4"/><circle class="dot" cx="240.0" cy="75.3" r="4"/><circle class="dot" cx="192.9" cy="169.4" r="4"/><text x="25.8" y="153.7" text-anchor="middle">A</text><text x="75.7" y="31.2" text-anchor="middle">B</text><text x="254.2" y="77.4" text-anchor="middle">C</text><text x="204.3" y="188.2" text-anchor="middle">D</text></svg><div class="cap">対角線は A − C と B − D</div></div><p><b>考え方</b>　A → B → C → D が右回りで、辺が交差していないのを確かめる。対角線は A − C と B − D。</p><table class="keys">
+<tr><th>押すキー</th><th>画面</th><th>意味</th></tr>
+<tr><td>200 <kbd>+</kbd> 200 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>A</kbd></td><td class="scr">200+200<i>i</i>→A</td><td>A の座標を、メモリ A にしまう</td></tr>
+<tr><td>209 <kbd>+</kbd> 204 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>B</kbd></td><td class="scr">209+204<i>i</i>→B</td><td>B の座標を、メモリ B にしまう</td></tr>
+<tr><td>206 <kbd>+</kbd> 217 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>C</kbd></td><td class="scr">206+217<i>i</i>→C</td><td>C の座標を、メモリ C にしまう</td></tr>
+<tr><td>198 <kbd>+</kbd> 213 <span class="c789"><kbd>ENG</kbd></span><span class="c570"><kbd>i</kbd></span> <span class="c789"><kbd>Shift</kbd> <kbd>RCL</kbd></span><span class="c570"><kbd>STO</kbd></span> <kbd>D</kbd></td><td class="scr">198+213<i>i</i>→D</td><td>D の座標を、メモリ D にしまう</td></tr>
+<tr><td><span class="c789"><kbd>Apps</kbd> <kbd>4</kbd></span><span class="c570"><kbd>Apps</kbd> <kbd>2</kbd></span> <span class="c789"><kbd>RCL</kbd> <kbd>A</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>A</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>C</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>C</kbd></span> <kbd>)</kbd> <kbd>(</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>B</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>B</kbd></span> <kbd>−</kbd> <span class="c789"><kbd>RCL</kbd> <kbd>D</kbd></span><span class="c570"><kbd>Alpha</kbd> <kbd>D</kbd></span> <kbd>)</kbd></td><td class="scr">Conjg(A−C)(B−D)</td><td>式を確かめる</td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">87+241<i>i</i></td><td></td></tr>
+<tr><td><kbd>÷</kbd> 2</td><td class="scr">Ans÷2</td><td></td></tr>
+<tr class="eq"><td><kbd>=</kbd></td><td class="scr">43.5+120.5<i>i</i></td><td>虚部 120.5 が面積</td></tr>
+</table><p><b>地積</b>　面積 120.5 ㎡。宅地なので小数第 2 位まで → <b>120.50 ㎡</b>。</p>
+</div>
+</details>
+
+<div class="box point"><b>この章の練習</b><a href="drill.html#area_conjg">ドリル「面積」</a>で、数字のちがう問題を解けます。</div>
+
+<!-- ================================================================ -->
+<h2 id="c6"><a class="totop" href="#top">もくじ ↑</a>公式一覧<small>ドリルを解くときに見返す用</small></h2>
+<p>電卓で使う公式に名前を付けて並べました。ドリルの解説も、この名前で呼びます。右上の数字は、説明している節です。手計算の式（三平方や cos・sin など）は、電卓の式の中身を理解するためのもので、試験で使うのはここに並べた式だけです。</p>
+<div class="flist"><div class="fl"><div class="fn"><span>距離の公式</span><a class="fc" href="#s2-6">2-6</a></div><div class="fx"><code>Abs(B − A)</code></div><div class="fu">使う場面：2 点の距離、辺長</div></div><div class="fl"><div class="fn"><span>方向角の公式</span><a class="fc" href="#s2-6">2-6</a></div><div class="fx"><code>Arg(B − A)</code>（マイナスなら ＋ 360°）</div><div class="fu">使う場面：2 点の向き</div></div><div class="fl"><div class="fn"><span>移動の公式</span><a class="fc" href="#s3-2">3-2</a></div><div class="fx"><code>A ＋ L∠θ</code></div><div class="fu">使う場面：向きと距離から点を出す、地積測量図の距離で点を復元</div></div><div class="fl"><div class="fn"><span>放射の公式</span><a class="fc" href="#s3-3">3-3</a></div><div class="fx"><code>器械点 ＋ 距離∠(Arg(後視点 − 器械点) ＋ 観測角)</code></div><div class="fu">使う場面：観測の表から点を出す</div></div><div class="fl"><div class="fn"><span>交点の公式</span><a class="fc" href="#s4-5">4-5</a></div><div class="fx">準備：メモリ X ＝ 傾き① ＋ <i>i</i>、メモリ Y ＝ 傾き② ＋ <i>i</i>（傾きは <code>tan(Arg(B − A))</code>）<br>1 行目：<code>Real((A X − C Y) ÷ (X − Y))</code> → 紙にメモ<br>2 行目：<code>Real((Ans − A) X)</code></div><div class="fu">使う場面：2 本の線の交点（後退線・隅切り・延長でも使う）</div></div><div class="fl"><div class="fn"><span>Conjg の公式</span><a class="fc" href="#s5-1">5-1</a></div><div class="fx">(<code>Conjg(A)B ＋ Conjg(B)C ＋ … ＋ Conjg(最後の点)A</code>) ÷ 2 の虚部<br>（項の数 ＝ 点の数。右回りに並べる）</div><div class="fu">使う場面：何角形でも面積</div></div><div class="fl"><div class="fn"><span>対角線の公式</span><a class="fc" href="#s5-2">5-2</a></div><div class="fx"><code>Conjg(A − C)(B − D) ÷ 2</code> の虚部</div><div class="fu">使う場面：四角形の面積</div></div><div class="fl"><div class="fn"><span>正弦定理</span><a class="fc" href="#s1-5">1-5</a></div><div class="fx">知りたい辺 ＝ 分かっている辺 × sin(知りたい辺の向かいの角) ÷ sin(分かっている辺の向かいの角)</div><div class="fu">使う場面：直角でない三角形の辺（隅切りの剪除長、三角形）</div></div></div>
+<div class="box point"><b>いつも守る約束</b>
+<ul>
+<li><b>丸め</b>：点の座標は小数第 3 位を四捨五入して第 2 位まで。次の計算には丸めた値を入れ直す。作図のためだけの点（隅切りの頂点など）は丸めない。</li>
+<li><b>地積</b>：宅地・鉱泉地は小数第 2 位まで、それ以外は整数まで、どちらも切り捨て。10 ㎡以下は小数第 2 位まで。</li>
+<li><b>引き算の順</b>：いつも「行き先 − 出発点」。</li>
+<li><b>メモリ</b>：点の座標は、点の名前と同じメモリへ（同じ名前のメモリが無い点は、空いているメモリへ）。途中の答えはメモリにしまわず紙にメモして Ans で続ける。</li>
+</ul></div>
+
+<h2 id="c7"><a class="totop" href="#top">もくじ ↑</a>この先へ</h2>
+<p>ここまでで、道具が 4 つそろいました（式は上の公式一覧）。</p>
+<table>
+<tr><th>道具</th><th>電卓</th><th>章</th></tr>
+<tr><td>2 点から距離と向き</td><td><code>Abs(B − A)</code>、<code>Arg(B − A)</code></td><td>第2章</td></tr>
+<tr><td>向きと距離で動かす</td><td><code>A ＋ L∠θ</code></td><td>第3章</td></tr>
+<tr><td>2 本の線の交点</td><td>交点の公式（覚える 2 行）<br><code>Real((A X − C Y) ÷ (X − Y))</code>（メモ）<br><code>Real((Ans − A) X)</code></td><td>第4章</td></tr>
+<tr><td>面積</td><td>Conjg の公式・対角線の公式</td><td>第5章</td></tr>
+</table>
+<p>試験に出る計算（隅切り、道路の後退線、地積測量図からの復元、土地を指定の面積で分ける…）は、ほとんどがこの 4 つの組み合わせです。次は<a href="oyo.html">応用編</a>で、組み合わせ方（パターン）を例題で 1 つずつ見て、<a href="drill.html">ドリル</a>で数字のちがう問題を解きます。</p>
+<div class="kfoot"><a href="dentaku.html">‹ 電卓の使い方</a><a href="oyo.html">応用編 ›</a></div></main>
+<script>(function(){var r=document.documentElement;function set(c){r.setAttribute('data-calc',c);document.querySelectorAll('.calcbar button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-c')===c?'true':'false')});try{localStorage.setItem('keisan-calc',c)}catch(e){}}
+var c='789';try{c=localStorage.getItem('keisan-calc')||'789'}catch(e){}set(c);document.querySelectorAll('.calcbar button').forEach(function(b){b.addEventListener('click',function(){set(b.getAttribute('data-c'))})})})();</script></body>
+</html>

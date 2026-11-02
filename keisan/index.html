@@ -1,0 +1,99 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-C34PHRSJN4"></script>
+<script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag("js", new Date());gtag("config", "G-C34PHRSJN4");</script>
+<meta name="description" content="土地家屋調査士試験の記述式（土地）の座標計算を、関数電卓 Canon F-789SG で解けるようになるための教材。電卓の使い方・入門・応用編（13 パターン）・ドリル（39 問）。">
+<link rel="canonical" href="https://cholabo.jp/keisan/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="土地家屋調査士 過去問アプリ"><meta property="og:title" content="座標計算（記述式・土地）の教材｜土地家屋調査士 記述式の座標計算"><meta property="og:description" content="土地家屋調査士試験の記述式（土地）の座標計算を、関数電卓 Canon F-789SG で解けるようになるための教材。電卓の使い方・入門・応用編（13 パターン）・ドリル（39 問）。"><meta property="og:url" content="https://cholabo.jp/keisan/"><meta property="og:image" content="https://cholabo.jp/ogimage.png"><meta property="og:locale" content="ja_JP"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>座標計算（記述式・土地）の教材｜土地家屋調査士 記述式の座標計算</title>
+<!-- 生成物。textbook/tools/keisan/build_keisan_index.py で書き出す -->
+<style>
+:root{--bg:#fdfcf9;--ink:#222;--sub:#666;--line:#ddd;--accent:#2f6fb3;--accent2:#c0392b;--accent3:#2e8b57;--pt:#fff6d6;--ptl:#e6c75a;--ex:#eef4fb;--exl:#9cbbe0;--ng:#fdecea;--ngl:#e3a39b;--code:#f1f1f1}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1b1c1e;--ink:#e8e8e8;--sub:#aaa;--line:#444;--accent:#7fb2ea;--accent2:#ef8577;--accent3:#6fcf97;--pt:#3a3320;--ptl:#8c7630;--ex:#1f2a36;--exl:#3e5f86;--ng:#3a2422;--ngl:#8a4a42;--code:#2a2b2e}}
+:root[data-theme="dark"]{--bg:#1b1c1e;--ink:#e8e8e8;--sub:#aaa;--line:#444;--accent:#7fb2ea;--accent2:#ef8577;--accent3:#6fcf97;--pt:#3a3320;--ptl:#8c7630;--ex:#1f2a36;--exl:#3e5f86;--ng:#3a2422;--ngl:#8a4a42;--code:#2a2b2e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.85 "Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif}
+main{max-width:760px;margin:0 auto;padding:24px 16px 80px}
+h1{font-size:28px;margin:8px 0 4px}
+.lead{color:var(--sub);margin:0 0 24px}
+h2{font-size:23px;margin:64px 0 12px;padding-bottom:6px;border-bottom:3px solid var(--accent)}
+h2 small{display:block;font-size:14px;color:var(--sub);font-weight:normal}
+h3{font-size:19px;margin:36px 0 8px}
+p{margin:10px 0}
+.box{border-radius:10px;padding:12px 16px;margin:18px 0;border-left:6px solid}
+.point{background:var(--pt);border-color:var(--ptl)}
+.ex{background:var(--ex);border-color:var(--exl)}
+.ng{background:var(--ng);border-color:var(--ngl)}
+.box>b:first-child{display:block;margin-bottom:4px}
+.f{font-size:19px;text-align:center;margin:14px 0;font-family:"Times New Roman",serif}
+.f i{font-style:italic}
+table{border-collapse:collapse;margin:10px 0;font-size:16px;max-width:100%}
+th,td{border:1px solid var(--line);padding:4px 10px;text-align:left;vertical-align:top}
+th{background:var(--code)}
+kbd{display:inline-block;white-space:nowrap;min-width:1.7em;padding:0 5px;margin:1px;border:1px solid var(--sub);border-bottom-width:2px;border-radius:5px;font:14px/1.6 sans-serif;text-align:center;background:var(--bg)}
+code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:15px}
+.fig{text-align:center;margin:16px 0}
+.fig svg{max-width:100%;height:auto}
+.fig .cap{font-size:14px;color:var(--sub);margin-top:2px}
+.figs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.figs .fig{flex:1 1 220px;margin:6px 0}
+details{margin:8px 0 16px;border:1px solid var(--line);border-radius:8px;padding:6px 12px}
+summary{cursor:pointer;color:var(--accent)}
+ol.q>li{margin:10px 0}
+.toc{background:var(--code);border-radius:10px;padding:10px 18px}
+.toc a{color:var(--accent)}
+.steps{counter-reset:s;list-style:none;padding-left:0}
+.steps>li{counter-increment:s;margin:8px 0;padding-left:2.2em;position:relative}
+.steps>li::before{content:counter(s);position:absolute;left:0;top:2px;width:1.6em;height:1.6em;border-radius:50%;background:var(--accent);color:var(--bg);text-align:center;font-size:14px;line-height:1.6em}
+.keys td.scr{font-family:Consolas,"Courier New",monospace;font-size:15px;overflow-wrap:anywhere;min-width:10.5em}
+.keys{width:100%}
+@media (max-width:560px){.keys,.keys tbody{display:block}.keys tr{display:grid;grid-template-columns:auto 1fr;border-bottom:1px solid var(--line)}.keys th{display:none}.keys td{border:0;padding:3px 8px}.keys td:first-child{grid-column:1/3}.keys td.scr{min-width:0}.keys td.note{grid-column:1/3}}
+.keys td:first-child{overflow-wrap:anywhere}
+.keys tr.eq td{background:var(--code)}
+.keys td.note{color:var(--sub);font-size:15px}
+.yomi{font-size:11px;color:var(--sub);font-weight:normal;font-style:normal;margin:0 1px}
+.fname{display:inline-block;font:bold 13px/1.4 sans-serif;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:0 6px;margin-bottom:4px}
+.flist{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media (max-width:560px){.flist{grid-template-columns:1fr}}
+.fl{border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:8px;padding:8px 12px;background:var(--bg)}
+.fn{font-weight:bold;color:var(--accent);display:flex;justify-content:space-between}
+.fc{font-weight:normal;font-size:13px;color:var(--sub)}
+.fx{margin:4px 0;font-size:15px}
+.fu{font-size:13px;color:var(--sub)}
+.miss{margin:14px 0 20px}
+.miss>b{display:block;margin-bottom:2px;color:var(--accent2)}
+.chk{font-size:15px;margin-top:4px}
+ruby{position:relative;display:inline}
+ruby rt{position:absolute;left:50%;transform:translateX(-50%);top:-0.85em;display:block;white-space:nowrap;font-size:10px;line-height:1;color:var(--sub);font-weight:normal;font-style:normal;letter-spacing:0;font-family:sans-serif}
+svg text{font:13px sans-serif;fill:var(--ink)}
+svg .sub{fill:var(--sub)}
+svg .ax,svg .ax0{stroke:var(--ink);stroke-width:1.2}
+svg .ax0{stroke:var(--sub)}
+svg .ln{stroke:var(--ink);stroke-width:1.5;fill:none}
+svg .bl{stroke:var(--accent);stroke-width:2;fill:none}
+svg .rd{stroke:var(--accent2);stroke-width:2.2;fill:none}
+svg .gn{stroke:var(--accent3);stroke-width:2;fill:none}
+svg .dh{stroke:var(--sub);stroke-width:1.2;stroke-dasharray:5 4;fill:none}
+svg .dh0{stroke:var(--sub);stroke-width:1.2;fill:none}
+svg .dot{fill:var(--accent2)}
+svg .hbl,svg .tbl{fill:var(--accent)}
+svg .hrd,svg .trd{fill:var(--accent2)}
+svg .hgn,svg .tgn{fill:var(--accent3)}
+svg .hln,svg .tln,svg .hax0{fill:var(--ink)}
+svg .area{fill:var(--accent);fill-opacity:.18;stroke:var(--accent);stroke-width:1.5}
+svg .area2{fill:var(--accent2);fill-opacity:.15;stroke:var(--accent2);stroke-width:1}
+.kcards{list-style:none;padding:0;margin:16px 0;display:grid;gap:12px}
+.kcards li{border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+.kcards a.kt{font-size:18px;font-weight:bold;text-decoration:none;color:var(--accent)}
+.kcards .kn{display:inline-block;width:1.6em;height:1.6em;line-height:1.6em;text-align:center;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:bold;margin-right:8px}
+.kcards p{margin:6px 0 0}
+main a{color:var(--accent)}
+h2,h3,.toc{scroll-margin-top:64px}
+.knav{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;font-size:14px;margin:4px 0 0;padding:6px 0;border-bottom:1px solid var(--line)}
+.knav a{padding:2px 10px;border-radius:14px;text-decoration:none;color:var(--accent)}
+.knav a[aria-current="page"]{background:var(--accent);color:var(--bg);font-weight:bold}
+.knav .sep{color:var(--sub)}
+.kfoot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:48px 0 24px;padding-top:12px;border-top:1px solid var(--line)}
+.kfoot a{text-decoration:none;color:var(--accent);font-weight:bold}
+h2 .totop{float:right;font-size:13px;font-weight:normal;text-decoration:none;color:var(--sub);margin-top:6px}
+</style></head><body><main><nav class="knav" aria-label="座標計算の教材"><a href="../index.html">‹ アプリ</a><span class="sep">|</span><a href="index.html" aria-current="page">座標計算</a><span class="sep">›</span><a href="dentaku.html">電卓の使い方</a><a href="nyumon.html">入門</a><a href="oyo.html">応用編</a><a href="drill.html">ドリル</a></nav><h1>座標計算（記述式・土地）</h1><p class="lead">土地家屋調査士試験の記述式（土地）で使う座標計算を、関数電卓 Canon F-789SG で解けるようになるための教材です。高校の数学Ⅰ（三角比・三平方の定理）を少し覚えていれば読めるように、図をたくさん使って書きました。上から順に進んでください。</p><ol class="kcards"><li><span class="kn">1</span><a class="kt" href="dentaku.html">電卓の使い方</a><p>キーの場所（写真）、最初の設定、点を 80 ＋ 60<i>i</i> の形で入れる方法、メモリの決まり、この教材の電卓の表の読み方。</p></li><li><span class="kn">2</span><a class="kt" href="nyumon.html">座標計算 入門</a><p>測量の座標と方向角、三角比と正弦定理、2 点から距離と向き、放射、2 本の線の交点、面積。公式は<a href="nyumon.html#c6">公式一覧</a>の 8 つだけです。</p></li><li><span class="kn">3</span><a class="kt" href="oyo.html">応用編</a><p>入門の公式を組み合わせて解く、試験に出る 13 のパターン（後退線・隅切り・平行線で分ける・トラバースなど）を、例題で 1 つずつ。<a href="oyo.html#patterns">パターン一覧</a>もあります。</p></li><li><span class="kn">4</span><a class="kt" href="drill.html">座標計算ドリル</a><p>入門の公式の練習と、応用編のパターンの練習。数字のちがう 39 問。どの問も答えと、段ごとの図・電卓の押し方が開けます。</p></li></ol><div class="box point"><b>進め方</b>入門は読みながら電卓でなぞる → 応用編は例題をなぞる → ドリルで 2〜3 問ずつ解く。解き方を忘れたら、ドリルの「やり方」から応用編へ、応用編の「使う公式」から入門へ戻れます。</div><div class="kfoot"><span></span><a href="dentaku.html">電卓の使い方 ›</a></div></main></body></html>
