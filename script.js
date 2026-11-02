@@ -715,6 +715,7 @@ function hideExplanation() {
   if (!area) return;
   area.classList.add("hidden");
   area.dataset.label = "";
+  document.getElementById("next-btn-bottom").classList.add("hidden");
   qaHide();
 }
 
@@ -725,7 +726,15 @@ function openExplanation() {
   area.classList.remove("hidden");
   toggle.classList.add("hidden");
   toggle.setAttribute("aria-expanded", "true");
+  showBottomNextButton();
   qaShowFor(area.dataset.label);
+}
+
+// 解説の下の「次の問題へ」。文言は上のボタンに合わせる（年度の最後なら「トップに戻る」など）
+function showBottomNextButton() {
+  const bottom = document.getElementById("next-btn-bottom");
+  bottom.textContent = document.getElementById("next-btn").textContent;
+  bottom.classList.remove("hidden");
 }
 
 // 条文カードを組み立てる。
@@ -943,6 +952,7 @@ function showExplanation(question, shouldOpen) {
     area.dataset.label = label;
     if (shouldOpen) {
       area.classList.remove("hidden");
+      showBottomNextButton();
       qaShowFor(label);   // 質問ボックス（送り先が設定されているときだけ出る）
     } else {
       document.getElementById("exp-toggle").classList.remove("hidden");
@@ -1236,6 +1246,11 @@ function renderTimeAttackWrongReview() {
 }
 
 document.getElementById("next-btn").addEventListener("click", newQuestion);
+// 下から押したら、次の問題は頭から読めるように上へ戻す
+document.getElementById("next-btn-bottom").addEventListener("click", () => {
+  window.scrollTo(0, 0);
+  newQuestion();
+});
 
 // 押したときだけ、ボタンの下に小さく 2.5 秒。規則を画面に常に書かずに伝える（2026-10-26 管理人）
 let bookmarkToastTimer = null;

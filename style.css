@@ -700,7 +700,25 @@ main {
 }
 
 #unknown-btn:active,
-#next-btn:active { transform: translateY(2px); }
+#next-btn:active,
+.next-btn-bottom:active { transform: translateY(2px); }
+
+/* 解説の下の「次の問題へ」。見た目は上のボタンと同じ */
+.next-btn-bottom {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  font-family: inherit;
+  font-size: 0.95em;
+  padding: 14px;
+  border: 1.5px solid var(--btn-primary-line);
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+}
+.next-btn-bottom.hidden { display: none; }
 
 :focus-visible {
   outline: 2px solid var(--focus);

@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=10.0">
+  <link rel="stylesheet" href="style.css?v=10.1">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -78,6 +78,8 @@
         <button id="exp-toggle" class="exp-toggle hidden" type="button" aria-expanded="false" aria-controls="explanation">解説を見る</button>
 
         <section id="explanation" class="explanation hidden" aria-label="解説" aria-live="polite"></section>
+        <!-- 解説を読み終えたところから、上に戻らずに進めるように。中身は上の「次の問題へ」と同じ -->
+        <button id="next-btn-bottom" class="next-btn-bottom hidden" type="button">次の問題へ</button>
       </div>
 
       <div id="controls">
@@ -196,6 +198,6 @@
     </template>
   </main>
   <script src="common.js?v=1.9"></script>
-  <script src="script.js?v=4.30"></script>
+  <script src="script.js?v=4.31"></script>
 </body>
 </html>
