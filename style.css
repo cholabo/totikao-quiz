@@ -2684,6 +2684,12 @@ span.qa-ref { text-decoration: none; }
 .qa-vote-btn { width: auto; min-height: 32px; padding: 3px 12px; font-size: 0.85em; background: transparent; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; margin: 0; }
 .qa-vote-btn:hover { background: var(--surface); color: var(--primary); transform: none; }
 .qa-note { margin: 6px 0 0; font-size: 0.74em; color: var(--muted); line-height: 1.6; }
+.qa-q { background: var(--surface); border-radius: 10px; padding: 5px 10px; font-weight: 700; white-space: pre-wrap; overflow-wrap: anywhere; }
+.qa-turn + .qa-turn { border-top: 1px solid var(--line); margin-top: 10px; padding-top: 10px; }
+/* 5 往復したら入力欄ごと閉じる（2026-11-06） */
+.qa-ended { display: none; max-width: 720px; margin: 4px auto 0; font-size: 0.86em; color: var(--muted); }
+.qa-dock.qa-done .qa-form, .qa-dock.qa-done .qa-hints { display: none; }
+.qa-dock.qa-done .qa-ended { display: block; }
 
 /* ===== タグ分けモードの一覧（tagmode.html、2026-10-22）。行全体が押せるボタン ===== */
 .tagmode-area .topic-row { grid-template-columns: 1fr 3em 3.8em; gap: 8px; }   /* 名前が長い（最長 13 文字）ので名前に幅を渡す */

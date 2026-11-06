@@ -1307,6 +1307,18 @@ document.getElementById("share-x-btn").addEventListener("click", () => {
 const QA_ENDPOINT_DEFAULT = "https://cholabo-qa.cholabo.workers.dev";
 const QA_ENDPOINT = (() => { try { return localStorage.getItem("qa.endpoint") || QA_ENDPOINT_DEFAULT; } catch (e) { return QA_ENDPOINT_DEFAULT; } })();
 let qaLastId = null;
+// 同じ肢で 5 往復まで続けて聞ける（2026-11-06 試行）。画面に出ているやり取りだけを AI に渡す。Worker の MAX_TURNS と揃える
+// 5 往復で入力欄ごと閉じる（注意書きは読まれないことが多いので。管理人）。別の肢に移ると最初から
+const QA_MAX_TURNS = 5;
+let qaTurnIds = [], qaDayLeft = null;
+function qaShowMeta() {
+  const rem = document.getElementById("qa-remaining");
+  const turns = qaTurnIds.length ? `この肢はあと ${Math.max(0, QA_MAX_TURNS - qaTurnIds.length)} 往復` : `この肢で ${QA_MAX_TURNS} 往復まで続けて聞けます`;
+  if (rem) rem.textContent = turns + (qaDayLeft === null ? "" : `　今日はあと ${qaDayLeft} 回`);
+  document.getElementById("qa-box")?.classList.toggle("qa-done", qaTurnIds.length >= QA_MAX_TURNS);
+  const sheetClosed = document.getElementById("qa-sheet")?.classList.contains("hidden");
+  document.getElementById("qa-reopen")?.classList.toggle("hidden", !(sheetClosed && qaTurnIds.length));
+}
 function qaUid() {
   try {
     let u = localStorage.getItem("qa.uid");
@@ -1326,6 +1338,8 @@ function qaReset() {
   input.value = ""; input.style.height = "";
   document.getElementById("qa-submit").disabled = false;
   qaLastId = null;
+  qaTurnIds = [];
+  qaShowMeta();
 }
 // 解説を出したときに呼ぶ。タイムアタック中は出さない
 function qaShowFor(label) {
@@ -1365,20 +1379,25 @@ async function qaSubmit(event) {
   const label = box && box.dataset.label;
   const input = document.getElementById("qa-input"), btn = document.getElementById("qa-submit"), st = document.getElementById("qa-status"), ans = document.getElementById("qa-answer"), vote = document.getElementById("qa-vote"), sheet = document.getElementById("qa-sheet");
   const question = String(input.value || "").trim().slice(0, 300);
-  if (!label || !QA_ENDPOINT || question.length < 2) return;
+  if (!label || !QA_ENDPOINT || question.length < 2 || qaTurnIds.length >= QA_MAX_TURNS) return;
   btn.disabled = true; st.textContent = "考えています…（5〜10 秒）";
   try {
-    const res = await fetch(QA_ENDPOINT.replace(/\/$/, "") + "/ask", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ label, question, uid: qaUid() }) });
+    const res = await fetch(QA_ENDPOINT.replace(/\/$/, "") + "/ask", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ label, question, uid: qaUid(), prev: qaTurnIds }) });
     const j = await res.json().catch(() => ({}));
     if (!res.ok) { st.textContent = j.message || "いま答えを作れませんでした。少し待ってからもう一度お試しください。"; btn.disabled = false; return; }
-    ans.innerHTML = qaRender(j.answer, j.refs);
-    sheet.classList.remove("hidden"); sheet.scrollTop = 0;
+    // やり取りは積んでいく（前の回答を見ながら続けて聞けるように）。一番新しい質問の頭が見える位置へ
+    const turn = document.createElement("div"); turn.className = "qa-turn";
+    turn.innerHTML = `<p class="qa-q">${qaEsc(question)}</p>` + qaRender(j.answer, j.refs);
+    ans.appendChild(turn);
+    sheet.classList.remove("hidden");
+    sheet.scrollTop += turn.getBoundingClientRect().top - sheet.getBoundingClientRect().top - 40;
     qaLastId = j.id || null;
+    if (qaLastId) qaTurnIds.push(qaLastId);
     document.getElementById("qa-vote-status").textContent = "";
     if (qaLastId) vote.classList.remove("hidden");
     st.textContent = "";
-    const rem = document.getElementById("qa-remaining");
-    if (rem && typeof j.remaining === "number") rem.textContent = `今日はあと ${j.remaining} 回`;
+    if (typeof j.remaining === "number") qaDayLeft = j.remaining;
+    qaShowMeta();
     input.value = ""; input.style.height = "";
     btn.disabled = false;
   } catch (e) {
@@ -1412,7 +1431,8 @@ const QA_HINTS = [
   }
 })();
 document.getElementById("qa-form")?.addEventListener("submit", qaSubmit);
-document.getElementById("qa-close")?.addEventListener("click", () => document.getElementById("qa-sheet").classList.add("hidden"));
+document.getElementById("qa-close")?.addEventListener("click", () => { document.getElementById("qa-sheet").classList.add("hidden"); qaShowMeta(); });
+document.getElementById("qa-reopen")?.addEventListener("click", () => { document.getElementById("qa-sheet").classList.remove("hidden"); qaShowMeta(); });
 document.querySelectorAll(".qa-vote-btn").forEach(b => b.addEventListener("click", () => qaVote(parseInt(b.dataset.vote, 10))));
 // 入力欄は 1 行から始めて中身に合わせて伸びる（4 行まで）。Ctrl/⌘+Enter で送る
 document.getElementById("qa-input")?.addEventListener("input", e => { const t = e.target; t.style.height = "auto"; t.style.height = Math.min(t.scrollHeight, 7 * 16) + "px"; });
