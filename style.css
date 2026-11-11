@@ -1874,6 +1874,143 @@ footer a {
   }
 }
 
+/* ===== 年度別過去問の入口（kakomon/index.html、2026-11-11） ===== */
+.hub-jump {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 20px 0 32px;
+  padding: 0;
+}
+
+.hub-jump a {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-sizing: border-box;
+  display: block;
+  height: 100%;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.hub-jump a:hover,
+.hub-links a:hover {
+  border-color: var(--primary);
+}
+
+.hub-jump strong,
+.hub-year strong {
+  color: var(--ink);
+  display: block;
+}
+
+.hub-jump span {
+  color: var(--muted);
+  font-size: 0.84em;
+}
+
+.hub-head,
+.hub-list li {
+  display: grid;
+  gap: 6px 16px;
+  grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1.25fr);
+}
+
+.hub-head {
+  color: var(--muted);
+  font-size: 0.8em;
+  padding: 0 4px 8px;
+}
+
+.hub-list {
+  border-top: 1px solid var(--line);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hub-list li {
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  padding: 12px 4px;
+}
+
+.hub-year span,
+.hub-label,
+.hub-none {
+  color: var(--muted);
+  font-size: 0.8em;
+}
+
+.hub-links {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+}
+
+.hub-label {
+  display: none;
+  flex: 0 0 5.5em;
+}
+
+.hub-links a {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.9em;
+  padding: 6px 10px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.hub-links a.hub-main {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+
+.hub-faq dt {
+  color: var(--ink);
+  font-weight: 700;
+  margin-top: 16px;
+}
+
+.hub-faq dd {
+  margin: 4px 0 0;
+}
+
+@media (max-width: 640px) {
+  .hub-jump {
+    grid-template-columns: 1fr;
+  }
+
+  .hub-head {
+    display: none;
+  }
+
+  .hub-list li {
+    grid-template-columns: 1fr;
+    padding: 14px 0;
+  }
+
+  .hub-year {
+    align-items: baseline;
+    display: flex;
+    gap: 10px;
+  }
+
+  .hub-links {
+    gap: 6px;
+  }
+
+  .hub-links a {
+    padding: 6px 8px;
+  }
+}
+
 /* ===== 解説（解答後に表示） ===== */
 .explanation {
   text-align: left;
