@@ -2742,3 +2742,37 @@ span.qa-ref { text-decoration: none; }
   line-height: 1.5;
   color: var(--muted);
 }
+
+/* やさしい版への入口（2026-11-10 試作）。トップは厳選テーマ別ボタンの下に文字リンク、
+   厳選テーマ別とやさしい版の一覧は上に「ふつう｜やさしい版」の切り替え */
+.yasashii-link {
+  margin-top: -6px;
+  font-size: 0.9em;
+  color: var(--primary);
+  text-decoration: none;
+}
+.yasashii-link:hover { text-decoration: underline; }
+.mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  margin: 0 0 16px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.mode-switch a {
+  text-align: center;
+  padding: 9px 0;
+  border-radius: 9px;
+  font-size: 0.92em;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+}
+.mode-switch a[aria-current="page"] {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}

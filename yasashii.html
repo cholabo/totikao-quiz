@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C34PHRSJN4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-C34PHRSJN4");
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>イージーモード｜土地家屋調査士 過去問アプリ</title>
+  <meta name="description" content="土地家屋調査士試験の択一過去問を、初めて学ぶ人が 1 周目に流して読めるように、やさしい言葉で書き直しました。答えると元の問題も並べて出します。">
+  <link rel="canonical" href="https://cholabo.jp/yasashii.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="土地家屋調査士 過去問アプリ">
+  <meta property="og:title" content="イージーモード｜土地家屋調査士 過去問アプリ">
+  <meta property="og:description" content="土地家屋調査士試験の択一過去問を、初めて学ぶ人が 1 周目に流して読めるように、やさしい言葉で書き直しました。">
+  <meta property="og:url" content="https://cholabo.jp/yasashii.html">
+  <meta property="og:image" content="https://cholabo.jp/ogimage.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
+  <link rel="stylesheet" href="style.css?v=10.3">
+  <link rel="stylesheet" href="yasashii.css?v=1.1">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#eff3f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f171c" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+  <!-- 群を選ぶ画面。並びは厳選テーマ別と同じ。記録は「どこまで読んだか」だけ（正誤・復習は付けない） -->
+  <main id="ys-list" class="list-page hidden">
+    <header class="list-header">
+      <h1>イージーモード <span id="ys-count"></span>肢</h1>
+    </header>
+    <nav class="mode-switch" aria-label="表示の切り替え">
+      <a href="tagmode.html">ふつう</a>
+      <a href="yasashii.html" aria-current="page">イージー</a>
+    </nav>
+    <p class="ys-lead">はじめて過去問にふれる人が、1 周目に流して読むためのページです。やさしい言葉の問題で ◯✕ を決めると、答えと元の問題を並べて出します。点線の語は、押すと意味が開きます。</p>
+    <div id="ys-progress" class="progress-panel" aria-live="polite">読み込み中...</div>
+    <button type="button" id="ys-resume" class="tagmode-resume hidden"></button>
+    <div id="ys-groups"></div>
+    <footer class="page-credit">
+      <p>出典：<a href="https://www.moj.go.jp/shikaku_saiyo_index5.html" rel="noopener">「土地家屋調査士試験」（法務省）</a>を加工して作成。肢ごとの◯✕に組み替え、やさしい言葉に書き直しています。加工したのは当サイトであり、法務省が作成・公表したものではありません。
+      本サイトは個人の学習支援を目的とした非公式なものです。</p>
+      <p><a href="about.html">このサイトについて・免責事項</a>　/　<a href="privacy.html">プライバシー</a>　/　<a href="index.html">トップ</a></p>
+    </footer>
+  </main>
+
+  <!-- 読む画面。1 肢ずつ: やさしい問題 → ◯✕ → 答え・元の問題 → 次へ。テーマの最後に組の表。
+       群の入口はデータにあるが画面には出さない（管理人 11/10「いらない」）。画面での呼び名は「テーマ」 -->
+  <main id="ys-read" class="quiz-page hidden">
+    <div class="quiz-meta">
+      <span id="ys-pos"></span>
+      <span id="ys-group" class="topic-chip"></span>
+    </div>
+
+    <div id="ys-item">
+      <div class="q-card">
+        <p class="ys-label">やさしい問題</p>
+        <div id="ys-q" class="ys-q"></div>
+        <div id="ys-choices" class="ys-choices">
+          <button class="choice" data-choice="◯" aria-label="正しい">◯</button>
+          <button class="choice" data-choice="✕" aria-label="誤り">✕</button>
+        </div>
+
+        <section id="ys-answer" class="explanation hidden" aria-live="polite">
+          <p id="ys-a" class="ys-a"></p>
+          <p id="ys-map" class="ys-map hidden"></p>
+          <div class="ys-orig">
+            <p class="ys-orig-title">元の問題</p>
+            <p id="ys-oc" class="q-context hidden"></p>
+            <p id="ys-ot" class="ys-ot"></p>
+            <p class="ys-orig-note">色の付いた語が、本番で正誤を分ける言葉です。</p>
+          </div>
+          <a id="ys-exp-link" class="ys-exp-link" href="#">この肢の解説を見る（一問一答）</a>
+        </section>
+      </div>
+      <button id="ys-next" class="next-btn-bottom hidden" type="button">次へ</button>
+    </div>
+
+    <section id="ys-end" class="hidden" aria-label="テーマのまとめ">
+      <div class="q-card">
+        <h2 class="ys-intro-title">並べて読むと分かる組</h2>
+        <table class="ys-pairs"><tbody id="ys-pairs"></tbody></table>
+      </div>
+      <button id="ys-next-group" class="next-btn-bottom" type="button">次のテーマへ</button>
+    </section>
+
+    <div id="controls">
+      <button id="ys-back" class="secondary-btn" type="button">テーマの一覧へ戻る</button>
+    </div>
+
+    <footer class="page-credit">
+      <p>出典：<a href="https://www.moj.go.jp/shikaku_saiyo_index5.html" rel="noopener">「土地家屋調査士試験」（法務省）</a>を加工して作成。肢ごとの◯✕に組み替え、やさしい言葉に書き直しています。加工したのは当サイトであり、法務省が作成・公表したものではありません。
+      本サイトは個人の学習支援を目的とした非公式なものです。</p>
+      <p><a href="about.html">このサイトについて・免責事項</a>　/　<a href="privacy.html">プライバシー</a>　/　<a href="index.html">トップ</a></p>
+    </footer>
+  </main>
+
+  <!-- 用語の小窓。点線の語を押すと、その語の下に開く -->
+  <div id="ys-pop" class="ys-pop hidden" role="dialog" aria-live="polite">
+    <button type="button" id="ys-pop-close" class="ys-pop-close" aria-label="閉じる">×</button>
+    <p id="ys-pop-t" class="ys-pop-t"></p>
+    <p id="ys-pop-m" class="ys-pop-m"></p>
+    <p id="ys-pop-e" class="ys-pop-e"></p>
+  </div>
+
+  <script src="yasashii.js?v=1.1"></script>
+</body>
+</html>

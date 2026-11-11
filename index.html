@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=10.2">
+  <link rel="stylesheet" href="style.css?v=10.3">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -56,6 +56,8 @@
       <button id="resume-btn" class="mode-btn resume-mode hidden">続きから</button>
       <!-- テーマ別モード（2026-10-22）。結論パターンごとの代表 1 肢を登記の種類（民法は編）ごとに。入口は tagmode.html -->
       <a id="start-tag-btn" class="mode-btn theme-mode" href="tagmode.html">厳選テーマ別モード</a>
+      <!-- やさしい版（2026-11-10 試作）。同じ 1,104 肢をやさしい言葉で読むだけのページ。ボタンにせず文字リンクで常に出す -->
+      <a id="start-yasashii-link" class="yasashii-link" href="yasashii.html">初学者向け：イージーモード<span aria-hidden="true">›</span></a>
       <button id="start-review-btn" class="mode-btn review-mode">今日の復習</button>
       <button id="start-timeattack-btn" class="mode-btn ta-mode">タイムアタック（5分）</button>
     </div>
@@ -144,6 +146,7 @@
     <section id="updates" class="updates" aria-label="更新情報">
       <h2 class="updates-heading">更新</h2>
       <ul class="updates-list">
+        <li><time datetime="2026-11-11">11/11</time>記述の模範解答（H19〜R7）と初学者向けイージーモードを公開</li>
         <li><time datetime="2026-11-10">11/10</time>H22-16-アに出題当時の答え（✕）の注、正解表の第16問に※</li>
         <li><time datetime="2026-11-09">11/9</time>過去問ダウンロードの択一の正解で H27 第13問を 3 から 2 に修正</li>
         <li><time datetime="2026-11-06">11/6</time>質問 AI で同じ肢を 5 往復まで続けて聞けるように、H22-1-アの判例を差し替え</li>
@@ -252,7 +255,7 @@
     }
 
     // どのボタンが押されているかを GA に送る（2026-10-22。「続きから」がどれだけ使われているかを見るため）
-    ["resume-btn", "start-normal-btn", "start-tag-btn", "start-review-btn", "start-timeattack-btn"].forEach(id => {
+    ["resume-btn", "start-normal-btn", "start-tag-btn", "start-yasashii-link", "start-review-btn", "start-timeattack-btn"].forEach(id => {
       document.getElementById(id).addEventListener("click", () => {
         try {
           if (typeof window.gtag === "function") window.gtag("event", "top_click", { button: id });

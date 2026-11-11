@@ -22,7 +22,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=10.2">
+  <link rel="stylesheet" href="style.css?v=10.3">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -34,6 +34,11 @@
     <header class="list-header">
       <h1>厳選テーマ別 <span id="tag-count">1,104</span>肢</h1>
     </header>
+    <!-- やさしい版との切り替え（2026-11-10 試作）。同じ 1,104 肢・同じ並び -->
+    <nav class="mode-switch" aria-label="表示の切り替え">
+      <a href="tagmode.html" aria-current="page">ふつう</a>
+      <a href="yasashii.html">イージー</a>
+    </nav>
 
     <div id="tag-progress" class="progress-panel" aria-live="polite">進捗を読み込み中...</div>
     <button type="button" id="tag-resume" class="tagmode-resume hidden"></button>
