@@ -1874,6 +1874,14 @@ footer a {
   }
 }
 
+/* サイト名（トップの見出しの上、2026-11-12） */
+.brand {
+  color: var(--muted);
+  font-size: 0.82em;
+  letter-spacing: 0.3em;
+  margin: 0 0 2px;
+}
+
 /* ===== 年度別過去問の入口（kakomon/index.html、2026-11-11） ===== */
 .hub-jump {
   display: grid;
