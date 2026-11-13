@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C34PHRSJN4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-C34PHRSJN4");
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>申請書ドリル 基本の型｜土地家屋調査士 記述式の登記申請書</title>
+  <meta name="description" content="土地家屋調査士試験 記述式の登記申請書を、登記の種類ごとの基本の型 59 で練習。分筆・合筆・地目変更・建物表題・変更・分割・合併・合体・区分建物の書き方。" />
+  <link rel="canonical" href="https://cholabo.jp/shinsei/rei.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ちょらぼ">
+  <meta property="og:title" content="申請書ドリル 基本の型｜土地家屋調査士 記述式の登記申請書">
+  <meta property="og:description" content="土地家屋調査士試験 記述式の登記申請書を、登記の種類ごとの基本の型 59 で練習。分筆・合筆・地目変更・建物表題・変更・分割・合併・合体・区分建物の書き方。">
+  <meta property="og:url" content="https://cholabo.jp/shinsei/rei.html">
+  <meta property="og:image" content="https://cholabo.jp/ogimage.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+  <meta name="theme-color" content="#eff3f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b1116" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* 配置: 上に張り付く事例パネル（略図＋3 行）、その下に答案用紙。広い画面では左に事例、右に用紙。下の帯に使い方ごとの操作。 */
+:root {
+  --bg: #eff3f4; --surface: #ffffff; --ink: #1e2c34; --muted: #61747f; --line: #d5e0e5; --soft: #f3f7f9;
+  --rule: #6f838d; --primary: #0b6e9e; --on-primary: #ffffff;
+  --correct: #1f7a44; --correct-soft: #e4f2e8; --wrong: #b9423c; --wrong-soft: #f8e9e7;
+  --seal: #ce4a2f; --seal-soft: #fbeae6; --focus: #f0b429; --pen: #17324a; --grid: rgba(11,110,158,.07);
+  --font-display: "Shippori Mincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", Meiryo, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0b1116; --surface: #121b21; --ink: #c8d6dd; --muted: #7b8f9a; --line: #21303a; --soft: #16222a;
+  --rule: #5d737f; --primary: #4e9ec7; --on-primary: #08131a;
+  --correct: #4e9f6e; --correct-soft: #15281d; --wrong: #c4685f; --wrong-soft: #2d1d1a;
+  --seal: #d1785a; --seal-soft: #281812; --pen: #a9cbe0; --grid: rgba(78,158,199,.07); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0b1116; --surface: #121b21; --ink: #c8d6dd; --muted: #7b8f9a; --line: #21303a; --soft: #16222a;
+  --rule: #5d737f; --primary: #4e9ec7; --on-primary: #08131a;
+  --correct: #4e9f6e; --correct-soft: #15281d; --wrong: #c4685f; --wrong-soft: #2d1d1a;
+  --seal: #d1785a; --seal-soft: #281812; --pen: #a9cbe0; --grid: rgba(78,158,199,.07); color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 8px 84px }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg) }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px }
+header.top { min-width: 0 }
+button:focus-visible, select:focus-visible, textarea:focus-visible, .cell:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px }
+
+/* 見出しの行: 型の選択と使い方 */
+header.top { display: flex; align-items: center; gap: 8px; justify-content: space-between }
+.pick { flex: 1 1 auto; min-width: 0; max-width: 320px; font: inherit; font-weight: 700; font-size: .9rem; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 0 8px; height: 36px }
+.back { font-size: 24px; line-height: 1; text-decoration: none; color: var(--ink); padding: 0 2px; flex: none }
+.bm { appearance: none; flex: none; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--muted); font-size: 1.05rem; cursor: pointer; padding: 0 }
+.bm[aria-pressed="true"] { color: var(--seal); border-color: var(--seal) }
+[hidden] { display: none !important }
+.modes { display: grid; grid-template-columns: repeat(3, auto); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); flex: none }
+.modes button { appearance: none; border: 0; background: none; color: var(--ink); font: inherit; font-weight: 700; font-size: .86rem; padding: 0 10px; cursor: pointer; border-left: 1px solid var(--line); height: 34px }
+.modes button:first-child { border-left: 0 }
+.modes button[aria-pressed="true"] { background: var(--primary); color: var(--on-primary) }
+
+.cols { display: grid; gap: 10px; min-width: 0 }
+
+/* 事例。解くあいだ上に張り付く */
+.jirei { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 4; background: var(--surface); border: 1px solid var(--line); border-radius: 0 0 10px 10px; padding: 6px 9px 7px; display: grid; gap: 5px; min-width: 0; box-shadow: 0 8px 14px -10px rgba(10, 30, 40, .45) }
+.fig { position: relative; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 14px 14px; border-radius: 5px }
+.fig svg { display: block; width: 100%; height: auto; max-width: 440px; margin: 0 auto }
+.kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 7px; margin: 0; font-size: .84rem; line-height: 1.45; font-variant-numeric: tabular-nums }
+.kv dt { color: var(--muted); font-size: .68rem; border: 1px solid var(--line); border-radius: 3px; padding: 0 4px; align-self: start; margin-top: 2px; white-space: nowrap; min-width: 2.8em; text-align: center }
+.kv dd { margin: 0 }
+.fold { appearance: none; position: absolute; right: 0; top: 0; border: 0; background: none; color: var(--muted); font: inherit; font-size: .68rem; line-height: 1.2; padding: 1px 4px; cursor: pointer }
+.jirei.folded .kv { display: none }
+.cell { scroll-margin-top: 230px }
+@media (min-width: 1000px) { .cols { grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); align-items: start }
+  .cols .jirei { top: calc(env(safe-area-inset-top, 0px) + 10px); border-radius: 10px; padding: 10px 12px; gap: 8px } .cols .kv { font-size: .92rem } .cols .cell { scroll-margin-top: 20px } }
+
+/* 答案用紙 */
+.sheetbox { min-width: 0; display: grid; gap: 10px }
+.sheet { position: relative; background: var(--surface); border: 1.5px solid var(--rule); font-family: var(--font-display); font-size: .98rem; font-variant-numeric: tabular-nums }
+.sheet .ttl { text-align: center; letter-spacing: .5em; font-weight: 700; padding: 4px 0 3px; border-bottom: 1.5px solid var(--rule); font-size: 1.05rem }
+.row { display: grid; grid-template-columns: 5.6em minmax(0, 1fr); border-bottom: 1px solid var(--rule) }
+.row > .lb { padding: 4px 6px; border-right: 1px solid var(--rule); font-size: .84rem; display: flex; align-items: center; background: var(--soft) }
+.row.wide { grid-template-columns: minmax(0, 1fr) }
+.given { padding: 4px 8px; color: var(--muted); font-size: .74rem; font-family: var(--font-body); border-top: 1px solid var(--rule) }
+.hy-cap { padding: 3px 8px; font-size: .8rem; background: var(--soft); border-bottom: 1px solid var(--rule) }
+table.hyoji { border-collapse: collapse; width: 100%; table-layout: fixed }
+table.hyoji th, table.hyoji td { border: 1px solid var(--rule); padding: 0; vertical-align: top }
+table.hyoji tr > *:first-child { border-left: 0 } table.hyoji tr > *:last-child { border-right: 0 } table.hyoji tr:first-child > * { border-top: 0 } table.hyoji tr:last-child > * { border-bottom: 0 }
+table.hyoji th { font-size: .7rem; font-weight: 500; background: var(--soft); padding: 3px 0; text-align: center; white-space: nowrap; font-family: var(--font-body) }
+table.hyoji td { height: 1px } table.hyoji td .cell { height: 100%; padding: 5px 4px; font-size: .92rem }
+table.tate th { white-space: normal; font-size: .66rem; line-height: 1.25 }
+table.tate td .cell { font-size: .86rem; padding: 5px 3px }
+table.hyoji { border-bottom: 1px solid var(--rule) }
+/* 列の多い表（合体・分割・合併・区分建物）。申請書の形を崩さず、字を小さくして収める */
+table.dense th { white-space: normal; font-size: .56rem; line-height: 1.2; padding: 2px 0 }
+table.dense td .cell { font-size: .68rem; line-height: 1.35; padding: 4px 2px; min-height: 2.2em }
+table.dense td .cell .ans.blank { font-size: .56rem }
+table.dense td .cell::after { inset: 2px !important }
+@media (min-width: 700px) { table.dense th { font-size: .68rem } table.dense td .cell { font-size: .86rem; padding: 5px 3px } table.dense td .cell .ans.blank { font-size: .7rem } }
+
+/* 欄（3 つの使い方で中身が変わる） */
+.cell { position: relative; min-height: 2.5em; padding: 6px 7px; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5 }
+.cell .ans { color: var(--ink) }
+.cell .ans.blank { color: var(--muted); font-family: var(--font-body); font-size: .76rem }
+[data-mode="look"] .cell { cursor: pointer }
+[data-mode="look"] .cell:not(.open) .ans { visibility: hidden }
+[data-mode="look"] .cell:not(.open)::after { content: ""; position: absolute; inset: 4px; border-radius: 4px; background: repeating-linear-gradient(135deg, var(--seal-soft) 0 6px, transparent 6px 12px); border: 1px dashed var(--seal) }
+[data-mode="look"] .cell.open .ans { color: var(--seal) }
+[data-mode="write"] .cell { min-height: 4.6em }
+[data-mode="write"] td .cell { min-height: 5.4em }
+[data-mode="write"] .cell .ans { visibility: hidden; position: absolute; left: 4px; top: 2px; right: 2px; font-size: .68rem; line-height: 1.25; color: var(--seal) }
+[data-mode="write"].shown .cell .ans { visibility: visible }
+canvas.ink { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; display: none; cursor: crosshair; z-index: 2 }
+[data-mode="write"] canvas.ink { display: block }
+[data-mode="write"].scroll canvas.ink { pointer-events: none }
+.cell textarea { display: none; width: 100%; border: 0; border-bottom: 1.5px dotted var(--rule); background: transparent; color: var(--pen); font: inherit; line-height: 1.5; padding: 0; resize: none; border-radius: 0; overflow: hidden }
+[data-mode="type"] .cell textarea { display: block }
+[data-mode="type"] .cell .ans { display: none }
+[data-mode="type"] .cell.ok { background: var(--correct-soft) }
+[data-mode="type"] .cell.ng { background: var(--wrong-soft) }
+[data-mode="type"] .cell.ng .ans { display: block; color: var(--seal); font-size: .84rem; margin-top: 3px }
+[data-mode="type"] .cell.ng .ans::before { content: "正 "; font-family: var(--font-body); font-size: .68rem; border: 1px solid var(--seal); border-radius: 2px; padding: 0 3px; margin-right: 4px }
+.mark { position: absolute; right: 3px; top: 1px; font-family: var(--font-body); font-size: .8rem; font-weight: 700; display: none }
+[data-mode="type"] .cell.ok .mark { display: block; color: var(--correct) }
+[data-mode="type"] .cell.ng .mark { display: block; color: var(--wrong) }
+
+.kimari { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px }
+.kimari summary { cursor: pointer; font-weight: 700; font-size: .9rem }
+.kimari ul { margin: 8px 0 2px; padding-left: 1.15em; display: grid; gap: 4px; font-size: .9rem }
+
+.rep { font-size: .86rem; padding: 0 4px }
+.rep summary { cursor: pointer; color: var(--seal); font-weight: 700 }
+.rep textarea { display: block; width: 100%; margin: 6px 0; border: 1px solid var(--line); border-radius: 8px; padding: 6px; font: inherit; background: var(--surface); color: var(--ink) }
+.rep .btn { height: 34px } .rep span { margin-left: 8px; color: var(--muted) }
+
+/* 下の帯 */
+.bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; background: var(--surface); border-top: 1px solid var(--line);
+  padding: 8px max(16px, env(safe-area-inset-right, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)) }
+.bar .in { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 6px; align-items: center }
+.bar .msg { color: var(--muted); font-size: .8rem; flex: 1 1 90px; min-width: 0 }
+.bar .msg b { color: var(--ink) }
+.btn { appearance: none; font: inherit; font-weight: 500; font-size: .9rem; border: 1px solid var(--line); background: var(--soft); color: var(--ink); border-radius: 8px; padding: 0 11px; cursor: pointer; height: 40px }
+.btn.main { background: var(--primary); border-color: var(--primary); color: var(--on-primary); font-weight: 700 }
+.btn[aria-pressed="true"] { border-color: var(--primary); color: var(--primary); background: var(--surface); box-shadow: inset 0 0 0 1px var(--primary) }
+.btn:disabled { opacity: .4; cursor: default }
+.grp { display: flex; gap: 6px; flex-wrap: wrap }
+</style>
+
+</head>
+<body>
+<div class="wrap" id="app" data-mode="look">
+  <header class="top">
+    <a class="back" id="back" href="index.html" aria-label="目次へ" hidden>‹</a>
+    <select class="pick" id="pick" aria-label="型を選ぶ"></select>
+    <button type="button" class="bm" id="bm" aria-pressed="false" aria-label="ブックマーク" hidden>☆</button>
+    <div class="modes" role="group" aria-label="使い方">
+      <button type="button" id="m-look" data-m="look">見る</button>
+      <button type="button" id="m-write" data-m="write">書く</button>
+      <button type="button" id="m-type" data-m="type">打つ</button>
+    </div>
+  </header>
+  <div class="cols">
+    <section class="jirei" id="jirei"></section>
+    <div class="sheetbox">
+      <div class="sheet" id="sheet"></div>
+      <details class="kimari" id="kimari"><summary>この型の決まり</summary><ul id="kimari-ul"></ul></details>
+      <details class="rep" id="rep" hidden><summary>この型の誤りを報告</summary>
+        <form id="rep-form"><textarea id="rep-text" maxlength="500" rows="3" placeholder="どの欄が、どう違うか（根拠があれば）" aria-label="報告の内容"></textarea><button type="submit" class="btn" id="rep-send">送る</button><span id="rep-st" role="status"></span></form></details>
+    </div>
+  </div>
+</div>
+<div class="bar"><div class="in" id="bar"></div></div>
+
+<script>window.SH_SITE = 1;</script>
+<script src="rei-data.js?v=ce4cb3ee"></script>
+<script>
+const CASES = window.CASES || [];
+const GIVEN = "令和6年10月20日申請　代理人 丁山五郎";
+const $ = (s, r = document) => r.querySelector(s);
+const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.textContent = h; return e };
+const app = $("#app"), sheet = $("#sheet");
+let CASE = null, idx = 0;
+
+// ---- 略図: 土地の四角を横に並べる。b があれば中に建物の四角 ----
+function figSVG(f) {
+  const all = [...f.before, ...f.after], tall = all.some(l => l.b || l.bs), W = 340, H = tall ? 96 : 76, y0 = 19, h = H - 26;
+  const T = (x, y, s, t, o = "") => `<text x="${x}" y="${y}" text-anchor="middle" font-size="${s}" fill="currentColor" ${o}>${t}</text>`;
+  const lands = (list, x0, w) => { const tot = list.reduce((s, l) => s + l.w, 0); let x = x0, o = "";
+    for (const l of list) { const ww = w * l.w / tot, small = ww < 70; let cx = x + ww / 2;
+      o += `<rect x="${x}" y="${y0}" width="${ww}" height="${h}" fill="none" stroke="currentColor" stroke-width="1.6"${l.dash ? ' stroke-dasharray="5 4"' : ""}/>`;
+      if (l.mark) { const mw = ww * l.mark.w / l.w; o += `<path d="M${x + mw} ${y0}v${h}" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/>` + T(x + mw / 2, y0 + 22, 10.5, l.mark.n, 'font-weight="700"') + T(x + mw / 2, y0 + 37, 10, l.mark.sub); cx = x + mw + (ww - mw) / 2 }
+      if (l.b) { o += `<text x="${x + 5}" y="${y0 + 13}" font-size="10.5" fill="currentColor">${l.n}</text><rect x="${x + 8}" y="${y0 + 19}" width="${ww - 16}" height="${h - 26}" fill="var(--seal-soft)" stroke="var(--seal)" stroke-width="1.6"/>`;
+        l.b.forEach((t, i) => o += T(cx, y0 + 37 + i * 16, 10.5, t, i ? "" : 'font-weight="700"')) }
+      else if (l.bs) { o += `<text x="${x + 5}" y="${y0 + 13}" font-size="10.5" fill="currentColor">${l.n}</text>`;
+        if (!l.bs.length && l.sub) o += T(cx, y0 + h / 2 + 8, 10.5, l.sub);
+        const n = l.bs.length, gap = 6, bw = (ww - 12 - gap * (n - 1)) / n, by = y0 + 19, bh = h - 26;
+        l.bs.forEach((b, i) => { const bx = x + 6 + i * (bw + gap), st = b.s === "new" ? 'fill="var(--seal-soft)" stroke="var(--seal)"' : b.s === "gone" ? 'fill="none" stroke="var(--muted)" stroke-dasharray="4 3"' : 'fill="var(--soft)" stroke="currentColor"';
+          o += `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" ${st} stroke-width="1.5"/>`;
+          const parts = b.t.split(" "), two = parts.length > 1 && b.t.length * 10.5 > bw - 4;
+          const fs2 = bw < 40 ? 8.5 : 10; if (two) { o += T(bx + bw / 2, by + bh / 2 - 3, fs2, parts[0], 'font-weight="700"') + T(bx + bw / 2, by + bh / 2 + 10, fs2, parts.slice(1).join(" ")) }
+          else o += T(bx + bw / 2, by + bh / 2 + 4, 10.5, b.t, 'font-weight="700"') }) }
+      else { o += T(cx, y0 + h / 2 - 3, small ? 11 : 13.5, l.n, 'font-weight="700"'); if (l.sub) o += T(cx, y0 + h / 2 + 14, small ? 10.5 : 11.5, l.sub) }
+      x += ww }
+    return o };
+  const ym = y0 + h / 2, nb = f.before.length, bwid = tall ? (nb > 1 ? 140 : 96) : 118, ax = 8 + bwid + 42;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="前と後の略図"><text x="8" y="12" font-size="11" fill="var(--muted)">${f.cap || ""}</text>` + lands(f.before, 8, bwid) +
+    `<path d="M${8 + bwid + 8} ${ym}h26m-8-6 8 6-8 6" fill="none" stroke="var(--seal)" stroke-width="2"/>` + lands(f.after, ax, W - 8 - ax) + `</svg>`;
+}
+function drawCase(c) {
+  const j = $("#jirei"), folded = j.classList.contains("folded");
+  j.innerHTML = `<div class="fig">${figSVG(c.figure)}<button type="button" class="fold" id="fold" aria-expanded="${!folded}">${folded ? "ひらく" : "たたむ"}</button></div>` +
+    `<dl class="kv">${c.info.map(r => `<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join("")}</dl>`;
+  $("#fold").addEventListener("click", e => { const f = j.classList.toggle("folded"); e.currentTarget.textContent = f ? "ひらく" : "たたむ"; e.currentTarget.setAttribute("aria-expanded", !f) });
+  $("#kimari-ul").innerHTML = c.kimari.map(k => `<li>${k}</li>`).join(""); $("#kimari").open = false; $("#rep").open = false; $("#rep-st").textContent = "";
+}
+
+// ---- 答案用紙 ----
+let cells = [];
+function cell(id, a, opt = {}) {
+  const d = el("div", "cell"); d.dataset.id = id; d.tabIndex = 0;
+  const ta = el("textarea"); ta.id = "in-" + id; ta.rows = 1; ta.setAttribute("aria-label", opt.label || id); ta.autocomplete = "off"; ta.spellcheck = false;
+  d.append(ta, el("div", "ans" + (a ? "" : " blank"), a || "空欄"), el("span", "mark"));
+  cells.push({ id, a, d, ta, set: !!opt.set });
+  ta.addEventListener("input", () => { ta.style.height = "auto"; ta.style.height = ta.scrollHeight + "px"; d.classList.remove("ok", "ng"); save() });
+  d.addEventListener("click", () => { if (mode === "look") { d.classList.toggle("open"); bar() } });
+  d.addEventListener("keydown", e => { if (mode === "look" && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); d.click() } });
+  return d;
+}
+// 土地・建物の決まった様式を、部品（行・見出し・表）の並びに直す。合体・区分建物は正本が部品の並びを直接持つ
+const H5 = ["主・附", "①種類", "②構造", "③床面積㎡", "原因及びその日付"], W5 = [11, 14, 26, 21, 28];
+function toBlocks(f) {
+  if (f.blocks) return f.blocks;
+  const h = f.表示, R = (label, a, o = {}) => ({ t: "row", label, a, ...o });
+  const b = [R("登記の目的", f.目的), R("添付情報", f.添付.join("　"), { set: true })];
+  if (f.申請人欄) b.push({ t: "cap", text: "申請人" }, { t: "wide", label: "申請人の欄", a: f.申請人欄 }); else b.push(R("申請人", f.申請人.join("\n")));
+  b.push(R("登録免許税", f.税));   // 本の申請書の順（申請人・代理人のあと）
+  b.push({ t: "cap", text: h.kind + "の表示" });
+  if (h.所在2) b.push({ t: "table", cols: [56, 44], head: [["所在", "原因及びその日付"]], body: [[[h.所在, ""]], [[h.所在2, h.所在原因]]] }); else b.push(R("所在", h.所在));
+  if (h.kind === "土地") b.push({ t: "table", cls: "tochi", cols: [27, 13, 20, 40], head: [["①地番", "②地目", "③地積 ㎡", "登記原因及びその日付"]], body: h.rows.map(r => [r]) });
+  else if (h.様式 === "地番欄あり") b.push({ t: "table", cls: "dense", cols: [14, 10, 7, 10, 20, 13, 26], head: [["地番", "家屋番号", ...H5]], body: h.rows.map(r => [r]) });
+  else { b.push(R("家屋番号", h.家屋番号)); b.push({ t: "table", cols: W5, head: [H5], body: h.rows.map(r => [r]) }) }
+  if (h.末尾) b.push({ t: "wide", label: "末尾の欄", a: h.末尾 });
+  return b;
+}
+function drawSheet(c) {
+  cells = []; sheet.innerHTML = ""; let n = 0;
+  sheet.append(el("div", "ttl", "登記申請書"));
+  toBlocks(c.form).forEach((b, bi) => {
+    if (b.t === "cap") sheet.append(el("div", "hy-cap", b.text));
+    else if (b.t === "wide") { const r = el("div", "row wide"); r.append(cell("c" + (n++), b.a, { label: b.label })); sheet.append(r) }
+    else if (b.t === "row") { const r = el("div", "row"); r.append(el("div", "lb", b.label), cell("c" + (n++), b.a, { label: b.label, set: b.set })); sheet.append(r) }
+    else { const t = el("table", "hyoji " + (b.cls || "tate")), flat = b.head[b.head.length - 1];
+      t.innerHTML = `<colgroup>${b.cols.map(w => `<col style="width:${w}%">`).join("")}</colgroup>` + b.head.map(hr => `<tr>${hr.map(x => Array.isArray(x) ? `<th colspan="${x[1]}">${x[0]}</th>` : `<th>${x}</th>`).join("")}</tr>`).join("");
+      b.body.forEach((g, gi) => g.forEach((trd, ti) => { const tr = el("tr"); if (ti === 0 && gi > 0 && g.length > 1) tr.className = "grp-top";
+        trd.forEach((x, j) => { const td = el("td"), v = Array.isArray(x) ? x[0] : x; if (Array.isArray(x)) td.colSpan = x[1];
+          const hd = b.head[Math.min(ti, b.head.length - 1)][j], name = Array.isArray(hd) ? hd[0] : hd;
+          td.append(cell("c" + (n++), v, { label: `${gi + 1}行目 ${name || ""}` })); tr.append(td) }); t.append(tr) }));
+      sheet.append(t) }
+  });
+  sheet.append(el("div", "given", GIVEN));
+  const cv = el("canvas", "ink"); cv.id = "ink"; sheet.append(cv); initInk(cv);
+}
+
+// ---- 採点（打つ） ----
+const norm = s => (s || "").normalize("NFKC").replace(/(\d),(?=\d{3})/g, "$1").replace(/[\s　]+/g, "").replace(/[,，]/g, "、").replace(/[‐－−ー]/g, "-");
+const toks = s => (s || "").normalize("NFKC").split(/[\s　、,]+/).filter(Boolean).sort().join("|");
+function check() { let ok = 0;
+  for (const c of cells) { const hit = c.set ? toks(c.ta.value) === toks(c.a) : norm(c.ta.value) === norm(c.a);
+    c.d.classList.toggle("ok", hit); c.d.classList.toggle("ng", !hit); $(".mark", c.d).textContent = hit ? "○" : "✕"; if (hit) ok++ }
+  checked = { ok, n: cells.length }; $("#kimari").open = true; bar() }
+
+// ---- 手書き（書く） ----
+let strokes = [], tool = "pen", penSeen = false, ctx, cv, baseW = 0, ro = null;
+function initInk(c) { cv = c; ctx = c.getContext("2d"); strokes = []; baseW = 0; let cur = null, last = null;
+  const pos = e => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top] };
+  cv.addEventListener("pointerdown", e => { if (e.pointerType === "pen") penSeen = true;
+    if (e.pointerType === "touch" && penSeen) { last = e.clientY; cv.setPointerCapture(e.pointerId); return }
+    cv.setPointerCapture(e.pointerId); cur = { t: tool, p: [pos(e)] }; strokes.push(cur); e.preventDefault() });
+  cv.addEventListener("pointermove", e => {
+    if (last != null) { window.scrollBy(0, last - e.clientY); return }
+    if (!cur) return; const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : []; for (const x of evs.length ? evs : [e]) cur.p.push(pos(x)); redraw() });
+  const up = () => { cur = null; last = null };
+  cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
+  if (!ro) { ro = new ResizeObserver(fit); ro.observe(sheet) }
+}
+function fit() { if (mode !== "write" || !cv) return; const r = sheet.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+  if (!r.width) return; if (baseW && Math.abs(baseW - r.width) > 1) { const k = r.width / baseW; for (const s of strokes) for (const p of s.p) { p[0] *= k; p[1] *= k } }
+  baseW = r.width; cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d); ctx.setTransform(d, 0, 0, d, 0, 0); redraw() }
+function redraw() { if (!ctx) return; ctx.clearRect(0, 0, cv.width, cv.height); ctx.lineCap = "round"; ctx.lineJoin = "round";
+  const pen = getComputedStyle(document.documentElement).getPropertyValue("--pen").trim();
+  for (const s of strokes) { ctx.globalCompositeOperation = s.t === "erase" ? "destination-out" : "source-over"; ctx.strokeStyle = pen; ctx.lineWidth = s.t === "erase" ? 18 : 1.9;
+    ctx.beginPath(); ctx.moveTo(s.p[0][0], s.p[0][1]); if (s.p.length === 1) ctx.lineTo(s.p[0][0] + .1, s.p[0][1]); for (const p of s.p) ctx.lineTo(p[0], p[1]); ctx.stroke() }
+  ctx.globalCompositeOperation = "source-over" }
+
+// ---- 使い方と下の帯 ----
+let mode = "look", checked = null;
+function setMode(m) { mode = m; app.dataset.mode = m; app.classList.remove("shown"); checked = null;
+  for (const b of document.querySelectorAll(".modes button")) b.setAttribute("aria-pressed", b.dataset.m === m);
+  for (const c of cells) { c.d.classList.remove("ok", "ng"); c.d.tabIndex = m === "look" ? 0 : -1; c.ta.style.height = "auto"; if (m === "type" && c.ta.value) c.ta.style.height = c.ta.scrollHeight + "px" }
+  try { localStorage.setItem("sh2-mode", m) } catch (e) {}
+  bar(); if (m === "write") requestAnimationFrame(fit) }
+function B(label, fn, cls, pressed) { const b = el("button", "btn" + (cls ? " " + cls : ""), label); b.type = "button"; if (pressed != null) b.setAttribute("aria-pressed", pressed); b.addEventListener("click", fn); return b }
+function bar() { const r = $("#bar"); r.innerHTML = ""; const msg = el("div", "msg"); const g = el("div", "grp");
+  const next = B("次 ›", () => go(idx + 1)); next.disabled = idx >= CASES.length - 1;
+  if (mode === "look") { const n = cells.filter(c => c.d.classList.contains("open")).length, all = n === cells.length; msg.innerHTML = n ? `<b>${n} / ${cells.length}</b> 欄` : "答えてからタップ";
+    g.append(B(all ? "全部隠す" : "全部開く", () => { cells.forEach(c => c.d.classList.toggle("open", !all)); if (!all) $("#kimari").open = true; bar() }, all ? "" : "main"), next) }
+  if (mode === "write") { const sh = app.classList.contains("shown"); app.classList.toggle("scroll", tool === "scroll"); msg.textContent = penSeen ? "ペンで書く。指はスクロール" : "";
+    g.append(B("ペン", () => { tool = "pen"; bar() }, "", tool === "pen"), B("消しゴム", () => { tool = "erase"; bar() }, "", tool === "erase"), B("スクロール", () => { tool = "scroll"; bar() }, "", tool === "scroll"),
+      B("戻す", () => { strokes.pop(); redraw() }), B("全消し", () => { strokes = []; redraw() }),
+      B(sh ? "答えを隠す" : "答えを重ねる", () => { app.classList.toggle("shown"); if (!sh) $("#kimari").open = true; bar() }, "main"), next) }
+  if (mode === "type") { msg.innerHTML = checked ? `<b>${checked.ok} / ${checked.n}</b> 欄が一致` : "空ける欄は空のまま";
+    g.append(B("やり直す", () => { cells.forEach(c => { c.ta.value = ""; c.ta.style.height = "auto"; c.d.classList.remove("ok", "ng") }); checked = null; save(); bar() }), B("答え合わせ", check, "main"), next) }
+  r.append(msg, g) }
+function save() { try { localStorage.setItem("sh2-" + CASE.id, JSON.stringify(Object.fromEntries(cells.map(c => [c.id, c.ta.value])))) } catch (e) {} }
+
+// ---- 型の切り替え ----
+function go(i) { if (i < 0 || i >= CASES.length) return; idx = i; CASE = CASES[i]; $("#pick").value = CASE.id;
+  drawCase(CASE); drawSheet(CASE);
+  try { const v = JSON.parse(localStorage.getItem("sh2-" + CASE.id) || "{}"); for (const c of cells) if (v[c.id]) c.ta.value = v[c.id] } catch (e) {}
+  try { localStorage.setItem("sh2-case", CASE.id) } catch (e) {}
+  drawBm(); setMode(mode); window.scrollTo(0, 0) }
+// ブックマーク（サイトに置いたときだけ。目次の先頭に並ぶ。キーは r:<型の記号>）
+const bmBtn = $("#bm");
+function bmLoad() { try { return JSON.parse(localStorage.getItem("shinsei.bm") || "[]") } catch (e) { return [] } }
+function drawBm() { const on = bmLoad().includes("r:" + CASE.id); bmBtn.setAttribute("aria-pressed", on); bmBtn.textContent = on ? "★" : "☆" }
+bmBtn.addEventListener("click", () => { const k = "r:" + CASE.id; let s = bmLoad(); s = s.includes(k) ? s.filter(x => x !== k) : s.concat(k); try { localStorage.setItem("shinsei.bm", JSON.stringify(s)) } catch (e) {} drawBm() });
+if (window.SH_SITE) { bmBtn.hidden = false; $("#back").hidden = false; $("#rep").hidden = false }
+// 誤りの報告（送り先は出題画面・過去問の事例と同じ。questionId は shinsei-rei:<型の記号>）
+const FEEDBACK = "https://script.google.com/macros/s/AKfycbykTsPoM-VFHtSWZUmS-TTqZyi7gtJd637B94mw5i_rDgeNtd6_XCRLLTQQ7Z6Fj_x9/exec";
+$("#rep-form").addEventListener("submit", async e => { e.preventDefault(); const ta = $("#rep-text"), st = $("#rep-st"), b = $("#rep-send"), c = ta.value.trim();
+  if (!c) { st.textContent = "内容を書いてください"; return } b.disabled = true; st.textContent = "送信中…";
+  try { await fetch(FEEDBACK, { method: "POST", mode: "no-cors", body: new URLSearchParams({ questionId: "shinsei-rei:" + CASE.id, comment: c.slice(0, 500) }) }); st.textContent = "報告しました。ありがとうございます。"; ta.value = "" }
+  catch (err) { st.textContent = "送信できませんでした" } b.disabled = false });
+const pick = $("#pick");
+for (const k of ["土地", "建物", "区分建物", "申請人の型"]) { const list = CASES.filter(c => c.kind === k); if (!list.length) continue;
+  const og = document.createElement("optgroup"); og.label = k; for (const c of list) { const o = el("option", "", c.name); o.value = c.id; og.append(o) } pick.append(og) }
+pick.addEventListener("change", () => go(CASES.findIndex(c => c.id === pick.value)));
+for (const b of document.querySelectorAll(".modes button")) b.addEventListener("click", () => setMode(b.dataset.m));
+let start = null, first = 0; try { start = localStorage.getItem("sh2-mode"); first = Math.max(0, CASES.findIndex(c => c.id === localStorage.getItem("sh2-case"))) } catch (e) {}
+const want = new URLSearchParams(location.search).get("id"); if (want && CASES.some(c => c.id === want)) first = CASES.findIndex(c => c.id === want);
+mode = start || (matchMedia("(hover: hover) and (pointer: fine)").matches ? "type" : (innerWidth >= 700 ? "write" : "look"));
+go(first);
+</script>
+</body>
+</html>

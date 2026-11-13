@@ -78,3 +78,7 @@ table.rec.survey td:first-child { white-space: nowrap; }
 .sh-rep textarea { width: 100%; box-sizing: border-box; margin: 6px 0; border: 1px solid var(--line); border-radius: 8px; padding: 6px; font: inherit; background: var(--card); color: var(--ink); }
 .sh-rep button { border: 1px solid var(--seal); background: var(--seal); color: #fff; border-radius: 8px; padding: 5px 14px; cursor: pointer; }
 .sh-rep .st { margin-left: 8px; }
+
+/* ブックマーク（目次の先頭に並ぶ） */
+.sh-bm { flex: none; width: 36px; height: 34px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--muted); font-size: 16px; cursor: pointer; }
+.sh-bm[aria-pressed="true"] { color: var(--seal, #ce4a2f); border-color: var(--seal, #ce4a2f); }

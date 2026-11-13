@@ -296,9 +296,14 @@
     main.appendChild(renderReport(it));
     // 書き方の要点は出さない（2026-09-13 管理人: 様式と模範解答だけを見せる）
     selKind.value = it.kind; fillItems(it.kind); selIt.value = String(cur);
-    try { localStorage.setItem('shinsei.cur', it.id); } catch (e) { /* 使えない環境でも動く */ }
+    try { localStorage.setItem('shinsei.cur', it.id); } catch (e) { /* 使えない環境でも動く */ } drawBm();
     window.scrollTo(0, 0);
   }
+  // ブックマーク（目次 index.html の先頭に並ぶ。キーは k:<事例の id>）
+  const bmBtn = document.getElementById('sh-bm');
+  function bmLoad() { try { return JSON.parse(localStorage.getItem('shinsei.bm') || '[]'); } catch (e) { return []; } }
+  function drawBm() { if (!bmBtn || !DATA) return; const on = bmLoad().includes('k:' + DATA.items[cur].id); bmBtn.setAttribute('aria-pressed', on); bmBtn.textContent = on ? '★' : '☆'; }
+  if (bmBtn) bmBtn.addEventListener('click', () => { const k = 'k:' + DATA.items[cur].id; let s = bmLoad(); s = s.includes(k) ? s.filter(x => x !== k) : s.concat(k); try { localStorage.setItem('shinsei.bm', JSON.stringify(s)); } catch (e) { /* 保存できない環境 */ } drawBm(); });
   function init() {
     for (const k of ['土地', '建物']) { const n = DATA.items.filter(it => it.kind === k).length; if (!n) continue; const o = document.createElement('option'); o.value = k; o.textContent = k + '（' + n + '）'; selKind.appendChild(o); }
     selKind.addEventListener('change', () => { const i = DATA.items.findIndex(it => it.kind === selKind.value); if (i >= 0) show(i); });
