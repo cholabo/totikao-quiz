@@ -10,13 +10,13 @@
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>申請書ドリル 基本の型｜土地家屋調査士 記述式の登記申請書</title>
-  <meta name="description" content="土地家屋調査士試験 記述式の登記申請書を、登記の種類ごとの基本の型 59 で練習。分筆・合筆・地目変更・建物表題・変更・分割・合併・合体・区分建物の書き方。" />
+  <title>申請書ドリル 基本の型と過去問の事例｜土地家屋調査士 記述式の登記申請書</title>
+  <meta name="description" content="土地家屋調査士試験 記述式の登記申請書を、基本の型 59 と過去問の事例 42 で練習。分筆・合筆・地目変更・建物表題・変更・分割・合併・合体・区分建物の書き方。" />
   <link rel="canonical" href="https://cholabo.jp/shinsei/rei.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ちょらぼ">
-  <meta property="og:title" content="申請書ドリル 基本の型｜土地家屋調査士 記述式の登記申請書">
-  <meta property="og:description" content="土地家屋調査士試験 記述式の登記申請書を、登記の種類ごとの基本の型 59 で練習。分筆・合筆・地目変更・建物表題・変更・分割・合併・合体・区分建物の書き方。">
+  <meta property="og:title" content="申請書ドリル 基本の型と過去問の事例｜土地家屋調査士 記述式の登記申請書">
+  <meta property="og:description" content="土地家屋調査士試験 記述式の登記申請書を、基本の型 59 と過去問の事例 42 で練習。分筆・合筆・地目変更・建物表題・変更・分割・合併・合体・区分建物の書き方。">
   <meta property="og:url" content="https://cholabo.jp/shinsei/rei.html">
   <meta property="og:image" content="https://cholabo.jp/ogimage.png">
   <meta property="og:locale" content="ja_JP">
@@ -79,9 +79,11 @@ header.top { display: flex; align-items: center; gap: 8px; justify-content: spac
 .kv dd { margin: 0 }
 .fold { appearance: none; position: absolute; right: 0; top: 0; border: 0; background: none; color: var(--muted); font: inherit; font-size: .68rem; line-height: 1.2; padding: 1px 4px; cursor: pointer }
 .jirei.folded .kv { display: none }
+/* 行の多い事例（過去問の合体など）でも用紙が見えるように、パネルは画面の半分弱までにして中で送る */
+.jirei { max-height: 46vh; overflow-y: auto; overscroll-behavior: contain }
 .cell { scroll-margin-top: 230px }
 @media (min-width: 1000px) { .cols { grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); align-items: start }
-  .cols .jirei { top: calc(env(safe-area-inset-top, 0px) + 10px); border-radius: 10px; padding: 10px 12px; gap: 8px } .cols .kv { font-size: .92rem } .cols .cell { scroll-margin-top: 20px } }
+  .cols .jirei { top: calc(env(safe-area-inset-top, 0px) + 10px); border-radius: 10px; padding: 10px 12px; gap: 8px; max-height: calc(100vh - 110px) } .cols .kv { font-size: .92rem } .cols .cell { scroll-margin-top: 20px } }
 
 /* 答案用紙 */
 .sheetbox { min-width: 0; display: grid; gap: 10px }
@@ -90,6 +92,8 @@ header.top { display: flex; align-items: center; gap: 8px; justify-content: spac
 .row { display: grid; grid-template-columns: 5.6em minmax(0, 1fr); border-bottom: 1px solid var(--rule) }
 .row > .lb { padding: 4px 6px; border-right: 1px solid var(--rule); font-size: .84rem; display: flex; align-items: center; background: var(--soft) }
 .row.wide { grid-template-columns: minmax(0, 1fr) }
+.pre { padding: 6px 7px; color: var(--muted); font-family: var(--font-body); font-size: .8rem; white-space: pre-wrap; line-height: 1.5 }
+table.dense .pre, table.tate .pre { padding: 4px 2px; font-size: .68rem }
 .given { padding: 4px 8px; color: var(--muted); font-size: .74rem; font-family: var(--font-body); border-top: 1px solid var(--rule) }
 .hy-cap { padding: 3px 8px; font-size: .8rem; background: var(--soft); border-bottom: 1px solid var(--rule) }
 table.hyoji { border-collapse: collapse; width: 100%; table-layout: fixed }
@@ -181,7 +185,7 @@ canvas.ink { position: absolute; inset: 0; width: 100%; height: 100%; touch-acti
 <div class="bar"><div class="in" id="bar"></div></div>
 
 <script>window.SH_SITE = 1;</script>
-<script src="rei-data.js?v=ce4cb3ee"></script>
+<script src="rei-data.js?v=a1c85360"></script>
 <script>
 const CASES = window.CASES || [];
 const GIVEN = "令和6年10月20日申請　代理人 丁山五郎";
@@ -191,7 +195,37 @@ const app = $("#app"), sheet = $("#sheet");
 let CASE = null, idx = 0;
 
 // ---- 略図: 土地の四角を横に並べる。b があれば中に建物の四角 ----
+// 過去問の事例の略図（もとの申請書ドリルの描き方。土地は平行四辺形、建物は四角を位置つきで置く）
+function figOld(fig) {
+  const LW = 78, LH = 64, SK = 12, GAP = 8, AR = 34;
+  const st = s => s === "new" ? 'stroke="var(--seal)" stroke-width="2"' : s === "gone" ? 'stroke="currentColor" stroke-dasharray="4 3" opacity=".45"' : s === "unreg" ? 'stroke="currentColor" stroke-dasharray="4 3"' : 'stroke="currentColor" stroke-width="1"';
+  const tx = (x, y, s, t, o = "") => `<text x="${x}" y="${y}" font-size="${s}" fill="currentColor" ${o}>${t == null ? "" : t}</text>`;
+  const side = (sd, ox) => { const lands = sd.lands || [], bl = sd.bldgs || []; let x = ox, o = ""; const spans = [];
+    for (const L of lands) { const w = (L.w || 1) * LW;
+      o += `<polygon points="${x + SK},0 ${x + w + SK},0 ${x + w},${LH} ${x},${LH}" fill="none" ${st(L.style)}/>`; spans.push([x, x + w]);
+      if (L.parts) { let px = x; const tot = L.parts.reduce((a, p) => a + (p.w || 1), 0);
+        L.parts.forEach((P, i) => { const pw = w * (P.w || 1) / tot; if (i) o += `<line x1="${px + SK}" y1="0" x2="${px}" y2="${LH}" stroke="currentColor" stroke-dasharray="3 3" opacity=".7"/>`;
+          o += tx(px + pw / 2 + SK / 2, LH - 18, 11, P.n, 'text-anchor="middle"'); if (P.sub) o += tx(px + pw / 2 + SK / 2, LH - 6, 9.5, P.sub, 'text-anchor="middle" opacity=".8"'); px += pw }) }
+      else { o += tx(x + 4, LH - 5, 11, L.n); if (L.sub) o += tx(x + w + SK - 3, LH - 5, 9.5, L.sub, 'text-anchor="end" opacity=".8"') }
+      x += w + GAP }
+    for (const B of bl) { const idx = B.land || [0], s0 = spans[idx[0]] || [ox, ox + LW], s1 = spans[idx[idx.length - 1]] || s0, span = s1[1] - s0[0];
+      const bx = s0[0] + SK * .6 + span * (B.x != null ? B.x : .15), bw = span * (B.w != null ? B.w : .7), by = B.y != null ? B.y : 6, bh = B.h != null ? B.h : 36;
+      o += `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" fill="var(--surface)" ${st(B.style)}/>`;
+      if (B.parts) { const tot = B.parts.reduce((a, p) => a + (p.w || 1), 0); let q = 0;
+        B.parts.forEach((P, i) => { const f = (P.w || 1) / tot;
+          if (B.dir === "h") { const py = by + bh * q; if (i) o += `<line x1="${bx}" y1="${py}" x2="${bx + bw}" y2="${py}" stroke="currentColor" stroke-dasharray="3 2"/>`; o += tx(bx + bw / 2, py + bh * f / 2 + 3.5, 9, P.n, 'text-anchor="middle"') }
+          else { const px = bx + bw * q; if (i) o += `<line x1="${px}" y1="${by}" x2="${px}" y2="${by + bh}" stroke="currentColor" stroke-dasharray="3 2"/>`; o += tx(px + bw * f / 2, by + bh / 2 - 1, 9, P.n, 'text-anchor="middle"'); if (P.sub) o += tx(px + bw * f / 2, by + bh / 2 + 10, 8, P.sub, 'text-anchor="middle" opacity=".8"') }
+          q += f });
+        if (B.n) o += tx(bx + bw / 2, by - 1, 8.5, B.n, 'text-anchor="middle" opacity=".8"') }
+      else { o += tx(bx + bw / 2, by + (B.sub ? bh / 2 - 1 : bh / 2 + 4), 11, B.n, `text-anchor="middle" font-weight="${B.style === "new" ? 700 : 400}"`); if (B.sub) o += tx(bx + bw / 2, by + bh / 2 + 10, 9, B.sub, 'text-anchor="middle" opacity=".8"') } }
+    return o };
+  const sw = sd => (sd.lands || []).reduce((a, L) => a + (L.w || 1) * LW + GAP, 0) - GAP + SK;
+  const b = fig.before || {}, a = fig.after || {}, wb = sw(b), wa = sw(a), W = Math.max(wb + AR + wa, 300), H = LH + 30, ay = LH / 2 + 26;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="前と後の略図" style="max-width:${Math.round(W * 1.25)}px"><text x="2" y="10" font-size="9.5" fill="var(--muted)">${fig.cap || ""}</text><g transform="translate(0,26)">${side(b, 0)}</g>` +
+    `<path d="M${wb + 6},${ay} h${AR - 16} m-6,-6 l6,6 l-6,6" fill="none" stroke="var(--seal)" stroke-width="2"/><g transform="translate(${wb + AR},26)">${side(a, 0)}</g></svg>`;
+}
 function figSVG(f) {
+  if (f.before && !Array.isArray(f.before)) return figOld(f);
   const all = [...f.before, ...f.after], tall = all.some(l => l.b || l.bs), W = 340, H = tall ? 96 : 76, y0 = 19, h = H - 26;
   const T = (x, y, s, t, o = "") => `<text x="${x}" y="${y}" text-anchor="middle" font-size="${s}" fill="currentColor" ${o}>${t}</text>`;
   const lands = (list, x0, w) => { const tot = list.reduce((s, l) => s + l.w, 0); let x = x0, o = "";
@@ -217,10 +251,10 @@ function figSVG(f) {
 }
 function drawCase(c) {
   const j = $("#jirei"), folded = j.classList.contains("folded");
-  j.innerHTML = `<div class="fig">${figSVG(c.figure)}<button type="button" class="fold" id="fold" aria-expanded="${!folded}">${folded ? "ひらく" : "たたむ"}</button></div>` +
+  j.innerHTML = `<div class="fig">${c.figure ? figSVG(c.figure) : ""}<button type="button" class="fold" id="fold" aria-expanded="${!folded}">${folded ? "ひらく" : "たたむ"}</button></div>` +
     `<dl class="kv">${c.info.map(r => `<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join("")}</dl>`;
   $("#fold").addEventListener("click", e => { const f = j.classList.toggle("folded"); e.currentTarget.textContent = f ? "ひらく" : "たたむ"; e.currentTarget.setAttribute("aria-expanded", !f) });
-  $("#kimari-ul").innerHTML = c.kimari.map(k => `<li>${k}</li>`).join(""); $("#kimari").open = false; $("#rep").open = false; $("#rep-st").textContent = "";
+  $("#kimari-ul").innerHTML = (c.kimari || []).map(k => `<li>${k}</li>`).join(""); $("#kimari").open = false; $("#kimari").hidden = !(c.kimari || []).length; $("#rep").open = false; $("#rep-st").textContent = "";
 }
 
 // ---- 答案用紙 ----
@@ -236,7 +270,7 @@ function cell(id, a, opt = {}) {
   return d;
 }
 // 土地・建物の決まった様式を、部品（行・見出し・表）の並びに直す。合体・区分建物は正本が部品の並びを直接持つ
-const H5 = ["主・附", "①種類", "②構造", "③床面積㎡", "原因及びその日付"], W5 = [11, 14, 26, 21, 28];
+const H5 = ["主・附", "①種類", "②構造", "③床面積㎡", "原因及びその日付"], W5 = [11, 14, 24, 23, 28];
 function toBlocks(f) {
   if (f.blocks) return f.blocks;
   const h = f.表示, R = (label, a, o = {}) => ({ t: "row", label, a, ...o });
@@ -257,16 +291,18 @@ function drawSheet(c) {
   toBlocks(c.form).forEach((b, bi) => {
     if (b.t === "cap") sheet.append(el("div", "hy-cap", b.text));
     else if (b.t === "wide") { const r = el("div", "row wide"); r.append(cell("c" + (n++), b.a, { label: b.label })); sheet.append(r) }
+    else if (b.t === "row" && b.g != null) { const r = el("div", "row"); r.append(el("div", "lb", b.label), el("div", "pre", b.g)); sheet.append(r) }   // 用紙に印字された（略）など
     else if (b.t === "row") { const r = el("div", "row"); r.append(el("div", "lb", b.label), cell("c" + (n++), b.a, { label: b.label, set: b.set })); sheet.append(r) }
     else { const t = el("table", "hyoji " + (b.cls || "tate")), flat = b.head[b.head.length - 1];
       t.innerHTML = `<colgroup>${b.cols.map(w => `<col style="width:${w}%">`).join("")}</colgroup>` + b.head.map(hr => `<tr>${hr.map(x => Array.isArray(x) ? `<th colspan="${x[1]}">${x[0]}</th>` : `<th>${x}</th>`).join("")}</tr>`).join("");
       b.body.forEach((g, gi) => g.forEach((trd, ti) => { const tr = el("tr"); if (ti === 0 && gi > 0 && g.length > 1) tr.className = "grp-top";
         trd.forEach((x, j) => { const td = el("td"), v = Array.isArray(x) ? x[0] : x; if (Array.isArray(x)) td.colSpan = x[1];
           const hd = b.head[Math.min(ti, b.head.length - 1)][j], name = Array.isArray(hd) ? hd[0] : hd;
+          if (x && x.g != null) { td.append(el("div", "pre", x.g)); tr.append(td); return }
           td.append(cell("c" + (n++), v, { label: `${gi + 1}行目 ${name || ""}` })); tr.append(td) }); t.append(tr) }));
       sheet.append(t) }
   });
-  sheet.append(el("div", "given", GIVEN));
+  sheet.append(el("div", "given", c.given || GIVEN));
   const cv = el("canvas", "ink"); cv.id = "ink"; sheet.append(cv); initInk(cv);
 }
 
@@ -330,7 +366,7 @@ function go(i) { if (i < 0 || i >= CASES.length) return; idx = i; CASE = CASES[i
   drawBm(); setMode(mode); window.scrollTo(0, 0) }
 // ブックマーク（サイトに置いたときだけ。目次の先頭に並ぶ。キーは r:<型の記号>）
 const bmBtn = $("#bm");
-function bmLoad() { try { return JSON.parse(localStorage.getItem("shinsei.bm") || "[]") } catch (e) { return [] } }
+function bmLoad() { try { return JSON.parse(localStorage.getItem("shinsei.bm") || "[]").map(k => k.replace(/^k:/, "r:")) } catch (e) { return [] } }   // k: は前の過去問用の画面のキー
 function drawBm() { const on = bmLoad().includes("r:" + CASE.id); bmBtn.setAttribute("aria-pressed", on); bmBtn.textContent = on ? "★" : "☆" }
 bmBtn.addEventListener("click", () => { const k = "r:" + CASE.id; let s = bmLoad(); s = s.includes(k) ? s.filter(x => x !== k) : s.concat(k); try { localStorage.setItem("shinsei.bm", JSON.stringify(s)) } catch (e) {} drawBm() });
 if (window.SH_SITE) { bmBtn.hidden = false; $("#back").hidden = false; $("#rep").hidden = false }
@@ -338,16 +374,16 @@ if (window.SH_SITE) { bmBtn.hidden = false; $("#back").hidden = false; $("#rep")
 const FEEDBACK = "https://script.google.com/macros/s/AKfycbykTsPoM-VFHtSWZUmS-TTqZyi7gtJd637B94mw5i_rDgeNtd6_XCRLLTQQ7Z6Fj_x9/exec";
 $("#rep-form").addEventListener("submit", async e => { e.preventDefault(); const ta = $("#rep-text"), st = $("#rep-st"), b = $("#rep-send"), c = ta.value.trim();
   if (!c) { st.textContent = "内容を書いてください"; return } b.disabled = true; st.textContent = "送信中…";
-  try { await fetch(FEEDBACK, { method: "POST", mode: "no-cors", body: new URLSearchParams({ questionId: "shinsei-rei:" + CASE.id, comment: c.slice(0, 500) }) }); st.textContent = "報告しました。ありがとうございます。"; ta.value = "" }
+  try { await fetch(FEEDBACK, { method: "POST", mode: "no-cors", body: new URLSearchParams({ questionId: (CASE.kako ? "shinsei:" : "shinsei-rei:") + CASE.id, comment: c.slice(0, 500) }) }); st.textContent = "報告しました。ありがとうございます。"; ta.value = "" }
   catch (err) { st.textContent = "送信できませんでした" } b.disabled = false });
 const pick = $("#pick");
-for (const k of ["土地", "建物", "区分建物", "申請人の型"]) { const list = CASES.filter(c => c.kind === k); if (!list.length) continue;
+for (const k of ["土地", "建物", "区分建物", "申請人の型", "過去問 土地", "過去問 建物"]) { const list = CASES.filter(c => c.kind === k); if (!list.length) continue;
   const og = document.createElement("optgroup"); og.label = k; for (const c of list) { const o = el("option", "", c.name); o.value = c.id; og.append(o) } pick.append(og) }
 pick.addEventListener("change", () => go(CASES.findIndex(c => c.id === pick.value)));
 for (const b of document.querySelectorAll(".modes button")) b.addEventListener("click", () => setMode(b.dataset.m));
 let start = null, first = 0; try { start = localStorage.getItem("sh2-mode"); first = Math.max(0, CASES.findIndex(c => c.id === localStorage.getItem("sh2-case"))) } catch (e) {}
 const want = new URLSearchParams(location.search).get("id"); if (want && CASES.some(c => c.id === want)) first = CASES.findIndex(c => c.id === want);
-mode = start || (matchMedia("(hover: hover) and (pointer: fine)").matches ? "type" : (innerWidth >= 700 ? "write" : "look"));
+mode = start || "look";   // 最初は「見る」（管理人 11/13）。切り替えたら次からはその使い方で開く
 go(first);
 </script>
 </body>
