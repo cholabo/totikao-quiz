@@ -126,6 +126,9 @@ table.dense td .cell::after { inset: 2px !important }
 canvas.ink { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; display: none; cursor: crosshair; z-index: 2 }
 [data-mode="write"] canvas.ink { display: block }
 [data-mode="write"].scroll canvas.ink { pointer-events: none }
+/* 書くあいだは、文字の選択・長押しのメニュー・拡大鏡を出さない（iPad でペンや指が文字を選んでしまう） */
+[data-mode="write"], [data-mode="write"] * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent }
+.bar, .bar * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none }
 .cell textarea { display: none; width: 100%; border: 0; border-bottom: 1.5px dotted var(--rule); background: transparent; color: var(--pen); font: inherit; line-height: 1.5; padding: 0; resize: none; border-radius: 0; overflow: hidden }
 [data-mode="type"] .cell textarea { display: block }
 [data-mode="type"] .cell .ans { display: none }
@@ -185,7 +188,7 @@ canvas.ink { position: absolute; inset: 0; width: 100%; height: 100%; touch-acti
 <div class="bar"><div class="in" id="bar"></div></div>
 
 <script>window.SH_SITE = 1;</script>
-<script src="rei-data.js?v=a1c85360"></script>
+<script src="rei-data.js?v=d5b7ea13"></script>
 <script>
 const CASES = window.CASES || [];
 const GIVEN = "令和6年10月20日申請　代理人 丁山五郎";
@@ -324,6 +327,9 @@ function initInk(c) { cv = c; ctx = c.getContext("2d"); strokes = []; baseW = 0;
   cv.addEventListener("pointermove", e => {
     if (last != null) { window.scrollBy(0, last - e.clientY); return }
     if (!cur) return; const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : []; for (const x of evs.length ? evs : [e]) cur.p.push(pos(x)); redraw() });
+  // iPad: 長押しの選択・メニュー・ダブルタップの拡大を止める（線を引くのは pointer の側でやっている）
+  cv.addEventListener("touchstart", e => e.preventDefault(), { passive: false });
+  cv.addEventListener("contextmenu", e => e.preventDefault());
   const up = () => { cur = null; last = null };
   cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
   if (!ro) { ro = new ResizeObserver(fit); ro.observe(sheet) }
@@ -381,6 +387,7 @@ for (const k of ["土地", "建物", "区分建物", "申請人の型", "過去�
   const og = document.createElement("optgroup"); og.label = k; for (const c of list) { const o = el("option", "", c.name); o.value = c.id; og.append(o) } pick.append(og) }
 pick.addEventListener("change", () => go(CASES.findIndex(c => c.id === pick.value)));
 for (const b of document.querySelectorAll(".modes button")) b.addEventListener("click", () => setMode(b.dataset.m));
+document.addEventListener("selectstart", e => { if (mode === "write") e.preventDefault() });   // 書くあいだは選択を始めさせない
 let start = null, first = 0; try { start = localStorage.getItem("sh2-mode"); first = Math.max(0, CASES.findIndex(c => c.id === localStorage.getItem("sh2-case"))) } catch (e) {}
 const want = new URLSearchParams(location.search).get("id"); if (want && CASES.some(c => c.id === want)) first = CASES.findIndex(c => c.id === want);
 mode = start || "look";   // 最初は「見る」（管理人 11/13）。切り替えたら次からはその使い方で開く
