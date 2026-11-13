@@ -308,7 +308,7 @@ function updateProgress() {
   if (currentMode === "tag" && tagGroup) {
     const c = summarizeProgress(tagGroup.items.map(label => ({ label })), learningState);
     const pos = currentQuestion ? tagGroup.items.indexOf(currentQuestion.label) + 1 : 0;
-    progressInfo.textContent = `厳選テーマ別｜${tagGroup.name}（${pos}問目 / 全${c.total}問・完了${c.completed}問）`;
+    progressInfo.textContent = `厳選テーマ別｜${tagGroup.name}（${pos}肢目 / 全${c.total}肢・完了${c.completed}肢）`;
     return;
   }
   if (currentMode === "review") {
@@ -321,7 +321,7 @@ function updateProgress() {
   const pass = getPassCount();
   const shown = pass + (yearPassJustFinished ? 0 : 1);   // 一周し終えた肢の画面では、まだその周のまま
   progressInfo.textContent = `${modeName}${pass > 0 ? `（${shown}周目）` : ""}`
-    + `｜全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 完了${p.completed}問`;
+    + `｜全${p.total}肢 / 未回答${p.unanswered}肢 / 復習${p.review}肢 / 完了${p.completed}肢`;
 }
 
 function initStudyMode(mode) {
@@ -431,13 +431,33 @@ function initTimeAttack() {
 
   updateTimerDisplay();
 
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    updateTimerDisplay();
-    if (timeLeft <= 0) finishTimeAttack();
-  }, 1000);
+  // はじまる前に 3 秒数える。その間に決まり（間違えると 20 秒減る）を見せる（2026-11-13。トップのフッターから移した）
+  const countdown = document.getElementById("ta-countdown");
+  const countdownNum = document.getElementById("ta-countdown-num");
+  const quiz = document.getElementById("quiz-container");
+  let count = 3;
+  countdownNum.textContent = count;
+  quiz.classList.add("hidden");
+  countdown.classList.remove("hidden");
 
-  newQuestion();
+  const countdownInterval = setInterval(() => {
+    count--;
+    if (count > 0) {
+      countdownNum.textContent = count;
+      return;
+    }
+    clearInterval(countdownInterval);
+    countdown.classList.add("hidden");
+    quiz.classList.remove("hidden");
+
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      updateTimerDisplay();
+      if (timeLeft <= 0) finishTimeAttack();
+    }, 1000);
+
+    newQuestion();
+  }, 1000);
 }
 
 function updateTimerDisplay() {

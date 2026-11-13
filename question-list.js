@@ -31,7 +31,7 @@ function renderProgress() {
   const pass = getPassCount();
   document.getElementById("list-progress-info").textContent =
     (pass > 0 ? `${pass}周完了｜` : "")
-    + `全${p.total}問 / 未回答${p.unanswered}問 / 復習${p.review}問 / 完了${p.completed}問`;
+    + `全${p.total}肢 / 未回答${p.unanswered}肢 / 復習${p.review}肢 / 完了${p.completed}肢`;
 }
 
 function renderQuestionList() {
@@ -49,7 +49,7 @@ function renderQuestionList() {
 
     const count = document.createElement("span");
     count.className = "year-summary-count";
-    count.textContent = `正解済み ${correctCount} / ${yearQuestions.length}`;
+    count.textContent = `完了 ${correctCount} / ${yearQuestions.length}`;
     summary.appendChild(count);
     details.appendChild(summary);
 
@@ -125,7 +125,7 @@ function renderReadingSection(list) {
 
 function createQuestionButton(question) {
   const result = getResult(question);
-  const statusText = { unanswered: "未回答", correct: "正解済み", wrong: "復習対象" }[result] + (bookmarks.has(question.label) ? "・ブックマーク" : "");
+  const statusText = { unanswered: "未回答", correct: "完了", wrong: "復習対象" }[result] + (bookmarks.has(question.label) ? "・ブックマーク" : "");
 
   const button = document.createElement("button");
   button.type = "button";

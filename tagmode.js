@@ -31,7 +31,7 @@ function render(data) {
   // 見出しの肢数はデータから（肢が増えても書き直さなくてよいように）
   document.getElementById("tag-count").textContent = all.total.toLocaleString("ja-JP");
   document.getElementById("tag-progress").textContent =
-    `全${all.total}問 / 未回答${all.total - all.completed - all.review}問 / 復習${all.review}問 / 完了${all.completed}問`;
+    `全${all.total}肢 / 未回答${all.total - all.completed - all.review}肢 / 復習${all.review}肢 / 完了${all.completed}肢`;
 
   // 続きから（最後に解いていた群と肢）
   const resume = loadTagResume();
@@ -68,7 +68,7 @@ function render(data) {
       row.querySelector(".topic-fill").style.width = Math.round((completed / total) * 100) + "%";
       row.querySelector(".topic-review").style.width = Math.round((review / total) * 100) + "%";
       row.querySelector(".topic-num").textContent = `${completed} / ${total}`;
-      row.title = `${g.name}：完了${completed}問・復習${review}問・全${total}問`;
+      row.title = `${g.name}：完了${completed}肢・復習${review}肢・全${total}肢`;
       row.addEventListener("click", () => startTagMode(g.id, firstOpenLabel(g)));
       section.appendChild(row);
     });

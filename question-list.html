@@ -31,6 +31,7 @@
 </head>
 <body>
   <main class="list-page">
+    <nav class="breadcrumbs" aria-label="パンくずリスト"><ol><li><a href="index.html">トップ</a></li><li aria-current="page">年度順モード</li></ol></nav>
     <header class="list-header">
       <h1>年度順モード</h1>
       <p>年度を開き、始めたい肢を選んでください。その位置から順番に出題します。</p>
@@ -40,7 +41,7 @@
 
     <div class="status-legend" aria-label="学習状態の色分け">
       <span class="legend-item"><span class="legend-dot status-unanswered"></span>未回答</span>
-      <span class="legend-item"><span class="legend-dot status-correct"></span>正解済み</span>
+      <span class="legend-item"><span class="legend-dot status-correct"></span>完了</span>
       <span class="legend-item"><span class="legend-dot status-wrong"></span>復習</span>
       <span class="legend-item"><span class="legend-star" aria-hidden="true">★</span>ブックマーク</span>
     </div>
@@ -55,6 +56,6 @@
   </main>
 
   <script src="common.js?v=1.9"></script>
-  <script src="question-list.js?v=2.6"></script>
+  <script src="question-list.js?v=2.8"></script>
 </body>
 </html>

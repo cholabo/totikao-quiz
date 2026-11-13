@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=10.4">
+  <link rel="stylesheet" href="style.css?v=10.5">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -34,6 +34,13 @@
   <main class="quiz-page">
     <div id="timer-bar" class="hidden">
       残り時間: <span id="timer-display">05:00</span>
+    </div>
+
+    <!-- タイムアタックの開始前に 3 秒だけ出す。決まりはここで知らせる（2026-11-13） -->
+    <div id="ta-countdown" class="ta-countdown hidden" role="status">
+      <p class="ta-countdown-title">タイムアタック（5分）</p>
+      <p id="ta-countdown-num" class="ta-countdown-num">3</p>
+      <p class="ta-countdown-rule">間違えると残り時間が 20 秒減ります</p>
     </div>
 
     <div id="quiz-container">
@@ -66,7 +73,7 @@
         <div id="choices">
           <button class="choice" data-choice="◯" aria-label="正しい">◯</button>
           <button class="choice" data-choice="✕" aria-label="誤り">✕</button>
-          <button id="unknown-btn">？</button>
+          <button id="unknown-btn">わからない</button>
           <button id="next-btn" class="hidden">次の問題へ</button>
         </div>
 
@@ -199,6 +206,6 @@
     </template>
   </main>
   <script src="common.js?v=1.9"></script>
-  <script src="script.js?v=4.32"></script>
+  <script src="script.js?v=4.33"></script>
 </body>
 </html>

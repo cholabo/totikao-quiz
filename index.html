@@ -23,7 +23,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://cholabo.jp/ogimage.png">
-  <link rel="stylesheet" href="style.css?v=10.4">
+  <link rel="stylesheet" href="style.css?v=10.5">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -86,20 +86,16 @@
       <section class="hub-group">
         <h2 class="db-heading">読みもの・動画</h2>
         <div class="db-grid">
-          <a class="db-btn" href="blog/">
+          <!-- 読みものは記事が 1 本なので、一覧（blog/）を挟まず記事へ直接（2026-11-13）。記事が増えたら blog/ に戻す -->
+          <a class="db-btn" href="blog/deru-jun/">
             <span class="db-btn-mark" aria-hidden="true">読</span>
-            <span class="db-btn-name">読みもの</span>
-            <span class="db-btn-sub">出る順など</span>
+            <span class="db-btn-name">出る順</span>
+            <span class="db-btn-sub">よく出る結論の順位</span>
           </a>
           <a class="db-btn" href="note/map.html">
             <span class="db-btn-mark" aria-hidden="true">図</span>
             <span class="db-btn-name">出題マップ</span>
             <span class="db-btn-sub">問われ方×登記の種類</span>
-          </a>
-          <a class="db-btn" href="reading.html">
-            <span class="db-btn-mark" aria-hidden="true">原</span>
-            <span class="db-btn-name">読むだけの問</span>
-            <span class="db-btn-sub">流れ図・空欄補充</span>
           </a>
           <!-- 聞き流し動画（2026-10-09 公開）。一覧は build/gen_douga.js で作る -->
           <a class="db-btn" href="douga/">
@@ -110,7 +106,7 @@
         </div>
       </section>
       <section class="hub-group">
-        <h2 class="db-heading">データベース</h2>
+        <h2 class="db-heading">資料</h2>
         <div class="db-grid">
           <!-- 過去問ダウンロード（2026-09-26 公開）。H19〜R7 の問題・答案用紙 PDF -->
           <a class="db-btn" href="mondai/">
@@ -118,25 +114,12 @@
             <span class="db-btn-name">過去問ダウンロード</span>
             <span class="db-btn-sub">問題・答案用紙 PDF</span>
           </a>
-          <a class="db-btn" href="kakomon/">
-            <span class="db-btn-mark" aria-hidden="true">問</span>
-            <span class="db-btn-name">過去問</span>
-            <span class="db-btn-sub">2,188肢</span>
-          </a>
-          <a class="db-btn" href="jobun/">
+          <!-- 条文・通達等・判例の 3 つを 1 つに（2026-11-13）。入口は shiryo.html。件数は中身とずれるので書かない。
+               年度別の過去問（kakomon/）は検索から来る人の玄関なので、ボタンをやめてフッターの文字リンクに -->
+          <a class="db-btn" href="shiryo.html">
             <span class="db-btn-mark" aria-hidden="true">法</span>
-            <span class="db-btn-name">条文</span>
-            <span class="db-btn-sub">516条</span>
-          </a>
-          <a class="db-btn" href="sources.html">
-            <span class="db-btn-mark" aria-hidden="true">達</span>
-            <span class="db-btn-name">通達等</span>
-            <span class="db-btn-sub">35件</span>
-          </a>
-          <a class="db-btn" href="hanrei/">
-            <span class="db-btn-mark" aria-hidden="true">判</span>
-            <span class="db-btn-name">判例</span>
-            <span class="db-btn-sub">88件</span>
+            <span class="db-btn-name">条文・通達・判例</span>
+            <span class="db-btn-sub">解説の根拠の原文</span>
           </a>
         </div>
       </section>
@@ -148,7 +131,7 @@
     <section id="updates" class="updates" aria-label="更新情報">
       <h2 class="updates-heading">更新</h2>
       <ul class="updates-list">
-        <li><time datetime="2026-11-13">11/13</time>H17-20-1 の解説に、問題文が経由に触れていない点の説明を追記</li>
+        <li><time datetime="2026-11-13">11/13</time>トップの入口を整理、H17-20-1 の解説に経由の説明を追記</li>
         <li><time datetime="2026-11-12">11/12</time>サイトの名前を「ちょらぼ」と表示するようにしました</li>
         <li><time datetime="2026-11-11">11/11</time>記述の模範解答（H17〜R7）とイージーモードを公開、年度別過去問の入口を整理</li>
         <li><time datetime="2026-11-10">11/10</time>H22-16-アに出題当時の答え（✕）の注、正解表の第16問に※</li>
@@ -178,13 +161,10 @@
     </section>
 
     <footer>
-      <p style="text-align: left; line-height: 1.6;">
-        タイムアタックは、間違えると残り時間が20秒減ります。
-      </p>
       <p>
         <a href="https://x.com/ryota_totikao" target="_blank">@ryota_totikao</a>
       </p>
-      <p><a href="backup.html">学習データの引き継ぎ</a>　/　<a href="about.html">このサイトについて・免責事項</a>　/　<a href="privacy.html">アクセス解析とプライバシー</a></p>
+      <p><a href="kakomon/">年度別の過去問</a>　/　<a href="backup.html">学習データの引き継ぎ</a>　/　<a href="about.html">このサイトについて・免責事項</a>　/　<a href="privacy.html">アクセス解析とプライバシー</a></p>
       <p style="text-align: left; line-height: 1.6; font-size: 0.8em; margin-top: 20px;">
         ちょらぼ（cholabo）は、土地家屋調査士試験の過去問を無料で解けるサイトです。平成17年度から令和8年度までの択一 2,188 肢に解説を付け、問題・答案用紙・模範解答の PDF も置いています。
       </p>

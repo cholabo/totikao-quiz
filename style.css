@@ -1148,6 +1148,34 @@ main {
   padding: 24px 20px 28px;
 }
 
+/* タイムアタック開始前の 3 秒。数字を大きく、決まりを下に */
+.ta-countdown {
+  text-align: center;
+  padding: 56px 16px;
+}
+.ta-countdown-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+.ta-countdown-num {
+  font-family: var(--font-display);
+  font-size: 6em;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--seal);
+  margin: 12px 0;
+  font-variant-numeric: tabular-nums;
+}
+.ta-countdown-rule {
+  font-size: 1.05em;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
 .ta-title {
   font-family: var(--font-display);
   color: var(--seal);
