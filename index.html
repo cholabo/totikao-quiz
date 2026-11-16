@@ -133,7 +133,7 @@
     <section id="updates" class="updates" aria-label="更新情報">
       <h2 class="updates-heading">更新</h2>
       <ul class="updates-list">
-        <li><time datetime="2026-11-16">11/16</time>ログインを追加。スマホ・iPad・パソコンで同じ続きから解けます</li>
+        <li><time datetime="2026-11-16">11/16</time>ログインを追加し、端末をまたいで続きから解けるように。引き継ぎコードは廃止</li>
         <li><time datetime="2026-11-13">11/13</time>申請書ドリルに基本の型 59 と R5〜R7 を追加、目次を新設。トップの入口を整理</li>
         <li><time datetime="2026-11-12">11/12</time>サイトの名前を「ちょらぼ」と表示するようにしました</li>
         <li><time datetime="2026-11-11">11/11</time>記述の模範解答（H17〜R7）とイージーモードを公開、年度別過去問の入口を整理</li>
@@ -167,7 +167,7 @@
       <p>
         <a href="https://x.com/ryota_totikao" target="_blank">@ryota_totikao</a>
       </p>
-      <p><a href="kakomon/">年度別の過去問</a>　/　<span id="backup-link"><a href="backup.html">学習データの引き継ぎ</a></span>　/　<a href="about.html">このサイトについて・免責事項</a>　/　<a href="privacy.html">アクセス解析とプライバシー</a></p>
+      <p><a href="kakomon/">年度別の過去問</a>　/　<a href="about.html">このサイトについて・免責事項</a>　/　<a href="privacy.html">アクセス解析とプライバシー</a></p>
       <p style="text-align: left; line-height: 1.6; font-size: 0.8em; margin-top: 20px;">
         ちょらぼ（cholabo）は、土地家屋調査士試験の過去問を無料で解けるサイトです。平成17年度から令和8年度までの択一 2,188 肢に解説を付け、問題・答案用紙・模範解答の PDF も置いています。
       </p>
@@ -181,13 +181,12 @@
 
   <script src="common.js?v=1.9"></script>
   <script>
-    // ログインの入口（2026-11-16）。ログインを出すようになったら引き継ぎコードの入口は隠す（restore.html は当面残す）
+    // ログインの入口（2026-11-16）。引き継ぎコード（backup.html / restore.html）は同日に廃止（管理人。ログインで足りる）
     (function () {
       const S = window.CholaboSync, a = document.getElementById("acct-link");
       if (!S || !S.enabled || !a) return;
       const draw = () => { a.textContent = S.signedIn() ? "同期 ✓" : "ログイン"; a.title = S.signedIn() ? "ログイン中。ほかの端末と同期しています" : "ログインすると端末をまたいで続きから解けます"; };
       a.hidden = false; draw();
-      const b = document.getElementById("backup-link"); if (b) { b.nextSibling && b.nextSibling.nodeType === 3 && b.nextSibling.remove(); b.remove(); }
       window.addEventListener("cholabo-sync", draw);
     })();
     let restartLabel = "";
