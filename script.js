@@ -1402,7 +1402,7 @@ async function qaSubmit(event) {
   if (!label || !QA_ENDPOINT || question.length < 2 || qaTurnIds.length >= QA_MAX_TURNS) return;
   btn.disabled = true; st.textContent = "考えています…（5〜10 秒）";
   try {
-    const res = await fetch(QA_ENDPOINT.replace(/\/$/, "") + "/ask", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ label, question, uid: qaUid(), prev: qaTurnIds }) });
+    const res = await fetch(QA_ENDPOINT.replace(/\/$/, "") + "/ask", { method: "POST", headers: Object.assign({ "content-type": "application/json" }, window.CholaboSync ? CholaboSync.authHeader() : {}), body: JSON.stringify({ label, question, uid: qaUid(), prev: qaTurnIds }) });
     const j = await res.json().catch(() => ({}));
     if (!res.ok) { st.textContent = j.message || "いま答えを作れませんでした。少し待ってからもう一度お試しください。"; btn.disabled = false; return; }
     // やり取りは積んでいく（前の回答を見ながら続けて聞けるように）。一番新しい質問の頭が見える位置へ

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C34PHRSJN4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-C34PHRSJN4");
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ログイン｜ちょらぼ</title>
+  <meta name="description" content="ログインすると、スマホ・iPad・パソコンで同じ続きから解けます。">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="style.css?v=10.5">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- ログインと同期（2026-11-16）。このページは画面に記録を持たないので、入ってきた分はいつでも書き込んでよい -->
+  <script>window.SYNC_SAFE_APPLY = true;</script>
+  <script src="/sync.js?v=1.1"></script>
+  <style>
+    .acct { max-width: 560px; }
+    .acct h2 { font-size: 1.05rem; margin: 28px 0 8px; }
+    .acct .card { border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin: 12px 0; background: var(--paper, transparent); }
+    .acct .muted { color: var(--muted); font-size: .9em; }
+    .acct .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .acct button { font: inherit; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); background: transparent; color: inherit; cursor: pointer; }
+    .acct button.primary { border-color: currentColor; font-weight: 700; }
+    .acct button.danger { color: #b3261e; border-color: #b3261e; }
+    .acct fieldset { border: 0; padding: 0; margin: 14px 0; }
+    .acct legend { font-weight: 700; margin-bottom: 6px; }
+    .acct label.opt { display: inline-flex; align-items: center; gap: 4px; margin: 2px 12px 2px 0; }
+    .acct .hidden { display: none; }
+    .acct ul.merits { padding-left: 1.2em; }
+    #g-btn { min-height: 44px; margin: 12px 0; }
+  </style>
+</head>
+<body>
+  <main class="seo-page acct">
+    <nav class="breadcrumbs" aria-label="パンくずリスト">
+      <ol>
+        <li><a href="./">トップ</a></li>
+        <li aria-current="page">ログイン</li>
+      </ol>
+    </nav>
+
+    <header class="seo-header">
+      <h1>ログイン</h1>
+    </header>
+
+    <section id="off" class="hidden">
+      <p>ログインは準備中です。</p>
+    </section>
+
+    <section id="out" class="hidden">
+      <p>ログインすると、スマホ・iPad・パソコンのどれで開いても、同じ続きから解けます。</p>
+      <ul class="merits">
+        <li>択一の結果と復習、ブックマーク、続きの位置</li>
+        <li>申請書ドリルの書きかけ（文字の欄）</li>
+        <li>イージーモードの既読、電卓の機種</li>
+      </ul>
+      <p class="muted">今この端末にある記録は、ログインするとそのまま引き継がれます。パスワードは要りません。ログインしなくても、今までどおりこの端末の中で使えます。</p>
+      <div id="g-btn"></div>
+      <div id="dev" class="card hidden">
+        <p class="muted">手元の試験用ログイン（acct.endpoint を設定しているときだけ出ます）</p>
+        <div class="row"><input id="dev-sub" value="alice" size="12"><button id="dev-go" type="button">試験ログイン</button></div>
+      </div>
+      <p id="out-msg" class="muted" role="status"></p>
+      <p class="muted">預かる情報と使い道は<a href="privacy.html#login">プライバシーのページ</a>に書いています。</p>
+    </section>
+
+    <section id="in" class="hidden">
+      <div class="card">
+        <p><span id="who"></span> でログインしています。</p>
+        <p class="muted" id="sync-state">同期の状態を確かめています…</p>
+        <!-- 「今すぐ同期」は置かない。ログインした直後・ページを開くたび・解いて 30 秒後・ページを離れるときに自動で同期する（2026-11-16 管理人） -->
+      </div>
+
+      <h2 id="prof-h">よければ教えてください</h2>
+      <p class="muted">サイトの作り方の参考にします。どれも答えなくてかまいません。あとからここで直せます。</p>
+      <form id="prof">
+        <!-- 項目は account/worker/src/index.js の PROFILE と揃える（2026-11-16 管理人の案） -->
+        <fieldset><legend>令和9年度に受験する予定ですか</legend>
+          <label class="opt"><input type="radio" name="r9" value="yes">はい</label>
+          <label class="opt"><input type="radio" name="r9" value="no">いいえ</label>
+        </fieldset>
+        <fieldset><legend>今度の受験は何回目ですか</legend>
+          <label class="opt"><input type="radio" name="times" value="1">初めて</label>
+          <label class="opt"><input type="radio" name="times" value="2">2回目</label>
+          <label class="opt"><input type="radio" name="times" value="3plus">3回目以上</label>
+        </fieldset>
+        <fieldset><legend>学び方</legend>
+          <p class="muted" style="margin:0 0 6px">答練だけの受講は、予備校の受講に含めません。</p>
+          <label class="opt" style="display:flex"><input type="radio" name="how" value="self">完全に独学</label>
+          <label class="opt" style="display:flex"><input type="radio" name="how" value="former">以前は予備校を受講していたが、今年は独学</label>
+          <label class="opt" style="display:flex"><input type="radio" name="how" value="school">今年、予備校を受講している（受講する予定）</label>
+        </fieldset>
+        <fieldset id="school-set" class="hidden"><legend>受講している（していた）予備校</legend>
+          <label class="opt"><input type="radio" name="school" value="hokei">東京法経学院</label>
+          <label class="opt"><input type="radio" name="school" value="lec">LEC</label>
+          <label class="opt"><input type="radio" name="school" value="agaroot">アガルート</label>
+          <label class="opt"><input type="radio" name="school" value="other">その他</label>
+        </fieldset>
+        <div class="row"><button class="primary" type="submit">保存</button><a href="./" id="skip">飛ばしてトップへ</a><span id="prof-msg" class="muted" role="status"></span></div>
+      </form>
+
+      <h2>ログアウト</h2>
+      <p class="muted">この端末の記録は残ります。家族と共用の端末なら、下の欄にチェックを入れると、この端末の記録も消します（サーバーの記録は残るので、次にログインすれば戻ります）。</p>
+      <div class="row">
+        <label class="opt"><input type="checkbox" id="clear-local">この端末の記録も消す</label>
+        <button id="logout" type="button">ログアウト</button>
+      </div>
+
+      <h2>退会</h2>
+      <p class="muted">サーバーに預けた記録とアンケートの答え、メールアドレスを全部消します。元に戻せません。この端末の記録は残ります。</p>
+      <button id="delete" class="danger" type="button">退会する</button>
+    </section>
+
+    <p style="margin-top:32px"><a href="./">トップへ戻る</a></p>
+  </main>
+
+  <script>
+  (function () {
+    const S = window.CholaboSync, $ = id => document.getElementById(id);
+    const show = id => ["off", "out", "in"].forEach(x => $(x).classList.toggle("hidden", x !== id));
+    const fmt = iso => { if (!iso) return ""; const d = new Date(iso); return (d.getMonth() + 1) + "/" + d.getDate() + " " + d.getHours() + ":" + String(d.getMinutes()).padStart(2, "0"); };
+
+    // 予備校の欄は「以前受講」「今年受講」のときだけ出す
+    function schoolVisibility() {
+      const how = (document.querySelector('#prof input[name="how"]:checked') || {}).value;
+      const on = how === "former" || how === "school";
+      $("school-set").classList.toggle("hidden", !on);
+      if (!on) document.querySelectorAll('#prof input[name="school"]').forEach(el => { el.checked = false; });
+    }
+    document.querySelectorAll('#prof input[name="how"]').forEach(el => el.addEventListener("change", schoolVisibility));
+    function fillProfile(p) {
+      for (const [k, v] of Object.entries(p || {})) { const el = document.querySelector(`#prof input[name="${k}"][value="${v}"]`); if (el) el.checked = true; }
+      schoolVisibility();
+    }
+    function render() {
+      if (!S || !S.enabled) return show("off");
+      if (!S.signedIn()) { show("out"); setupLogin(); return; }
+      show("in");
+      const u = S.user() || {};
+      $("who").textContent = u.email || "Google アカウント";
+      fillProfile(u.profile);
+      $("prof-h").textContent = u.profile && u.profile.at ? "アンケート（直せます）" : "よければ教えてください";
+      $("skip").classList.toggle("hidden", !!(u.profile && u.profile.at));
+      const at = S.lastSync();
+      $("sync-state").textContent = at ? "最後に同期: " + fmt(at) : "まだ同期していません";
+    }
+
+    let loginReady = false;
+    function setupLogin() {
+      if (loginReady) return; loginReady = true;
+      if (S.devMode) {
+        $("dev").classList.remove("hidden");
+        $("dev-go").onclick = () => done(S.devLogin($("dev-sub").value));
+      }
+      if (!S.googleClientId) return;
+      const s = document.createElement("script");
+      s.src = "https://accounts.google.com/gsi/client"; s.async = true;
+      s.onload = () => {
+        google.accounts.id.initialize({ client_id: S.googleClientId, callback: r => done(S.loginWithGoogle(r.credential)), ux_mode: "popup" });
+        google.accounts.id.renderButton($("g-btn"), { theme: "outline", size: "large", text: "signin_with", shape: "pill", locale: "ja", width: 280 });
+      };
+      s.onerror = () => { $("out-msg").textContent = "Google のログインを読み込めませんでした。通信を確かめてください。"; };
+      document.head.appendChild(s);
+    }
+    function done(p) {
+      $("out-msg").textContent = "ログインしています…";
+      p.then(() => { $("out-msg").textContent = ""; render(); try { gtag("event", "login", { method: "google" }); } catch (e) {} })
+       .catch(e => { $("out-msg").textContent = "ログインできませんでした（" + e.message + "）。時間をおいてもう一度お試しください。"; });
+    }
+
+    $("prof").onsubmit = e => {
+      e.preventDefault();
+      const p = {}; for (const el of document.querySelectorAll("#prof input:checked")) p[el.name] = el.value;
+      $("prof-msg").textContent = "保存しています…";
+      S.saveProfile(p).then(() => { $("prof-msg").textContent = "保存しました"; render(); }).catch(() => { $("prof-msg").textContent = "保存できませんでした"; });
+    };
+    $("logout").onclick = () => {
+      const clear = $("clear-local").checked;
+      if (clear && !confirm("この端末の記録を消してログアウトします。よろしいですか？")) return;
+      S.logout(clear); render();
+    };
+    $("delete").onclick = () => {
+      if (!confirm("サーバーの記録とアンケートの答えを全部消して退会します。元に戻せません。よろしいですか？")) return;
+      S.deleteAccount().then(() => { alert("退会しました。この端末の記録は残っています。"); render(); }).catch(() => alert("退会できませんでした。通信を確かめてもう一度お試しください。"));
+    };
+    window.addEventListener("cholabo-sync", e => { if (e.detail.state === "ok" || e.detail.state === "signedout") render(); if (e.detail.state === "error") $("sync-state").textContent = "同期できませんでした。通信を確かめてください。"; });
+    if (S && S.signedIn()) S.me().then(render).catch(() => {});
+    render();
+  })();
+  </script>
+</body>
+</html>
