@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C34PHRSJN4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-C34PHRSJN4");
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>問題を解く｜測量士補 一問一答</title>
+  <meta name="description" content="測量士補試験の過去問（H23〜R8）を1肢ずつ◯✕で解きます。解答すると根拠の作業規程の準則・測量法が開けます。">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="style.css?v=1.3">
+  <meta name="theme-color" content="#eff3f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f171c" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <main class="quiz-page">
+    <div id="quiz-container">
+      <div class="quiz-meta">
+        <span id="question-number"></span>
+        <span id="topic-chip" class="topic-chip hidden"></span>
+      </div>
+
+      <div class="q-card">
+        <div id="question-area">
+          <p id="q-context" class="q-context hidden"></p>
+          <div id="question-text"></div>
+          <!-- 地図を読む問題（fig のある肢）。原本のページ画像。タップで拡大 -->
+          <figure id="q-figure" class="q-figure sk-figure hidden">
+            <img id="q-figure-img" alt="" loading="lazy">
+            <figcaption><button id="q-figure-zoom" type="button" class="sk-zoom-link"><span id="q-figure-cap"></span></button><span id="q-figure-src" class="sk-fig-src"></span></figcaption>
+          </figure>
+        </div>
+
+        <!-- 解答したら「わからない」の場所がそのまま「次の問題へ」になる -->
+        <div id="choices">
+          <button class="choice" data-choice="◯" aria-label="正しい">◯</button>
+          <button class="choice" data-choice="✕" aria-label="誤り">✕</button>
+          <button id="unknown-btn">わからない</button>
+          <button id="next-btn" class="hidden">次の問題へ</button>
+        </div>
+
+        <div id="verdict" class="verdict hidden">
+          <div id="stamp" class="stamp" aria-hidden="true"></div>
+          <div id="result" class="verdict-text" aria-live="polite"></div>
+        </div>
+
+        <button id="exp-toggle" class="exp-toggle hidden" type="button" aria-expanded="false" aria-controls="explanation">解説を見る</button>
+
+        <section id="explanation" class="explanation hidden" aria-label="解説" aria-live="polite"></section>
+        <button id="next-btn-bottom" class="next-btn-bottom hidden" type="button">次の問題へ</button>
+      </div>
+
+      <div id="controls">
+        <!-- 前の問題へは分野別だけ。年度順は一覧へ戻る（調査士の年度順モードと同じ） -->
+        <button id="prev-btn" class="secondary-btn" type="button">前の問題へ</button>
+        <button id="list-btn" class="secondary-btn hidden" type="button">問題一覧へ戻る</button>
+        <button id="home-btn" type="button">トップに戻る</button>
+      </div>
+    </div>
+
+    <div id="progress-info"></div>
+
+    <footer class="page-credit">
+      <p>出典：国土地理院ウェブサイト（<a href="https://www.gsi.go.jp/LAW/SHIKEN/past.html" rel="noopener">https://www.gsi.go.jp/LAW/SHIKEN/past.html</a>）の測量士補試験の問題（平成23年〜令和8年）をもとに、当サイトが肢ごとの◯✕に編集・加工しています（穴埋め問題は一問一答の文に直しています）。解説は作業規程の準則・測量法をもとに当サイトが作成したもので、国土地理院が作成したものではありません。</p>
+      <p><a href="index.html">トップ</a></p>
+    </footer>
+
+    <!-- 図の拡大。画面いっぱいに出し、縦横にスクロールして読む -->
+    <div id="fig-zoom" class="sk-zoom hidden" role="dialog" aria-modal="true" aria-label="図の拡大">
+      <button id="fig-zoom-close" class="sk-zoom-close" type="button">閉じる ×</button>
+      <div class="sk-zoom-body">
+        <img id="fig-zoom-img" alt="">
+        <p id="fig-zoom-src" class="sk-fig-src"></p>
+      </div>
+    </div>
+
+    <!-- 解説の中身。c（結論）・a（あてはめ）・dc（一次資料が無い旨）・s（出題当時と今の違い）・k（根拠カード） -->
+    <template id="exp-template">
+      <p class="exp-core"></p>
+      <p class="exp-body"></p>
+      <p class="exp-doctrine hidden"></p>
+      <p class="exp-superseded hidden"></p>
+      <details class="exp-cards hidden">
+        <summary></summary>
+        <div class="exp-cards-body">
+          <div class="exp-cards-list"></div>
+        </div>
+      </details>
+    </template>
+  </main>
+  <script src="sokuryo.js?v=1.2"></script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C34PHRSJN4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-C34PHRSJN4");
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>測量士補 一問一答（過去問 H23〜R8）｜ちょらぼ</title>
+<link rel="canonical" href="https://cholabo.jp/sokuryo/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ちょらぼ">
+<meta property="og:title" content="測量士補 一問一答（過去問 H23〜R8）">
+<meta property="og:url" content="https://cholabo.jp/sokuryo/">
+<meta property="og:image" content="https://cholabo.jp/ogimage.png">
+<meta property="og:locale" content="ja_JP">
+  <meta name="description" content="測量士補試験の過去問（平成23年度〜令和8年度）を1肢ずつ◯✕で解く一問一答。年度順・分野別・今日の復習。">
+  <link rel="stylesheet" href="style.css?v=1.3">
+  <meta name="theme-color" content="#eff3f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f171c" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <main class="title-page">
+    <div class="hero">
+      <div class="hero-in">
+        <a href="/" style="position:absolute;top:10px;left:12px;z-index:2;font-size:.8rem;padding:4px 10px;border:1px solid currentColor;border-radius:999px;color:inherit;text-decoration:none;opacity:.85">調査士</a>
+        <div class="hanko" aria-hidden="true">測</div>
+        <h1 class="wordmark">測量士補 一問一答<span class="sk-wordmark-sub">（過去問 H23〜R8）</span></h1>
+        <p class="subtitle">肢別◯✕ <span id="hero-total">–</span>肢｜計算問題 165問</p>
+      </div>
+    </div>
+
+    <div class="dash">
+      <div class="dash-top">
+        <span class="dash-big" id="dash-done">–</span>
+        <span class="dash-cap">/ <span id="dash-total">–</span> 解いた</span>
+      </div>
+      <p class="dash-sub" id="dash-sub">進捗を読み込み中...</p>
+    </div>
+
+    <!-- 並びは管理人の指示（11/25）: 計算以外の一問一答（年度順）→ 計算問題 → 続きから → 今日の復習 → 分野別は折りたたみ。
+         年度順は一覧（question-list.html）で肢を選んで始める。続きから・今日の復習は調査士アプリと同じ -->
+    <div id="mode-select">
+      <button id="start-normal-btn" class="mode-btn normal-mode" type="button">計算以外の一問一答</button>
+      <a id="start-keisan-btn" class="mode-btn theme-mode" href="keisan/index.html">計算問題</a>
+      <button id="resume-btn" class="mode-btn resume-mode hidden" type="button">続きから</button>
+      <button id="review-btn" class="mode-btn review-mode" type="button">今日の復習</button>
+    </div>
+
+    <details class="sk-fold">
+      <summary>分野別（計算以外）</summary>
+      <p class="sk-section-note">分野の中は年度の古い順に出ます。</p>
+      <div id="chapter-grid" class="db-grid sk-grid"></div>
+    </details>
+
+    <footer>
+      <p class="sk-credit">
+        出典：国土地理院ウェブサイト（<a href="https://www.gsi.go.jp/LAW/SHIKEN/past.html" rel="noopener">https://www.gsi.go.jp/LAW/SHIKEN/past.html</a>）の測量士補試験の問題をもとに、当サイトが肢ごとの◯✕に編集・加工したものです（穴埋め問題は一問一答の文に直しています）。
+        解説は作業規程の準則・測量法をもとに当サイトが作成したもので、国土地理院が作成・公表したものではありません。
+        記録はこの端末のブラウザにだけ残ります。
+      </p>
+      <p class="sk-credit">図の地図は、国土地理院の電子地形図25000・1/25,000地形図・地理院地図などの一部（測量士補試験の問題に掲載されたもの）です。<a href="/about.html">誤りを見つけたら・このサイトについて</a>｜<a href="/privacy.html">アクセス解析とプライバシー</a></p>
+    </footer>
+  </main>
+
+  <script src="sokuryo.js?v=1.2"></script>
+  <script>
+    (function () {
+      const n = v => v.toLocaleString("ja-JP");
+
+      let resumeAction = null;
+
+      // 「続きから」は最後に使ったモードの続き（調査士 index.html と同じ考え方。調査士のテーマ別の代わりが分野別）。
+      // 分野別で止まっていればそちら、それ以外は年度順の再開位置
+      function updateResumeButton(questions, state) {
+        const button = document.getElementById("resume-btn");
+        const show = (text, action) => {
+          button.textContent = text;
+          resumeAction = action;
+          button.classList.remove("hidden");
+        };
+
+        const last = skRead(SK_LAST_KEY, null);
+        if (skGet(SK_MODE_KEY) === "chapter" && last && last.mode === "chapter" && last.key) {
+          const label = skRead(SK_POS_KEY, {})[`chapter:${last.key}`];
+          const q = setQuestions(questions, "chapter", last.key).find(item => item.label === label);
+          if (q) {
+            show(`続きから（${last.key}・${dispName(q)}）`, () => { window.location.href = quizUrl("chapter", last.key); });
+            return;
+          }
+        }
+
+        const resumeLabel = skGet(SK_YEAR_RESUME_KEY);
+        const resumeQuestion = questions.find(q => q.label === resumeLabel);
+        if (!resumeQuestion) {
+          if (resumeLabel) skRemove(SK_YEAR_RESUME_KEY);
+          // 全部やり終えているのに再開位置が無い状態。ここから始められないと一覧で肢を探すことになる
+          if (questions.length && summarize(questions, state).unanswered === 0) {
+            const restartLabel = getFirstLabel(questions);
+            show("もう一周する", () => startYearMode(restartLabel));
+            return;
+          }
+          button.classList.add("hidden");
+          return;
+        }
+
+        // 一周し終えると先頭に巻き戻してあるので、そのときは次の周への入口として見せる
+        const pass = getPassCount();
+        show(pass > 0 && resumeLabel === getFirstLabel(questions)
+          ? `${pass + 1}周目をはじめる`
+          : `続きから（${dispName(resumeQuestion)}）`, () => startYearMode(resumeLabel));
+      }
+
+      document.getElementById("resume-btn").addEventListener("click", () => {
+        if (resumeAction) resumeAction();
+      });
+      document.getElementById("start-normal-btn").addEventListener("click", () => {
+        skSet(SK_MODE_KEY, "year");
+        window.location.href = "question-list.html";
+      });
+      document.getElementById("review-btn").addEventListener("click", () => {
+        window.location.href = quizUrl("review");
+      });
+
+      // 分野のボタン 1 つ。解いた数／全体と細い棒で進み具合を出す
+      function setButton(href, name, sub, s) {
+        const a = document.createElement("a");
+        a.className = "db-btn sk-set-btn";
+        a.href = href;
+        const nm = document.createElement("span");
+        nm.className = "db-btn-name";
+        nm.textContent = name;
+        const sb = document.createElement("span");
+        sb.className = "db-btn-sub";
+        sb.textContent = `${sub ? sub + "・" : ""}${n(s.answered)} / ${n(s.total)}`;
+        const bar = document.createElement("span");
+        bar.className = "sk-bar";
+        bar.setAttribute("aria-hidden", "true");
+        const fill = document.createElement("span");
+        fill.style.width = s.total ? `${Math.round(s.answered / s.total * 100)}%` : "0";
+        bar.appendChild(fill);
+        a.append(nm, sb, bar);
+        a.setAttribute("aria-label", `${name} 解いた ${s.answered} 肢 / 全 ${s.total} 肢`);
+        return a;
+      }
+
+      loadQuestions().then(questions => {
+        const state = loadLearningState();
+        const all = summarize(questions, state);
+        document.getElementById("hero-total").textContent = n(all.total);
+        document.getElementById("dash-done").textContent = n(all.answered);
+        document.getElementById("dash-total").textContent = n(all.total);
+        const pass = getPassCount();
+        document.getElementById("dash-sub").textContent = `正解 ${n(all.completed)} ・ 復習 ${n(all.review)} ・ 未回答 ${n(all.unanswered)}`
+          + (pass > 0 ? ` ・ ${pass}周完了` : "");
+
+        // 分野別（決めた並び。決めていない分野があれば後ろに）
+        const present = new Set(questions.map(q => q.chapter));
+        const chapters = CHAPTER_ORDER.filter(c => present.has(c)).concat([...present].filter(c => c && !CHAPTER_ORDER.includes(c)));
+        const cg = document.getElementById("chapter-grid");
+        chapters.forEach(c => {
+          const list = setQuestions(questions, "chapter", c);
+          cg.appendChild(setButton(quizUrl("chapter", c), c, "", summarize(list, state)));
+        });
+
+        // 今日の復習の肢数（期限が来た復習対象）。規則は書かず数だけ見せる（調査士と同じ）
+        const due = todayReviewLabels(questions, state).length;
+        document.getElementById("review-btn").textContent = due > 0 ? `今日の復習 ${n(due)} 肢` : "今日の復習は完了";
+
+        updateResumeButton(questions, state);
+      }).catch(() => {
+        document.getElementById("dash-sub").textContent = "問題データを読み込めませんでした。";
+      });
+    })();
+  </script>
+</body>
+</html>

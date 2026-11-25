@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C34PHRSJN4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-C34PHRSJN4");
+  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>令和6年度 測量士補 計算問題と解説｜ちょらぼ</title>
+<link rel="canonical" href="https://cholabo.jp/sokuryo/keisan/R6.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ちょらぼ">
+<meta property="og:title" content="令和6年度 測量士補 計算問題と解説">
+<meta property="og:url" content="https://cholabo.jp/sokuryo/keisan/R6.html">
+<meta property="og:image" content="https://cholabo.jp/ogimage.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="description" content="測量士補試験 令和6年度の計算問題。問題文・図と、数字を入れた解き方を図つきで解説します。">
+<link rel="stylesheet" href="../style.css?v=1.3">
+<style>
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);line-height:1.8}
+main{max-width:760px;margin:0 auto;padding:16px}
+h1{font-family:var(--font-display);font-size:22px;margin:8px 0 4px}
+.top{font-size:14px;margin:0 0 4px}.top a{color:var(--primary)}
+.lead{color:var(--muted);font-size:14px;margin:0 0 12px}
+nav.years{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px}
+nav.years a,nav.years span{padding:2px 10px;border:1px solid var(--line);border-radius:999px;font-size:14px;text-decoration:none;color:var(--primary)}
+nav.years span{color:var(--muted)}
+nav.years a.cur{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:14px 16px;margin:0 0 18px}
+.q h2{font-size:17px;margin:0 0 6px;display:flex;gap:8px;align-items:baseline}
+.q h2 .tag{font-size:12px;font-weight:normal;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.stem{margin:0 0 8px;overflow-wrap:anywhere}
+.fig{margin:8px 0;text-align:center}
+.fig img{max-width:100%;height:auto;background:#fff;border-radius:6px;padding:4px}
+.items p{margin:2px 0;padding-left:1.6em;text-indent:-1.6em}
+ol.ch{margin:8px 0;padding-left:2em}
+ol.ch li{overflow-wrap:anywhere}
+details{border-top:1px dashed var(--line);margin-top:10px;padding-top:8px}
+summary{cursor:pointer;color:var(--primary);font-weight:bold}
+.ans{font-size:17px;margin:6px 0}
+.f{font-family:"Times New Roman",var(--font-body);background:var(--soft);border-radius:8px;padding:8px 12px;margin:8px 0;overflow-x:auto;line-height:1.9}
+.pt{border-left:4px solid var(--seal);background:var(--seal-soft);padding:6px 10px;border-radius:0 8px 8px 0;margin:8px 0;font-size:15px}
+.src{font-size:12px;color:var(--muted);text-align:center;margin:4px 0}
+.kz{margin:10px 0;text-align:center}
+.kz svg{max-width:100%;height:auto}
+.kz svg.on{background:#fff;border-radius:6px}
+.kz .cap{font-size:13px;color:var(--muted);margin-top:2px}
+.kz svg.on text{paint-order:stroke;stroke:#fff;stroke-width:7px;stroke-linejoin:round;font-family:var(--font-body)}
+.kz svg.on .r{fill:#c33f27}.kz svg.on .b{fill:#0b6e9e}
+.kz svg.new text{font-family:var(--font-body);fill:var(--ink)}
+.kz svg.new .ln{stroke:var(--ink);stroke-width:1.5;fill:none}
+.kz svg.new .dh{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:4 3;fill:none}
+.kz svg.new .rl{stroke:var(--seal);stroke-width:2;fill:none}
+.kz svg.new .bl{stroke:var(--primary);stroke-width:2.5;fill:none}
+.kz svg.new .r{fill:var(--seal)}.kz svg.new .b{fill:var(--primary)}
+.kz svg.new .sub{fill:var(--muted)}
+table.idx{border-collapse:collapse;width:100%;background:var(--surface)}
+table.idx a{color:var(--primary);white-space:nowrap}table.idx td:nth-child(-n+2){white-space:nowrap}
+table.idx td,table.idx th{border:1px solid var(--line);padding:4px 8px;text-align:left;font-size:15px}
+footer{color:var(--muted);font-size:12px;margin:24px 0 8px}
+footer a{color:var(--muted)}
+</style>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<main>
+<p class="top"><a href="../index.html">一問一答</a> ／ <a href="index.html">計算問題の一覧</a></p>
+<h1>令和6年度（R6）計算問題</h1><p class="lead">測量士補試験の計算問題 12 問。紙と鉛筆で解いてから「答えと解説」を開いてください。関数の値は試験の巻末の関数表を使います。</p><nav class="years"><a href="H23.html">H23</a><a href="H24.html">H24</a><a href="H25.html">H25</a><a href="H26.html">H26</a><a href="H27.html">H27</a><a href="H28.html">H28</a><a href="H29.html">H29</a><a href="H30.html">H30</a><a href="R1.html">R1</a><a href="R2.html">R2</a><a href="R3.html">R3</a><a href="R4.html">R4</a><a href="R5.html">R5</a><a href="R6.html" class=cur>R6</a><a href="R7.html">R7</a><a href="R8.html">R8</a></nav><section class="q" id="R6-03"><h2>No.3<span class="tag">数学</span></h2><p class="stem">次のa及びbの各問の答えとして最も近いものの組合せはどれか。次の1～5の中から選べ。<br>ただし，円周率π＝3.14とする。<br>なお，関数の値が必要な場合は，巻末の関数表を使用すること。</p><div class="stem items"><p>a．84° 15′ 36″をラジアンに換算すると幾らか。</p><p>b．三角形ABCで辺AC＝8.0 m，∠BCA＝70°，∠ABC＝30°としたとき，辺BCの長さは幾らか。</p></div><ol class="ch"><li>a=0.73ラジアン／b=4.1 m</li><li>a=0.73ラジアン／b=15.8 m</li><li>a=1.47ラジアン／b=15.0 m</li><li>a=1.47ラジアン／b=15.8 m</li><li>a=4.83ラジアン／b=15.0 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>4</b></p><p><b>a　84°15′36″ をラジアンに</b>　まず分と秒を度に直します（60′ ＝ 1°、3,600″ ＝ 1°）。</p>
+<div class="f">15′ ＝ 15 ÷ 60 ＝ 0.25°　　36″ ＝ 36 ÷ 3,600 ＝ 0.01°<br>84°15′36″ ＝ 84.26°</div>
+<p>180° が π ラジアンなので、度に π ÷ 180 を掛けます。</p>
+<div class="f">84.26 × 3.14 ÷ 180 ≒ 1.47 ラジアン</div>
+<p><b>b　三角形の辺 BC</b>　辺 AC ＝ 8.0 m、∠BCA ＝ 70°、∠ABC ＝ 30° です。</p>
+<div class="kz"><svg class="new" viewBox="0 0 440 236" width="440"><polygon class="ln" points="326.6,38.6 40,204 386.7,204"/>
+<line class="bl" x1="40" y1="204" x2="386.7" y2="204"/>
+<path class="ln" d="M79.8 181 A46 46 0 0 1 86 204"/>
+<path class="ln" d="M360.7 204 A26 26 0 0 1 377.8 179.6"/>
+<path class="rl" d="M334.8 61.1 A24 24 0 0 1 305.8 50.6"/>
+<text x="24" y="212" font-size="15">B</text>
+<text x="394.7" y="212" font-size="15">C</text>
+<text x="322.6" y="30.6" font-size="15">A</text>
+<text x="92" y="195" font-size="14">30°</text>
+<text x="340.7" y="184" font-size="14">70°</text>
+<text x="300.6" y="80.6" font-size="14" class="r">80°</text>
+<text x="366.6" y="121.3" font-size="14">8.0 m</text>
+<text x="213.4" y="226" font-size="14" class="b" text-anchor="middle">求める BC</text></svg><div class="cap">AC の向かいの角が B（30°）、BC の向かいの角が A（80°）</div></div>
+<p>正弦定理は「辺 ÷ sin（その辺の向かいの角）」がどの辺でも同じ、という決まりです。求める BC の向かいは角 A なので、先に角 A を出します。</p>
+<div class="f">角 A ＝ 180° − 70° − 30° ＝ 80°<br>BC ÷ sin 80° ＝ AC ÷ sin 30°<br>BC ＝ 8.0 × sin 80° ÷ sin 30° ＝ 8.0 × 0.98481 ÷ 0.50000<br>＝ 16 × 0.98481 ≒ 15.8 m</div>
+<div class="pt">a は 90° が約 1.57 ラジアンなので、それより少し小さい 1.47 と選べます。b で 70° の sin を使うと 16 × 0.93969 ≒ 15.0 m（選択肢 3）。これは AB の長さです。</div>
+</details></section><section class="q" id="R6-05"><h2>No.5<span class="tag">多角</span></h2><p class="stem">公共測量における3級基準点測量において，トータルステーションを用いて既知点から新点A，新点Bの鉛直角を観測し，表5の結果を得た。新点A，新点Bの高低角及び高度定数の較差の組合せとして最も適当なものはどれか。次の1～5の中から選べ。<br>なお，関数の値が必要な場合は，巻末の関数表を使用すること。</p><div class="fig"><img src="fig/R6-05-1.png" width="439" alt="R6-05 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>新点Aの高低角=－24° 18′ 10″／新点Bの高低角=－42° 33′ 25″／高度定数の較差=5″</li><li>新点Aの高低角=＋24° 18′ 10″／新点Bの高低角=＋42° 33′ 25″／高度定数の較差=5″</li><li>新点Aの高低角=＋24° 18′ 10″／新点Bの高低角=＋42° 33′ 25″／高度定数の較差=10″</li><li>新点Aの高低角=＋65° 41′ 50″／新点Bの高低角=＋47° 26′ 35″／高度定数の較差=5″</li><li>新点Aの高低角=＋65° 41′ 50″／新点Bの高低角=＋47° 26′ 35″／高度定数の較差=10″</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>3</b></p><div class="kz"><svg class="on" viewBox="0 0 879 652" width="439"><image href="fig/R6-05-1.png" width="879" height="652"/>
+<text x="640" y="315" font-size="28" class="r">和 360° 00′ 00″</text>
+<text x="640" y="526" font-size="28" class="r">和 360° 00′ 10″</text>
+</svg><div class="cap">赤：r と l の和（原本の表 5 に書き足し）</div></div>
+<div class="kz"><svg class="new" viewBox="0 0 480 236" width="480"><line class="dh" x1="115" y1="130" x2="115" y2="24"/>
+<polyline class="ln" points="118.7,32.2 115,24 111.3,32.2"/>
+<text x="115" y="18" font-size="12" class="sub" text-anchor="middle">真上</text>
+<line class="dh" x1="15" y1="130" x2="220" y2="130"/>
+<text x="15" y="147" font-size="12" class="sub">水平</text>
+<line class="ln" x1="115" y1="130" x2="206.1" y2="88.8"/>
+<text x="210.1" y="86.8" font-size="15">A</text>
+<circle cx="115" cy="130" r="3" fill="currentColor"/>
+<path class="rl" d="M115 98 A32 32 0 0 1 144.2 116.8"/>
+<polyline class="rl" points="136.8,111.7 144.2,116.8 143,107.9"/>
+<text x="124" y="92" font-size="15" class="r">r</text>
+<path class="ln" d="M156.9 111.1 A46 46 0 1 1 115 84"/>
+<polyline class="ln" points="107.1,88.4 115,84 106.5,81.1"/>
+<text x="115" y="194" font-size="15" text-anchor="middle">l</text>
+<path class="bl" d="M182.4 99.5 A74 74 0 0 1 189 130"/>
+<text x="197" y="114" font-size="12" class="b">高低角</text>
+<text x="115" y="226" font-size="14" class="b" text-anchor="middle">高低角 ＋24°18′10″</text>
+<line class="dh" x1="355" y1="130" x2="355" y2="24"/>
+<polyline class="ln" points="358.7,32.2 355,24 351.3,32.2"/>
+<text x="355" y="18" font-size="12" class="sub" text-anchor="middle">真上</text>
+<line class="dh" x1="255" y1="130" x2="460" y2="130"/>
+<text x="255" y="147" font-size="12" class="sub">水平</text>
+<line class="ln" x1="355" y1="130" x2="428.7" y2="62.4"/>
+<text x="432.7" y="60.4" font-size="15">B</text>
+<circle cx="355" cy="130" r="3" fill="currentColor"/>
+<path class="rl" d="M355 98 A32 32 0 0 1 378.6 108.4"/>
+<polyline class="rl" points="369.9,105.8 378.6,108.4 374.7,100.2"/>
+<text x="364" y="92" font-size="15" class="r">r</text>
+<path class="ln" d="M388.9 98.9 A46 46 0 1 1 355 84"/>
+<polyline class="ln" points="347.1,88.4 355,84 346.5,81.1"/>
+<text x="355" y="194" font-size="15" text-anchor="middle">l</text>
+<path class="bl" d="M409.5 79.9 A74 74 0 0 1 429 130"/>
+<text x="437" y="104" font-size="12" class="b">高低角</text>
+<text x="355" y="226" font-size="14" class="b" text-anchor="middle">高低角 ＋42°33′25″</text></svg><div class="cap">r は真上から目標までの角、l はその残り。2 つで 1 周（360°）になる</div></div>
+<p>r（望遠鏡が正の向き）の鉛直角は、真上から目標まで測った角です。l（反の向き）は残りの角が読めるので、r ＋ l は 360° になるはず。360° からのずれが<b>高度定数</b>です。</p>
+<div class="f">A　65°41′50″ ＋ 294°18′10″ ＝ 360°00′00″　→　高度定数 0″<br>B　47°26′40″ ＋ 312°33′30″ ＝ 360°00′10″　→　高度定数 10″<br>較差（いちばん大きい値と小さい値の差）＝ 10 − 0 ＝ 10″</div>
+<p>真上からの角は、r と「360° − l」の平均で出します。高低角（水平から上向きの角）は 90° からそれを引いたものです。</p>
+<div class="f">A　360° − 294°18′10″ ＝ 65°41′50″（r と同じ）<br>　　高低角 ＝ 90° − 65°41′50″ ＝ ＋24°18′10″</div>
+<div class="f">B　360° − 312°33′30″ ＝ 47°26′30″<br>　　47°26′40″ との平均 ＝ 47°26′35″<br>　　高低角 ＝ 90° − 47°26′35″ ＝ ＋42°33′25″</div>
+<div class="pt">r が 90° より小さいので、目標は水平より上（＋）。選択肢 1 は消せます。90° から引き忘れると 65°41′50″・47°26′35″（選択肢 5）です。</div>
+</details></section><section class="q" id="R6-06"><h2>No.6<span class="tag">多角</span></h2><p class="stem">平面直角座標系（平成14年国土交通省告示第9号）において，点Bは，点Aからの方向角が305° 00′ 00″，平面距離が1,000.00 mの位置にある。点Aの座標値を，XA＝－800.00 m，YA＝＋1,100.00 mとする場合，点Bの座標値（XB，YB）は幾らか。最も近いものを次の1～5の中から選べ。<br>なお，関数の値が必要な場合は，巻末の関数表を使用すること。</p><ol class="ch"><li>XB=－1,619.15 m／YB=＋1,673.58 m</li><li>XB=－1,507.11 m／YB=＋1,807.11 m</li><li>XB=－1,373.58 m／YB=＋1,919.15 m</li><li>XB=－226.42 m／YB=＋280.85 m</li><li>XB=＋19.15 m／YB=＋526.42 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>4</b></p><div class="kz"><svg class="new" viewBox="0 0 420 268" width="420"><line class="ln" x1="270" y1="260" x2="270" y2="24"/>
+<polyline class="ln" points="273.7,32.2 270,24 266.3,32.2"/>
+<text x="278" y="30" font-size="13">X（北）</text>
+<line class="ln" x1="60" y1="200" x2="400" y2="200"/>
+<polyline class="ln" points="391.8,203.7 400,200 391.8,196.3"/>
+<text x="404" y="192" font-size="13" text-anchor="end">Y（東）</text>
+<line class="ln" x1="270" y1="200" x2="106.2" y2="85.3"/>
+<circle cx="270" cy="200" r="4" fill="currentColor"/>
+<circle cx="106.2" cy="85.3" r="4" fill="currentColor"/>
+<line class="rl" x1="106.2" y1="85.3" x2="270" y2="85.3"/>
+<line class="bl" x1="270" y1="85.3" x2="270" y2="200"/>
+<path class="ln" d="M270 160 A40 40 0 1 1 237.2 177.1"/>
+<polyline class="ln" points="236.4,186 237.2,177.1 230,182.4"/>
+<text x="304" y="244" font-size="14">305°</text>
+<path class="rl" d="M219.2 164.4 A62 62 0 0 1 270 138"/>
+<text x="222" y="131" font-size="13" class="r">55°</text>
+<text x="278" y="219" font-size="15">A</text>
+<text x="88.2" y="90.3" font-size="15">B</text>
+<text x="188.1" y="76.3" font-size="13" class="r" text-anchor="middle">Y の変化 −819.15</text>
+<text x="278" y="138.6" font-size="13" class="b">X の変化</text>
+<text x="278" y="155.6" font-size="13" class="b">＋573.58</text>
+<text x="166.1" y="162.6" font-size="13" text-anchor="end">1,000 m</text></svg><div class="cap">上が北（X）、右が東（Y）。方向角 305° は左上（北西）向き</div></div>
+<p>方向角は、北（X）から右回りに測った角です。305° は 360° まであと 55° なので、北から左へ 55° 傾いた向き、つまり左上です。だから X は増え（＋）、Y は減ります（−）。</p>
+<div class="f">360° − 305° ＝ 55°<br>X の変化 ＝ ＋1,000 × cos 55° ＝ 1,000 × 0.57358 ＝ ＋573.58 m<br>Y の変化 ＝ −1,000 × sin 55° ＝ −1,000 × 0.81915 ＝ −819.15 m</div>
+<div class="f">X<sub>B</sub> ＝ −800.00 ＋ 573.58 ＝ −226.42 m<br>Y<sub>B</sub> ＝ 1,100.00 − 819.15 ＝ ＋280.85 m</div>
+<div class="pt">sin と cos を逆にすると X<sub>B</sub> ＝ ＋19.15、Y<sub>B</sub> ＝ ＋526.42（選択肢 5）。55° は 45° より大きいので、横（Y）の動きのほうが大きいことで確かめられます。</div>
+</details></section><section class="q" id="R6-08"><h2>No.8<span class="tag">GNSS</span></h2><p class="stem">次の文は，公共測量におけるGNSS測量機を用いた基準点測量において，電子基準点A，Bを既知点とした場合のセミ・ダイナミック補正について述べたものである。<br>表8－1は，観測で得られた電子基準点Aから新点C及び新点Cから電子基準点Bまでの基線ベクトルのY成分を示したものである。表8－2は各点における地殻変動補正パラメータから求めたY方向の補正量を示しており，元期座標値と今期座標値は，「今期座標値＝元期座標値＋地殻変動補正パラメータから求めた補正量」の関係がある。新点Cにおける元期のY座標値を求めるとき，表8－3の［ア］～［エ］に入る数値の組合せとして最も適当なものはどれか。次の1～5の中から選べ。<br>ただし，基線ベクトルの観測誤差並びにX方向及び楕円体高の補正量は考えないものとする。<br>なお，関数の値が必要な場合は，巻末の関数表を使用すること。</p><div class="fig"><img src="fig/R6-08-1.png" width="554" alt="R6-08 の図・表（原本）" loading="lazy"></div><div class="fig"><img src="fig/R6-08-2.png" width="428" alt="R6-08 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>ア=－0.020／イ=＋19,999.960／ウ=＋6,999.960／エ=＋6,999.980</li><li>ア=－0.020／イ=＋19,999.960／ウ=＋7,000.000／エ=＋6,999.980</li><li>ア=0.000／イ=＋20,000.020／ウ=＋6,999.960／エ=＋7,000.000</li><li>ア=0.000／イ=＋20,000.040／ウ=＋6,999.980／エ=＋7,000.000</li><li>ア=0.000／イ=＋20,000.040／ウ=＋7,000.020／エ=＋7,000.000</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>4</b></p><div class="kz"><svg class="new" viewBox="0 0 500 260" width="500"><text x="8" y="85" font-size="14">元期</text>
+<text x="8" y="195" font-size="14">今期</text>
+<text x="80" y="30" font-size="15" text-anchor="middle">A</text>
+<circle cx="80" cy="80" r="4" fill="currentColor"/>
+<circle cx="80" cy="190" r="4" fill="currentColor"/>
+<text x="220" y="30" font-size="15" text-anchor="middle">新点 C</text>
+<circle cx="220" cy="80" r="4" fill="currentColor"/>
+<circle cx="220" cy="190" r="4" fill="currentColor"/>
+<text x="430" y="30" font-size="15" text-anchor="middle">B</text>
+<circle cx="430" cy="80" r="4" fill="currentColor"/>
+<circle cx="430" cy="190" r="4" fill="currentColor"/>
+<line class="rl" x1="80" y1="87" x2="80" y2="182"/>
+<polyline class="rl" points="76.3,173.8 80,182 83.7,173.8"/>
+<line class="rl" x1="430" y1="87" x2="430" y2="182"/>
+<polyline class="rl" points="426.3,173.8 430,182 433.7,173.8"/>
+<line class="bl" x1="220" y1="183" x2="220" y2="88"/>
+<polyline class="bl" points="223.7,96.2 220,88 216.3,96.2"/>
+<text x="88" y="140" font-size="13" class="r">＋0.010</text>
+<text x="438" y="140" font-size="13" class="r">＋0.040</text>
+<text x="228" y="140" font-size="13" class="b">−0.020</text>
+<line class="rl" x1="88" y1="190" x2="210" y2="190"/>
+<polyline class="rl" points="201.8,193.7 210,190 201.8,186.3"/>
+<text x="150" y="181" font-size="13" class="r" text-anchor="middle">＋7,000.000</text>
+<line class="ln" x1="228" y1="190" x2="420" y2="190"/>
+<polyline class="ln" points="411.8,193.7 420,190 411.8,186.3"/>
+<text x="325" y="181" font-size="13" text-anchor="middle">＋13,000.040</text>
+<text x="80" y="68" font-size="13" text-anchor="middle">−0.010</text>
+<text x="430" y="68" font-size="13" text-anchor="middle">20,000.000</text>
+<text x="220" y="68" font-size="14" class="b" text-anchor="middle">ウ 6,999.980</text>
+<text x="80" y="212" font-size="13" class="r" text-anchor="middle">ア 0.000</text>
+<text x="220" y="212" font-size="13" class="r" text-anchor="middle">エ 7,000.000</text>
+<text x="430" y="212" font-size="13" class="r" text-anchor="middle">イ 20,000.040</text>
+<text x="250" y="246" font-size="12" class="sub" text-anchor="middle">A を今期へ → 観測値を足して C へ → C を元期へ戻す</text></svg><div class="cap">元期から今期へは補正量を足し、今期から元期へは引く（右が Y の大きい方）</div></div>
+<p>元期は座標の基準にしている時点、今期は観測した時点です。その間に地面が動いているので、観測した値は今期どうしでつなぎ、最後に元期へ戻します。問題文の「今期座標値 ＝ 元期座標値 ＋ 補正量」をそのまま使います。</p>
+<div class="f">ア　A の今期 ＝ −0.010 ＋ 0.010 ＝ 0.000 m<br>イ　B の今期 ＝ 20,000.000 ＋ 0.040 ＝ 20,000.040 m<br>エ　C の今期 ＝ A の今期 ＋ 7,000.000 ＝ 7,000.000 m<br>ウ　C の元期 ＝ 7,000.000 − 0.020 ＝ 6,999.980 m</div>
+<p>エは B からも確かめられます。C→B が ＋13,000.040 なので、20,000.040 − 13,000.040 ＝ 7,000.000 m で合います。</p>
+<div class="pt">アとイが出た時点で 4 か 5。ウで 0.020 を足してしまうと 7,000.020（選択肢 5）です。元期へ戻るときは引きます。</div>
+</details></section><section class="q" id="R6-10"><h2>No.10<span class="tag">水準</span></h2><p class="stem">公共測量における1級水準測量を実施するに当たり，既知点間が1.7 kmの平たんな路線において，最大視準距離を45 mとして観測することとした。往路におけるレベルの設置回数（測点数）は最低何点になるか。次の1～5の中から選べ。<br>ただし，全測点において視通や観測時の環境条件を考えずにレベルを設置できるものとする。<br>なお，関数の値が必要な場合は，巻末の関数表を使用すること。</p><ol class="ch"><li>18点</li><li>19点</li><li>20点</li><li>38点</li><li>39点</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>3</b></p><div class="kz"><svg class="new" viewBox="0 0 500 212" width="500"><line class="ln" x1="15" y1="130" x2="485" y2="130"/>
+<line class="rl" x1="40" y1="130" x2="40" y2="50"/>
+<text x="40" y="42" font-size="13" class="r" text-anchor="middle">標尺 1</text>
+<line class="ln" x1="200" y1="130" x2="200" y2="50"/>
+<text x="200" y="42" font-size="13" text-anchor="middle">標尺 2</text>
+<line class="rl" x1="360" y1="130" x2="360" y2="50"/>
+<text x="360" y="42" font-size="13" class="r" text-anchor="middle">標尺 1</text>
+<polyline class="ln" points="106,130 120,92 134,130"/>
+<rect class="ln" x="111" y="82" width="18" height="10" style="fill:currentColor;fill-opacity:.08"/>
+<text x="120" y="74" font-size="12" text-anchor="middle">1 回目</text>
+<polyline class="ln" points="266,130 280,92 294,130"/>
+<rect class="ln" x="271" y="82" width="18" height="10" style="fill:currentColor;fill-opacity:.08"/>
+<text x="280" y="74" font-size="12" text-anchor="middle">2 回目</text>
+<line class="dh" x1="129" y1="87" x2="200" y2="87"/>
+<line class="dh" x1="111" y1="87" x2="40" y2="87"/>
+<line class="dh" x1="289" y1="87" x2="360" y2="87"/>
+<line class="dh" x1="271" y1="87" x2="200" y2="87"/>
+<line class="ln" x1="40" y1="148" x2="120" y2="148"/>
+<line class="ln" x1="40" y1="143" x2="40" y2="153"/>
+<line class="ln" x1="120" y1="143" x2="120" y2="153"/>
+<line class="ln" x1="120" y1="148" x2="200" y2="148"/>
+<line class="ln" x1="120" y1="143" x2="120" y2="153"/>
+<line class="ln" x1="200" y1="143" x2="200" y2="153"/>
+<text x="80" y="166" font-size="13" text-anchor="middle">45 m</text>
+<text x="160" y="166" font-size="13" text-anchor="middle">45 m</text>
+<line class="bl" x1="200" y1="148" x2="360" y2="148"/>
+<line class="bl" x1="200" y1="143" x2="200" y2="153"/>
+<line class="bl" x1="360" y1="143" x2="360" y2="153"/>
+<text x="280" y="166" font-size="13" class="b" text-anchor="middle">1 回で 90 m 進む</text>
+<text x="420" y="90" font-size="13" class="sub" text-anchor="middle">… 1.7 km まで</text>
+<text x="250" y="200" font-size="13" class="r" text-anchor="middle">2 本の標尺を交互に立てる。偶数回なら、終わりも始めと同じ標尺 1</text></svg><div class="cap">レベルを前と後ろの標尺の真ん中に置いて進む</div></div>
+<p>水準測量では、レベル（水平に見る望遠鏡）を 2 本の標尺の真ん中に置き、後ろと前の標尺を読んで進みます。レベルから標尺まで（視準距離）が最大 45 m なので、1 回置くと最大 90 m 進めます。</p>
+<div class="f">1 回で進む距離 ＝ 45 × 2 ＝ 90 m<br>1,700 ÷ 90 ＝ 18.8…　→　足りるには 19 回</div>
+<p>ただし、標尺は 2 本 1 組で使い、測点数（レベルを置く回数）は偶数にすると決まっています。19 は奇数なので、次の偶数 20 にします。</p>
+<div class="f">測点数 ＝ 20 点</div>
+<div class="pt">切り上げただけの 19（選択肢 2）で止めないこと。45 m だけで割ると 1,700 ÷ 45 ＝ 37.7… → 38 回（選択肢 4）になり、これも誤りです。</div>
+</details></section><section class="q" id="R6-12"><h2>No.12<span class="tag">水準</span></h2><p class="stem">公共測量により水準点A，B間で1級水準測量を実施し，表12に示す結果を得た。温度変化による標尺の伸縮の影響を考慮し，使用する標尺に対応する標尺補正計算を行った後の水準点A，B間の観測高低差は幾らか。最も近いものを次の1～5の中から選べ。<br>ただし，観測に使用した標尺の標尺改正数は，20 ℃において＋10 μm/m，膨張係数は＋1.5×10⁻⁶/℃とする。<br>なお，関数の値が必要な場合は，巻末の関数表を使用すること。</p><div class="fig"><img src="fig/R6-12-1.png" width="499" alt="R6-12 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>－50.0046 m</li><li>－50.0011 m</li><li>－50.0005 m</li><li>－49.9999 m</li><li>－49.9989 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>2</b></p><div class="kz"><svg class="on" viewBox="0 0 998 176" width="499"><image href="fig/R6-12-1.png" width="998" height="176"/>
+<rect x="515" y="116" width="190" height="46" fill="none" stroke="#c33f27" stroke-width="5"/>
+<rect x="815" y="116" width="105" height="46" fill="none" stroke="#c33f27" stroke-width="5"/>
+</svg><div class="cap">使うのは高低差と気温だけ（原本の表 12 に書き足し）</div></div>
+<div class="kz"><svg class="new" viewBox="0 0 460 240" width="460"><text x="120" y="22" font-size="14" text-anchor="middle">標尺 1 m あたりの補正</text>
+<rect class="ln" x="30" y="40" width="44" height="150" style="fill:currentColor;fill-opacity:.08"/>
+<line class="ln" x1="30" y1="55" x2="42" y2="55"/>
+<line class="ln" x1="30" y1="70" x2="42" y2="70"/>
+<line class="ln" x1="30" y1="85" x2="42" y2="85"/>
+<line class="ln" x1="30" y1="100" x2="42" y2="100"/>
+<line class="ln" x1="30" y1="115" x2="50" y2="115"/>
+<line class="ln" x1="30" y1="130" x2="42" y2="130"/>
+<line class="ln" x1="30" y1="145" x2="42" y2="145"/>
+<line class="ln" x1="30" y1="160" x2="42" y2="160"/>
+<line class="ln" x1="30" y1="175" x2="42" y2="175"/>
+<line class="ln" x1="88" y1="40" x2="88" y2="190"/>
+<line class="ln" x1="93" y1="40" x2="83" y2="40"/>
+<line class="ln" x1="93" y1="190" x2="83" y2="190"/>
+<text x="96" y="60" font-size="13">1 m</text>
+<text x="96" y="100" font-size="13">20 ℃ で ＋10 μm</text>
+<text x="96" y="122" font-size="13" class="r">8 ℃ 高い分 ＋12 μm</text>
+<line class="ln" x1="96" y1="132" x2="232" y2="132"/>
+<text x="96" y="152" font-size="14" class="r">合わせて ＋22 μm</text>
+<line class="ln" x1="270" y1="60" x2="320" y2="60"/>
+<line class="ln" x1="370" y1="190" x2="420" y2="190"/>
+<line class="ln" x1="320" y1="60" x2="370" y2="190"/>
+<text x="285" y="52" font-size="14">A</text>
+<text x="400" y="208" font-size="14">B</text>
+<line class="dh" x1="320" y1="60" x2="420" y2="60"/>
+<line class="bl" x1="412" y1="60" x2="412" y2="189"/>
+<polyline class="bl" points="408.3,180.8 412,189 415.7,180.8"/>
+<text x="418" y="120" font-size="13" class="b">−50 m</text>
+<text x="350" y="228" font-size="13" class="b" text-anchor="middle">1 m が 50 個分、下がる</text></svg><div class="cap">1 m あたりの補正を出して、高低差 −50 m に掛ける</div></div>
+<p>標尺（高さを読む物差し）の目盛りには、わずかな狂いがあります。標尺改正数は 1 m あたりの狂いを直す量（20 ℃ のとき）、膨張係数は温度 1 ℃ で 1 m あたりどれだけ伸びるかです。10⁻⁶ は 100 万分の 1 なので、1 m あたりでは 1.5 μm になります（1 μm ＝ 0.000001 m）。</p>
+<div class="f">気温の差 ＝ 28 − 20 ＝ 8 ℃<br>1 m あたりの補正 ＝ 10 ＋ 1.5 × 8 ＝ 10 ＋ 12 ＝ ＋22 μm<br>高低差 −50 m 分 ＝ 22 × (−50) ＝ −1,100 μm ＝ −0.0011 m<br>補正後の高低差 ＝ −50.0000 − 0.0011 ＝ −50.0011 m</div>
+<p>標尺が伸びていると、実際の高低差は読んだ数字より大きくなります。下がる向き（マイナス）なので、もっと下がる −50.0011 m になります。距離の 2.0 km は使いません。</p>
+<div class="pt">高低差のマイナスを忘れて ＋0.0011 を足すと −49.9989 m（選択肢 5）、温度の分を忘れると −50.0005 m（選択肢 3）です。</div>
+</details></section><section class="q" id="R6-15"><h2>No.15<span class="tag">地形</span></h2><p class="stem">トータルステーションを用いた縮尺1/1,000の地形図作成において，ある道路上に設置された標高40.8 mの基準点Aから，同じ道路上の点Bの観測を行ったところ，高低角6°，斜距離50 mの結果が得られた。<br>このとき，地形図上において，点A，点B間を結ぶ道路とこれを横断する標高45 mの等高線との交点は，点Aから何cmの地点か。最も近いものを次の1～5の中から選べ。<br>ただし，点Aと点Bを結ぶ道路は，傾斜が一定でまっすぐな道路であるとする。<br>なお，関数の値が必要な場合は，巻末の関数表を使用すること。</p><ol class="ch"><li>3.0 cm</li><li>3.5 cm</li><li>4.0 cm</li><li>4.5 cm</li><li>5.0 cm</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>3</b></p><div class="kz"><svg class="new" viewBox="0 0 460 140" width="460"><line class="ln" x1="50" y1="104" x2="398.1" y2="23.5"/>
+<line class="dh" x1="50" y1="104" x2="418.1" y2="104"/>
+<line class="rl" x1="329.7" y1="39.3" x2="329.7" y2="104"/>
+<line class="bl" x1="50" y1="104" x2="329.7" y2="104"/>
+<line class="dh" x1="259.7" y1="39.3" x2="404.7" y2="39.3"/>
+<circle cx="50" cy="104" r="4" fill="currentColor"/>
+<circle cx="398.1" cy="23.5" r="4" fill="currentColor"/>
+<circle cx="329.7" cy="39.3" r="4" fill="currentColor"/>
+<text x="38" y="92" font-size="15">A</text>
+<text x="20" y="124" font-size="12" class="sub">標高 40.8 m</text>
+<text x="406.1" y="21.5" font-size="15">B</text>
+<text x="253.7" y="44.3" font-size="12" class="sub" text-anchor="end">標高 45 m</text>
+<text x="335.7" y="78" font-size="13" class="r">4.2 m</text>
+<text x="210" y="124" font-size="13" class="b" text-anchor="middle">水平距離 約 40 m</text>
+<path class="ln" d="M157.2 79.2 A110 110 0 0 1 160 104"/>
+<text x="166" y="96" font-size="13">6°</text></svg><div class="cap">道路を横から見た図（高さは大きく描いてある）</div></div>
+<p>A から標高 45 m の所まで、道路は 45 − 40.8 ＝ 4.2 m 上がります。傾きは 6° で一定なので、A・真下の点・標高 45 m の点で直角三角形ができます。分かっているのは高さ、求めるのは底辺（水平距離）なので、tan を使います。</p>
+<div class="f">tan 6° ＝ 4.2 ÷ 水平距離<br>水平距離 ＝ 4.2 ÷ tan 6° ＝ 4.2 ÷ 0.10510 ≒ 40.0 m</div>
+<p>縮尺 1/1,000 では、実際の 1 m が地図上の 1 mm なので、40 m は 40 mm ＝ 4.0 cm。</p>
+<div class="pt">tan 6° はほぼ 0.105。4.2 は 0.105 のちょうど 40 倍です。斜距離 50 m は B までの長さで、答えには使いません。</div>
+</details></section><section class="q" id="R6-18"><h2>No.18<span class="tag">写真</span></h2><p class="stem">画面距離12 cm，画面の大きさ17,000画素×10,000画素，撮像面での素子寸法5 μmのデジタル航空カメラを用いて鉛直下に向けた空中写真撮影を計画した。<br>撮影高度を標高3,000 m，撮影基準面における同一撮影コース内の隣接する空中写真との重複度を60%とするとき，撮影基線長は幾らか。最も近いものを次の1～5の中から選べ。<br>ただし，撮影基準面の標高は600 mとし，画面の短辺が撮影基線と平行であるとする。<br>なお，関数の値が必要な場合は，巻末の関数表を使用すること。</p><ol class="ch"><li>400 m</li><li>500 m</li><li>600 m</li><li>680 m</li><li>750 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>1</b></p><div class="kz"><svg class="new" viewBox="0 0 460 330" width="460"><line class="ln" x1="150" y1="24" x2="230" y2="24"/>
+<line class="bl" x1="169" y1="24" x2="211" y2="24"/>
+<circle cx="190" cy="60" r="3" fill="currentColor"/>
+<line class="dh" x1="169" y1="24" x2="277.5" y2="210"/>
+<line class="dh" x1="211" y1="24" x2="102.5" y2="210"/>
+<text x="236" y="22" font-size="12" class="b">短辺 10,000 画素 × 5 μm ＝ 50 mm</text>
+<line class="ln" x1="134" y1="24" x2="134" y2="60"/>
+<line class="ln" x1="139" y1="24" x2="129" y2="24"/>
+<line class="ln" x1="139" y1="60" x2="129" y2="60"/>
+<text x="126" y="46" font-size="12" text-anchor="end">画面距離 12 cm</text>
+<line class="ln" x1="30" y1="210" x2="430" y2="210"/>
+<text x="30" y="226" font-size="12" class="sub">撮影基準面（標高 600 m）</text>
+<line class="dh" x1="30" y1="260" x2="430" y2="260"/>
+<text x="30" y="276" font-size="12" class="sub">標高 0 m</text>
+<line class="rl" x1="70" y1="60" x2="70" y2="210"/>
+<line class="rl" x1="75" y1="60" x2="65" y2="60"/>
+<line class="rl" x1="75" y1="210" x2="65" y2="210"/>
+<text x="62" y="140" font-size="13" class="r" text-anchor="end">2,400 m</text>
+<line class="dh" x1="60" y1="60" x2="187" y2="60"/>
+<line class="dh" x1="193" y1="60" x2="420" y2="60"/>
+<line class="ln" x1="410" y1="60" x2="410" y2="260"/>
+<line class="ln" x1="415" y1="60" x2="405" y2="60"/>
+<line class="ln" x1="415" y1="260" x2="405" y2="260"/>
+<text x="402" y="150" font-size="13" text-anchor="end">3,000 m</text>
+<rect class="rl" x="172.5" y="201" width="105" height="9"/>
+<text x="208" y="193" font-size="12" class="r" text-anchor="middle">重なり 60%</text>
+<line class="ln" x1="102.5" y1="292" x2="277.5" y2="292"/>
+<line class="ln" x1="102.5" y1="287" x2="102.5" y2="297"/>
+<line class="ln" x1="277.5" y1="287" x2="277.5" y2="297"/>
+<text x="285.5" y="297" font-size="13">1 枚の幅 1,000 m</text>
+<line class="bl" x1="102.5" y1="314" x2="172.5" y2="314"/>
+<line class="bl" x1="102.5" y1="309" x2="102.5" y2="319"/>
+<line class="bl" x1="172.5" y1="309" x2="172.5" y2="319"/>
+<text x="180.5" y="319" font-size="13" class="b">残り 40% ＝ 撮影基線長</text></svg><div class="cap">短辺 50 mm ： 12 cm ＝ 写る幅 ： 2,400 m</div></div>
+<p>撮影基線長は、1 枚目を撮ってから 2 枚目を撮るまでに飛行機が進む距離です。まず、写真 1 枚が進む向きに写す地面の幅を出します。</p>
+<p><b>縮尺</b>　「画面距離 ÷ 基準面からカメラまでの高さ」です。撮影高度は標高 3,000 m、基準面は標高 600 m なので、高さは 2,400 m。</p>
+<div class="f">縮尺 ＝ 0.12 m ÷ 2,400 m ＝ 1/20,000</div>
+<p><b>1 枚の幅</b>　進む向きは画面の短辺（10,000 画素）です。</p>
+<div class="f">画面の短辺 ＝ 10,000 × 5 μm ＝ 50,000 μm ＝ 50 mm ＝ 0.05 m<br>地面の幅 ＝ 0.05 × 20,000 ＝ 1,000 m</div>
+<p><b>撮影基線長</b>　となりの写真と 60% 重なるので、ずれるのは残りの 40% です。</p>
+<div class="f">1,000 × (1 − 0.6) ＝ 400 m</div>
+<div class="pt">基準面の標高を引かずに 3,000 m を使うと 500 m（選択肢 2）、60% のほうを答えると 600 m（選択肢 3）、長辺の 17,000 画素を使うと 680 m（選択肢 4）です。</div>
+</details></section><section class="q" id="R6-19"><h2>No.19<span class="tag">点群</span></h2><p class="stem">次のa～cの文は，公共測量における航空レーザ測量の欠測率について述べたものである。［ア］及び［イ］に入る語句又は数値の組合せとして最も適当なものはどれか。次の1～5の中から選べ。<br>なお，関数の値が必要な場合は，巻末の関数表を使用すること。</p><div class="stem items"><p>a．「欠測」とは，点群データを格子間隔で区切り，一つの格子内に点群データがない場合をいう。</p><p>b．欠測率は，対象面積に対する欠測の割合を示すものであり，欠測率＝（欠測格子数/格子数）×100で求めるものとする。なお，欠測率の計算対象に，水部［ア］ものとする。</p><p>c．800 m×600 mの範囲において，計画する格子間隔が1 mになるように計測した点群データがある。この範囲内に水部はなく，点群データがない格子の個数を数えたところ，36,000であった。この範囲における欠測率として最も近い値は［イ］%である。</p></div><ol class="ch"><li>ア=は含まない／イ=7.0</li><li>ア=は含まない／イ=7.5</li><li>ア=は含まない／イ=8.1</li><li>ア=も含む／イ=7.0</li><li>ア=も含む／イ=7.5</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>2</b></p><div class="kz"><svg class="new" viewBox="0 0 520 216" width="520"><rect class="ln" x="30" y="40" width="34" height="34"/>
+<circle cx="40.2" cy="53.6" r="3" fill="currentColor"/>
+<circle cx="53.8" cy="63.8" r="3" fill="currentColor"/>
+<rect class="ln" x="64" y="40" width="34" height="34"/>
+<circle cx="81" cy="57" r="3" fill="currentColor"/>
+<rect class="ln" x="98" y="40" width="34" height="34"/>
+<rect class="bl" x="102" y="44" width="26" height="26"/>
+<rect class="ln" x="132" y="40" width="34" height="34"/>
+<circle cx="145.6" cy="50.2" r="3" fill="currentColor"/>
+<rect class="ln" x="166" y="40" width="34" height="34"/>
+<circle cx="186.4" cy="60.4" r="3" fill="currentColor"/>
+<rect class="ln" x="30" y="74" width="34" height="34"/>
+<circle cx="43.6" cy="94.4" r="3" fill="currentColor"/>
+<rect class="ln" x="64" y="74" width="34" height="34"/>
+<rect class="bl" x="68" y="78" width="26" height="26"/>
+<rect class="ln" x="98" y="74" width="34" height="34" style="fill:currentColor;fill-opacity:.08"/>
+<line class="ln" x1="102" y1="104" x2="128" y2="78"/>
+<line class="ln" x1="102" y1="91" x2="115" y2="78"/>
+<line class="ln" x1="115" y1="104" x2="128" y2="91"/>
+<rect class="ln" x="132" y="74" width="34" height="34" style="fill:currentColor;fill-opacity:.08"/>
+<line class="ln" x1="136" y1="104" x2="162" y2="78"/>
+<line class="ln" x1="136" y1="91" x2="149" y2="78"/>
+<line class="ln" x1="149" y1="104" x2="162" y2="91"/>
+<rect class="ln" x="166" y="74" width="34" height="34"/>
+<circle cx="183" cy="87.6" r="3" fill="currentColor"/>
+<circle cx="172.8" cy="101.2" r="3" fill="currentColor"/>
+<rect class="ln" x="30" y="108" width="34" height="34"/>
+<circle cx="50.4" cy="118.2" r="3" fill="currentColor"/>
+<rect class="ln" x="64" y="108" width="34" height="34"/>
+<circle cx="74.2" cy="128.4" r="3" fill="currentColor"/>
+<rect class="ln" x="98" y="108" width="34" height="34" style="fill:currentColor;fill-opacity:.08"/>
+<line class="ln" x1="102" y1="138" x2="128" y2="112"/>
+<line class="ln" x1="102" y1="125" x2="115" y2="112"/>
+<line class="ln" x1="115" y1="138" x2="128" y2="125"/>
+<rect class="ln" x="132" y="108" width="34" height="34" style="fill:currentColor;fill-opacity:.08"/>
+<line class="ln" x1="136" y1="138" x2="162" y2="112"/>
+<line class="ln" x1="136" y1="125" x2="149" y2="112"/>
+<line class="ln" x1="149" y1="138" x2="162" y2="125"/>
+<rect class="ln" x="166" y="108" width="34" height="34"/>
+<circle cx="186.4" cy="125" r="3" fill="currentColor"/>
+<rect class="ln" x="30" y="142" width="34" height="34"/>
+<circle cx="47" cy="159" r="3" fill="currentColor"/>
+<rect class="ln" x="64" y="142" width="34" height="34"/>
+<circle cx="77.6" cy="152.2" r="3" fill="currentColor"/>
+<circle cx="91.2" cy="169.2" r="3" fill="currentColor"/>
+<rect class="ln" x="98" y="142" width="34" height="34"/>
+<circle cx="115" cy="165.8" r="3" fill="currentColor"/>
+<rect class="ln" x="132" y="142" width="34" height="34"/>
+<rect class="bl" x="136" y="146" width="26" height="26"/>
+<rect class="ln" x="166" y="142" width="34" height="34"/>
+<circle cx="176.2" cy="159" r="3" fill="currentColor"/>
+<text x="30" y="28" font-size="14">格子のようす</text>
+<text x="30" y="194" font-size="12" class="b">青：点が無い ＝ 欠測</text>
+<text x="30" y="212" font-size="12" class="sub">斜線：水部（数えない）</text>
+<rect class="ln" x="260" y="60" width="200" height="150"/>
+<text x="360" y="50" font-size="13" text-anchor="middle">800 m</text>
+<text x="468" y="140" font-size="13">600 m</text>
+<text x="360" y="110" font-size="13" text-anchor="middle">1 m の格子が</text>
+<text x="360" y="130" font-size="13" text-anchor="middle">800 × 600 ＝ 480,000 個</text>
+<text x="360" y="160" font-size="13" class="b" text-anchor="middle">うち欠測 36,000 個</text>
+<text x="360" y="180" font-size="13" class="b" text-anchor="middle">→ 何 % か</text></svg><div class="cap">左：欠測の数え方　右：c の範囲（この範囲に水部は無い）</div></div>
+<p><b>ア</b>　欠測は、点群データを格子で区切ったとき、1 つの格子の中に点が 1 つも無いことです。川や池などの水部は、欠測率の計算の対象に「含まない」と決まっています。</p>
+<p><b>イ</b>　800 m × 600 m を 1 m の格子で区切ると、格子の数は</p>
+<div class="f">800 × 600 ＝ 480,000 個</div>
+<p>点の無い格子は 36,000 個で、水部は無いので、そのまま割り算します。</p>
+<div class="f">欠測率 ＝ 36,000 ÷ 480,000 × 100<br>＝ 36 ÷ 480 × 100 ＝ 3,600 ÷ 480 ＝ 7.5%</div>
+<div class="pt">480,000 の 10% が 48,000、5% が 24,000。36,000 はちょうど真ん中なので 7.5%。「格子の総数」ではなく「点のある格子（444,000）」で割ると 8.1%（選択肢 3）になります。</div>
+</details></section><section class="q" id="R6-21"><h2>No.21<span class="tag">地図</span></h2><p class="stem">図21は，国土地理院がインターネットで提供している二次元の地図「地理院地図」の一部（縮尺を変更，一部を改変）である。この図にある裁判所の経緯度で最も近いものを次の1～5の中から選べ。<br>ただし，表21に示す数値は，図の中にある税務署及び保健所の経緯度を地理院地図で読み取った値である。<br>なお，関数の値が必要な場合は，巻末の関数表を使用すること。</p><div class="fig"><img src="fig/R6-21-1.png" width="581" alt="R6-21 の図・表（原本）" loading="lazy"></div><div class="fig"><img src="fig/R6-21-2.png" width="429" alt="R6-21 の図・表（原本）" loading="lazy"></div><p class="src">図の出典：国土地理院「地理院地図」（測量士補試験の問題に掲載されたもの）</p><ol class="ch"><li>北緯26° 12′ 17″　東経127° 42′ 05″</li><li>北緯26° 12′ 29″　東経127° 41′ 02″</li><li>北緯26° 12′ 30″　東経127° 41′ 14″</li><li>北緯26° 12′ 31″　東経127° 41′ 11″</li><li>北緯26° 12′ 51″　東経127° 41′ 31″</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>4</b></p><div class="kz"><svg class="on" viewBox="0 0 1162 911" width="581"><image href="fig/R6-21-1.png" width="1162" height="911"/>
+<rect x="137" y="296" width="925" height="226" fill="none" stroke="#c33f27" stroke-width="5"/>
+<line x1="671" y1="296" x2="671" y2="375" stroke="#0b6e9e" stroke-width="6"/>
+<line x1="137" y1="405" x2="641" y2="405" stroke="#0b6e9e" stroke-width="6"/>
+<circle cx="137" cy="296" r="28" fill="none" stroke="#c33f27" stroke-width="6"/><circle cx="1062" cy="522" r="28" fill="none" stroke="#c33f27" stroke-width="6"/><circle cx="671" cy="405" r="28" fill="none" stroke="#0b6e9e" stroke-width="6"/>
+<rect x="14" y="326" width="102" height="40" fill="#fff"/><text x="20" y="356" font-size="30" class="r">税務署</text><rect x="1012" y="553" width="92" height="31" fill="#fff"/><text x="1018" y="578" font-size="26" class="r">保健所</text><rect x="706" y="386" width="102" height="40" fill="#fff"/><text x="712" y="416" font-size="30" class="b">裁判所</text><text x="20" y="896" font-size="28" class="r">赤い枠：横 117.5 mm、縦 29 mm</text><text x="690" y="896" font-size="28" class="b">青い線：横 68 mm、縦 14 mm</text>
+</svg><div class="cap">赤：経緯度の分かっている 2 点、青：裁判所（原本の図 21 に書き足し。長さは試験の問題用紙の大きさで測ったもの）</div></div>
+<p>まず 3 つの地図記号を探します。税務署はそろばんの玉の形、保健所は丸に十字、裁判所は立て札の形です。税務署（左上）と保健所（右下）の経緯度が分かっているので、裁判所がその間のどこにあるかを、図の長さの比で割り出します。右へ行くほど経度が大きく、下へ行くほど緯度が小さくなります。</p>
+<p><b>経度</b>（横）</p>
+<div class="kz"><svg class="new" viewBox="0 0 480 150" width="480"><line class="ln" x1="40" y1="60" x2="440" y2="60"/>
+<line class="ln" x1="40" y1="52" x2="40" y2="68"/>
+<line class="ln" x1="440" y1="52" x2="440" y2="68"/>
+<circle cx="271.5" cy="60" r="5" fill="currentColor"/>
+<text x="40" y="40" font-size="12" class="r">税務署 127°40′35″</text>
+<text x="440" y="40" font-size="12" class="r" text-anchor="end">保健所 127°41′38″</text>
+<line class="bl" x1="40" y1="84" x2="271.5" y2="84"/>
+<line class="bl" x1="40" y1="79" x2="40" y2="89"/>
+<line class="bl" x1="271.5" y1="79" x2="271.5" y2="89"/>
+<text x="155.8" y="104" font-size="13" class="b" text-anchor="middle">63″ × 68 ÷ 117.5 ≒ 36″</text>
+<text x="279.5" y="82" font-size="13" class="b">裁判所</text>
+<line class="rl" x1="40" y1="122" x2="440" y2="122"/>
+<line class="rl" x1="40" y1="117" x2="40" y2="127"/>
+<line class="rl" x1="440" y1="117" x2="440" y2="127"/>
+<text x="240" y="142" font-size="13" class="r" text-anchor="middle">経度の差 63″</text></svg><div class="cap">図の横の長さの比と、経度の差の比は同じ</div></div>
+<div class="f">2 点の差 ＝ 127°41′38″ − 127°40′35″ ＝ 63″<br>税務署から裁判所まで ＝ 63 × 68 ÷ 117.5 ≒ 36″<br>裁判所 ＝ 127°40′35″ ＋ 36″ ＝ 127°41′11″ くらい</div>
+<p><b>緯度</b>（縦）</p>
+<div class="f">2 点の差 ＝ 26°12′38″ − 26°12′24″ ＝ 14″<br>税務署から裁判所まで ＝ 14 × 14 ÷ 29 ≒ 7″<br>裁判所 ＝ 26°12′38″ − 7″ ＝ 26°12′31″ くらい</div>
+<p>いちばん近いのは、北緯 26°12′31″・東経 127°41′11″ の選択肢 4 です。</p>
+<div class="pt">裁判所は 2 点の間にあるので、緯度は 12′24″〜12′38″、経度は 40′35″〜41′38″ の中。1（12′17″）と 5（12′51″）はすぐ消えます。残りは経度で決めます（2 は 41′02″、3 は 41′14″、4 は 41′11″）。</div>
+<p class="src">図の出典：国土地理院「地理院地図」（測量士補試験の問題に掲載されたもの）。赤・青の線と文字は当サイトが書き足しました</p></details></section><section class="q" id="R6-26"><h2>No.26<span class="tag">応用</span></h2><p class="stem">図26に示すように，起点BP，円曲線始点BC，円曲線終点EC及び終点EPからなる直線と円曲線の道路を組み合わせた新しい道路を建設することとなった。BPと交点IPとの距離が280 m，EC～EPの距離が206 m，円曲線の曲線半径R＝200 m，交角I＝60°としたとき，建設する道路の路線長BP～EPは幾らか。最も近いものを次の1～5の中から選べ。<br>ただし，円周率π＝3.14とする。<br>なお，関数の値が必要な場合は，巻末の関数表を使用すること。</p><div class="fig"><img src="fig/R6-26-1.png" width="533" alt="R6-26 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>476 m</li><li>481 m</li><li>580 m</li><li>595 m</li><li>606 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>3</b></p><div class="kz"><svg class="on" viewBox="0 0 1066 514" width="533"><image href="fig/R6-26-1.png" width="1066" height="514"/>
+<line x1="274" y1="208" x2="486" y2="81" stroke="#c33f27" stroke-width="6"/>
+<line x1="58" y1="337" x2="274" y2="208" stroke="#0b6e9e" stroke-width="7"/>
+<line x1="703" y1="225" x2="1007" y2="425" stroke="#0b6e9e" stroke-width="7"/>
+<text transform="rotate(-31 291 178)" x="291" y="178" font-size="28" class="r">115.47 m</text>
+<line x1="27" y1="285.5" x2="455" y2="29.5" stroke="#c33f27" stroke-width="3"/><line x1="20" y1="274" x2="34" y2="297" stroke="#c33f27" stroke-width="3"/><line x1="448" y1="18" x2="462" y2="41" stroke="#c33f27" stroke-width="3"/>
+<text transform="rotate(-31 150 198)" x="150" y="198" font-size="28" class="r">280 m</text>
+<text x="180" y="305" font-size="28" class="b">164.53 m</text>
+<text x="425" y="195" font-size="28" class="b">209.33 m</text>
+<text x="875" y="310" font-size="28" class="b">206 m</text>
+</svg><div class="cap">青の 3 つを足すと路線長（原本の図 26 に書き足し）</div></div>
+<p>路線長は、BP～BC の直線、BC～EC の円の弧、EC～EP の直線の 3 つを足した長さです。BP～BC が分かっていないので、BP～IP の 280 m から、BC～IP の長さ（接線の長さ）を引いて出します。</p>
+<div class="kz"><svg class="new" viewBox="0 0 360 226" width="360"><polygon class="ln" points="60,40 230,40 230,138.1 145,187.2"/>
+<line class="dh" x1="60" y1="40" x2="230" y2="138.1"/>
+<line class="rl" x1="230" y1="40" x2="230" y2="138.1"/>
+<path class="bl" d="M230 40 A170 170 0 0 1 145 187.2"/>
+<polyline class="ln" points="221,40 221,49 230,49"/>
+<path class="rl" d="M104 40 A44 44 0 0 1 98.1 62"/>
+<path class="ln" d="M110.2 69 A58 58 0 0 1 89 90.2"/>
+<text x="52" y="30" font-size="13" text-anchor="middle">中心 O</text>
+<text x="236" y="34" font-size="14">BC</text>
+<text x="238" y="148.1" font-size="14">IP</text>
+<text x="137" y="207.2" font-size="14">EC</text>
+<text x="145" y="30" font-size="13" text-anchor="middle">R ＝ 200 m</text>
+<text x="108" y="57" font-size="13" class="r">30°</text>
+<text x="100" y="100" font-size="13">30°</text>
+<text x="240" y="94.1" font-size="13" class="r">200 × tan 30°</text></svg><div class="cap">円の中心 O から見た図。中心角は交角と同じ 60° で、O と IP を結ぶ線が半分に分ける</div></div>
+<p>接線は半径と直角に交わるので、O・BC・IP は直角三角形。O の角は 60° の半分の 30° です。</p>
+<div class="f">BC～IP ＝ 200 × tan 30° ＝ 200 × 0.57735 ＝ 115.47 m<br>BP～BC ＝ 280 − 115.47 ＝ 164.53 m</div>
+<p>弧の長さは、半径 200 m・中心角 60° です。</p>
+<div class="f">BC～EC ＝ 200 × 60 × 3.14 ÷ 180 ＝ 628 ÷ 3 ≒ 209.33 m</div>
+<div class="f">路線長 ＝ 164.53 ＋ 209.33 ＋ 206 ＝ 579.86 ≒ 580 m</div>
+<div class="pt">EC～EP の 206 m は EC からの長さなので、そのまま足します。280 m は IP までの長さなので、接線の分を引いてから使います。</div>
+</details></section><section class="q" id="R6-27"><h2>No.27<span class="tag">応用</span></h2><p class="stem">図27は，境界点A，B，C，Dの4点で囲まれた四角形の土地を表したもので，各境界点の平面直角座標系（平成14年国土交通省告示第9号）における座標値は表27に示すとおりである。<br>この度，計画道路の建設に伴い四角形の土地ABCDを長方形の土地AEFDに整えることとなった。長方形AEFDの面積を四角形ABCDの面積の70%とするとき，点FのX座標値は幾らか。最も近いものを次の1～5の中から選べ。<br>なお，関数の値が必要な場合は，巻末の関数表を使用すること。</p><div class="fig"><img src="fig/R6-27-1.png" width="506" alt="R6-27 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>＋7.840 m</li><li>＋9.382 m</li><li>＋10.640 m</li><li>＋13.740 m</li><li>＋22.943 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>2</b></p><div class="kz"><svg class="on" viewBox="0 0 1013 1109" width="506"><image href="fig/R6-27-1.png" width="1013" height="1109"/>
+<polygon points="402,201 771,201 771,485 402,485" fill="#0b6e9e" fill-opacity=".14"/>
+<line x1="402" y1="201" x2="402" y2="485" stroke="#0b6e9e" stroke-width="7"/>
+<text x="425" y="345" font-size="28" class="b">AE ＝ 面積の 70% ÷ 64 m</text>
+<text x="600" y="522" font-size="28" class="r">64 m</text>
+</svg><div class="cap">青：整えたあとの長方形 AEFD（原本の図 27 に書き足し）</div></div>
+<p>X は北（上）、Y は東（右）です。A と B は Y が同じなので AB は南北の線、A と D は X が同じなので AD は東西の線です。四角形 ABCD を A と C を結ぶ線で 2 つの三角形に分けて面積を出します。</p>
+<div class="kz"><svg class="new" viewBox="0 0 470 298" width="470"><polygon class="ln" style="fill:currentColor;fill-opacity:.08" points="70,270 70,58.5 385,94.5"/>
+<polygon class="ln" points="70,270 385,94.5 358,270"/>
+<line class="rl" x1="56" y1="270" x2="56" y2="58.5"/>
+<line class="rl" x1="51" y1="270" x2="61" y2="270"/>
+<line class="rl" x1="51" y1="58.5" x2="61" y2="58.5"/>
+<text x="48" y="169.2" font-size="13" class="r" text-anchor="end">47 m</text>
+<line class="rl" x1="70" y1="34" x2="385" y2="34"/>
+<line class="rl" x1="70" y1="29" x2="70" y2="39"/>
+<line class="rl" x1="385" y1="29" x2="385" y2="39"/>
+<text x="227.5" y="26" font-size="13" class="r" text-anchor="middle">70 m</text>
+<line class="dh" x1="385" y1="34" x2="385" y2="94.5"/>
+<line class="dh" x1="385" y1="94.5" x2="385" y2="270"/>
+<line class="dh" x1="358" y1="270" x2="385" y2="270"/>
+<line class="bl" x1="397" y1="94.5" x2="397" y2="270"/>
+<line class="bl" x1="402" y1="94.5" x2="392" y2="94.5"/>
+<line class="bl" x1="402" y1="270" x2="392" y2="270"/>
+<text x="403" y="187.2" font-size="13" class="b">39 m</text>
+<line class="bl" x1="70" y1="270" x2="358" y2="270"/>
+<text x="214" y="288" font-size="13" class="b" text-anchor="middle">64 m</text>
+<text x="66" y="288" font-size="14" text-anchor="end">A</text>
+<text x="64" y="52.5" font-size="14" text-anchor="end">B</text>
+<text x="391" y="88.5" font-size="14">C</text>
+<text x="356" y="288" font-size="14">D</text>
+<text x="120" y="145" font-size="14" class="r">① 1,645 m²</text>
+<text x="240" y="215" font-size="14" class="b">② 1,248 m²</text></svg><div class="cap">① 三角形 ABC（底辺 47 m・高さ 70 m）と ② 三角形 ACD（底辺 64 m・高さ 39 m）</div></div>
+<div class="f">AB ＝ 24.740 − (−22.260) ＝ 47 m　　AB から C まで ＝ 76 − 6 ＝ 70 m<br>AD ＝ 70 − 6 ＝ 64 m　　AD から C まで ＝ 16.740 − (−22.260) ＝ 39 m</div>
+<div class="f">① ＝ 47 × 70 ÷ 2 ＝ 1,645 m²<br>② ＝ 64 × 39 ÷ 2 ＝ 1,248 m²<br>四角形 ABCD ＝ 1,645 ＋ 1,248 ＝ 2,893 m²</div>
+<p>長方形 AEFD はその 70% で、横が AD の 64 m です。縦 AE を出せば、F の X 座標は A の X 座標に AE を足した値です。</p>
+<div class="f">長方形の面積 ＝ 2,893 × 0.7 ＝ 2,025.1 m²<br>AE ＝ 2,025.1 ÷ 64 ≒ 31.642 m<br>F の X 座標 ＝ −22.260 ＋ 31.642 ＝ ＋9.382 m</div>
+<div class="pt">AB の 47 m を 70% にして 32.9 m とすると ＋10.640 m（選択肢 3）。70% にするのは長さではなく面積です。</div>
+</details></section><nav class="years"><a href="H23.html">H23</a><a href="H24.html">H24</a><a href="H25.html">H25</a><a href="H26.html">H26</a><a href="H27.html">H27</a><a href="H28.html">H28</a><a href="H29.html">H29</a><a href="H30.html">H30</a><a href="R1.html">R1</a><a href="R2.html">R2</a><a href="R3.html">R3</a><a href="R4.html">R4</a><a href="R5.html">R5</a><a href="R6.html" class=cur>R6</a><a href="R7.html">R7</a><a href="R8.html">R8</a></nav>
+<footer>出典：国土地理院ウェブサイト（<a href="https://www.gsi.go.jp/LAW/SHIKEN/past.html" rel="noopener">https://www.gsi.go.jp/LAW/SHIKEN/past.html</a>）の測量士補試験の問題をもとに、当サイトが作成したものです（問題文と選択肢は原本から起こし、図・表は原本の画像を切り出して載せています。解き方・解説は当サイトが書いたもので、国土地理院が作成・公表したものではありません）。</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C34PHRSJN4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-C34PHRSJN4");
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>問題一覧｜測量士補 一問一答</title>
+  <meta name="description" content="測量士補試験の過去問を年度・問番号から選んで開始できます。">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="style.css?v=1.3">
+  <meta name="theme-color" content="#eff3f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f171c" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <main class="list-page">
+    <nav class="breadcrumbs" aria-label="パンくずリスト"><ol><li><a href="index.html">トップ</a></li><li aria-current="page">計算以外の一問一答</li></ol></nav>
+    <header class="list-header">
+      <h1>計算以外の一問一答</h1>
+      <p>年度順に出題します。年度を開き、始めたい肢を選んでください。計算問題は<a href="keisan/index.html">計算問題のページ</a>にあります。</p>
+    </header>
+
+    <div id="list-progress-info" class="progress-panel" aria-live="polite">進捗を読み込み中...</div>
+
+    <div class="status-legend" aria-label="学習状態の色分け">
+      <span class="legend-item"><span class="legend-dot status-unanswered"></span>未回答</span>
+      <span class="legend-item"><span class="legend-dot status-correct"></span>完了</span>
+      <span class="legend-item"><span class="legend-dot status-wrong"></span>復習</span>
+    </div>
+
+    <div id="question-list"></div>
+
+    <footer class="page-credit">
+      <p>出典：国土地理院ウェブサイト（<a href="https://www.gsi.go.jp/LAW/SHIKEN/past.html" rel="noopener">https://www.gsi.go.jp/LAW/SHIKEN/past.html</a>）の測量士補試験の問題をもとに、当サイトが肢ごとの◯✕に編集・加工したものです（穴埋め問題は一問一答の文に直しています）。
+      解説は作業規程の準則・測量法をもとに当サイトが作成したもので、国土地理院が作成・公表したものではありません。
+      記録はこの端末のブラウザにだけ残ります。</p>
+      <p><a href="index.html">トップ</a></p>
+    </footer>
+  </main>
+
+  <script src="sokuryo.js?v=1.2"></script>
+  <script src="question-list.js?v=1.0"></script>
+</body>
+</html>
