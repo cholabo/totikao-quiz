@@ -23,12 +23,14 @@
   <meta name="theme-color" content="#eff3f4" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0f171c" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
-</head>
+<script src="/sync.js?v=1.2"></script></head>
 <body>
   <main class="title-page">
     <div class="hero">
       <div class="hero-in">
         <a href="/" style="position:absolute;top:10px;left:12px;z-index:2;font-size:.8rem;padding:4px 10px;border:1px solid currentColor;border-radius:999px;color:inherit;text-decoration:none;opacity:.85">調査士</a>
+        <!-- ログイン（調査士のトップと同じ）。sync.js は公開時に入るので、手元では出ない -->
+        <a id="acct-link" href="/account.html" hidden style="position:absolute;top:10px;right:12px;z-index:2;font-size:.8rem;padding:4px 10px;border:1px solid currentColor;border-radius:999px;color:inherit;text-decoration:none;opacity:.85">ログイン</a>
         <div class="hanko" aria-hidden="true">測</div>
         <h1 class="wordmark">測量士補 一問一答<span class="sk-wordmark-sub">（過去問 H23〜R8）</span></h1>
         <p class="subtitle">肢別◯✕ <span id="hero-total">–</span>肢｜計算問題 165問</p>
@@ -62,14 +64,21 @@
       <p class="sk-credit">
         出典：国土地理院ウェブサイト（<a href="https://www.gsi.go.jp/LAW/SHIKEN/past.html" rel="noopener">https://www.gsi.go.jp/LAW/SHIKEN/past.html</a>）の測量士補試験の問題をもとに、当サイトが肢ごとの◯✕に編集・加工したものです（穴埋め問題は一問一答の文に直しています）。
         解説は作業規程の準則・測量法をもとに当サイトが作成したもので、国土地理院が作成・公表したものではありません。
-        記録はこの端末のブラウザにだけ残ります。
+        記録はこの端末のブラウザに残ります。ログインすると、ほかの端末でも続きから解けます。
       </p>
       <p class="sk-credit">図の地図は、国土地理院の電子地形図25000・1/25,000地形図・地理院地図などの一部（測量士補試験の問題に掲載されたもの）です。<a href="/about.html">誤りを見つけたら・このサイトについて</a>｜<a href="/privacy.html">アクセス解析とプライバシー</a></p>
     </footer>
   </main>
 
-  <script src="sokuryo.js?v=1.2"></script>
+  <script src="sokuryo.js?v=1.4"></script>
   <script>
+    (function () {
+      const S = window.CholaboSync, a = document.getElementById("acct-link");
+      if (!S || !S.enabled || !a) return;
+      const draw = () => { a.textContent = S.signedIn() ? "同期 ✓" : "ログイン"; a.title = S.signedIn() ? "ログイン中。ほかの端末と同期しています" : "ログインすると端末をまたいで続きから解けます"; };
+      a.hidden = false; draw();
+      window.addEventListener("cholabo-sync", draw);
+    })();
     (function () {
       const n = v => v.toLocaleString("ja-JP");
 

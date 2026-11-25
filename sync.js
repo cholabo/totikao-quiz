@@ -14,6 +14,7 @@
   // ---- 同期する項目（キー → 種類） ----
   // map:newer 肢ごと、両方変わったら lastAnsweredAt が新しいほう / map:union 中身の配列を足し合わせる
   // set 要素ごと / max 大きいほう / scalar 丸ごと、両方変わったら端末のほう
+  // …:keep 片方に無いことを「消された」とみなさない（古い sync.js を開いたままの端末が、知らないキーを落として書いても記録が消えないように）
   const SPEC = [
     ["learningStateByLabel", "map:newer"],
     ["bookmarkedLabels", "set"],
@@ -29,6 +30,14 @@
     ["keisan-set", "scalar"],
     ["yasashii.read", "map:union"],
     ["yasashii.pos", "scalar"],
+    // 測量士補（app/sokuryo/、2026-11-25）
+    ["sk.learningState", "map:newer:keep"],
+    ["sk.position", "map:local:keep"],
+    ["sk.yearModePassCount", "max"],
+    ["sk.yearModeStartLabel", "scalar"],
+    ["sk.yearModeResumeLabel", "scalar:keep"],
+    ["sk.lastSet", "scalar:keep"],
+    ["sk.quizMode", "scalar:keep"],
   ];
   const kindOf = k => { for (const [m, t] of SPEC) if (typeof m === "string" ? m === k : m.test(k)) return t; return null; };
 
@@ -53,7 +62,7 @@
     if (l == null && s == null) return null;
     return JSON.stringify(out);
   }
-  function mergeMap(l, s, b, hasBase, rule) {
+  function mergeMap(l, s, b, hasBase, rule, keep) {
     const L = parse(l, {}), S = parse(s, {}), B = parse(b, {});
     if (typeof L !== "object" || typeof S !== "object" || Array.isArray(L) || Array.isArray(S)) return l != null ? l : s;
     const out = {};
@@ -61,6 +70,7 @@
       const lv = L[k], sv = S[k], bv = B && typeof B === "object" ? B[k] : undefined;
       let v;
       if (same(lv, sv)) v = lv;
+      else if (keep && (lv === undefined || sv === undefined)) v = lv === undefined ? sv : lv;
       else if (hasBase && same(lv, bv)) v = sv;
       else if (hasBase && same(sv, bv)) v = lv;
       else if (lv === undefined) v = sv;
@@ -81,10 +91,11 @@
       const t = kindOf(k); if (!t) continue;
       const l = local[k] ?? null, s = server[k] ?? null, b = hasBase ? (base[k] ?? null) : null;
       let v;
-      if (t === "scalar") v = mergeScalar(l, s, b, hasBase);
+      if (t === "scalar:keep" && (l == null || s == null)) v = l != null ? l : s;
+      else if (t === "scalar" || t === "scalar:keep") v = mergeScalar(l, s, b, hasBase);
       else if (t === "max") v = l == null ? s : s == null ? l : String(Math.max(Number(l) || 0, Number(s) || 0));
       else if (t === "set") v = mergeSet(l, s, b, hasBase);
-      else v = mergeMap(l, s, b, hasBase, t.split(":")[1]);
+      else v = mergeMap(l, s, b, hasBase, t.split(":")[1], t.split(":")[2] === "keep");
       if (v != null) out[k] = v;
     }
     return out;

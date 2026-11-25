@@ -58,6 +58,10 @@ summary{cursor:pointer;color:var(--primary);font-weight:bold}
 .kz svg.new .bl{stroke:var(--primary);stroke-width:2.5;fill:none}
 .kz svg.new .r{fill:var(--seal)}.kz svg.new .b{fill:var(--primary)}
 .kz svg.new .sub{fill:var(--muted)}
+.rep{font-size:14px}.rep summary{font-weight:normal;color:var(--muted)}
+.rep textarea{width:100%;box-sizing:border-box;margin:6px 0;padding:8px;font:inherit;font-size:16px;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px}
+.rep button{font:inherit;padding:4px 18px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--primary);cursor:pointer}
+.rep .st{margin-left:10px;color:var(--muted)}
 table.idx{border-collapse:collapse;width:100%;background:var(--surface)}
 table.idx a{color:var(--primary);white-space:nowrap}table.idx td:nth-child(-n+2){white-space:nowrap}
 table.idx td,table.idx th{border:1px solid var(--line);padding:4px 8px;text-align:left;font-size:15px}
@@ -103,7 +107,7 @@ footer a{color:var(--muted)}
 <p>図では、A の向きのほうが P の向きより C に近いので、<i>T</i> は <i>T</i>′ より <i>x</i> だけ小さい角です。</p>
 <div class="f"><i>T</i> ＝ 45°37′00″ − 4′ ＝ 45°33′00″</div>
 <div class="pt">sin 30° でなく cos 30° を使うと <i>x</i> は約 6′56″ で、約 45°30′（選択肢 3）になります。<i>x</i> を足すか引くかは、式で覚えるより図を見て決めるのが確実です。</div>
-</details></section><section class="q" id="H26-08"><h2>No.8<span class="tag">GNSS</span></h2><p class="stem">GNSS測量機を用いた基準点測量を行い，基線解析により基準点Aから基準点B，基準点Aから基準点Cまでの基線ベクトルを得た。表8は，地心直交座標系におけるX軸，Y軸，Z軸方向について，それぞれの基線ベクトル成分（ΔX，ΔY，ΔZ）を示したものである。基準点Bから基準点Cまでの斜距離は幾らか。最も近いものを次の中から選べ。<br>なお，関数の数値が必要な場合は，巻末の関数表を使用すること。</p><div class="fig"><img src="fig/H26-08-1.png" width="413" alt="H26-08 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>574.456 m</li><li>748.331 m</li><li>806.226 m</li><li>877.496 m</li><li>1,374.773 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>3</b></p><div class="kz"><svg class="new" viewBox="0 0 400 235" width="400"><line class="ln" x1="140.6" y1="200" x2="158.4" y2="39"/>
+</details><details class="rep"><summary>この問題の違和感を報告</summary><form data-id="H26-06"><textarea maxlength="500" rows="3" placeholder="問題文・図・解説のどこが、どう気になったか" aria-label="H26-06 の報告"></textarea><button type="submit">送る</button><span class="st" role="status"></span></form></details></section><section class="q" id="H26-08"><h2>No.8<span class="tag">GNSS</span></h2><p class="stem">GNSS測量機を用いた基準点測量を行い，基線解析により基準点Aから基準点B，基準点Aから基準点Cまでの基線ベクトルを得た。表8は，地心直交座標系におけるX軸，Y軸，Z軸方向について，それぞれの基線ベクトル成分（ΔX，ΔY，ΔZ）を示したものである。基準点Bから基準点Cまでの斜距離は幾らか。最も近いものを次の中から選べ。<br>なお，関数の数値が必要な場合は，巻末の関数表を使用すること。</p><div class="fig"><img src="fig/H26-08-1.png" width="413" alt="H26-08 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>574.456 m</li><li>748.331 m</li><li>806.226 m</li><li>877.496 m</li><li>1,374.773 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>3</b></p><div class="kz"><svg class="new" viewBox="0 0 400 235" width="400"><line class="ln" x1="140.6" y1="200" x2="158.4" y2="39"/>
 <polyline class="ln" points="153.9,46.7 158.4,39 161.2,47.5"/>
 <line class="ln" x1="143" y1="201" x2="194" y2="133"/>
 <polyline class="ln" points="186.1,137.4 194,133 192,141.8"/>
@@ -151,7 +155,7 @@ footer a{color:var(--muted)}
 <text x="115" y="183" font-size="14" class="b">斜距離</text></svg><div class="cap">箱の対角線が B から C までの斜距離（マイナスは 2 乗すると消える）</div></div>
 <div class="f">斜距離² ＝ 500² ＋ 200² ＋ 600² ＝ 250,000 ＋ 40,000 ＋ 360,000 ＝ 650,000<br>斜距離 ＝ √650,000 ＝ 100 × √65 ＝ 100 × 8.06226 ＝ 806.226 m</div>
 <div class="pt">800² ＝ 640,000、810² ＝ 656,100 なので 800 と 810 の間、と分かれば選べます。引かずに足すと (1300, 400, −200) で 1,374.773 m（選択肢 5）、Δ<i>Z</i> を −400 ＋ 200 ＝ −200 とすると 574.456 m（選択肢 1）になります。</div>
-</details></section><section class="q" id="H26-12"><h2>No.12<span class="tag">水準</span></h2><p class="stem">図12は，水準点Aから固定点(1)，(2)及び(3)を経由する水準点Bまでの路線を示したものである。この路線で公共測量における水準測量を行い，表12に示す観測結果を得た。再測する観測区間はどれか。次の中から選べ。<br>ただし，往復観測値の較差の許容範囲は，Sを観測距離（片道，km単位）としたとき，2.5 mm√Sとする。なお，関数の数値が必要な場合は，巻末の関数表を使用すること。</p><div class="fig"><img src="fig/H26-12-1.png" width="591" alt="H26-12 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>A～(1)</li><li>(1)～(2)</li><li>(2)～(3)</li><li>(3)～B</li><li>再測の必要はない</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>2</b></p><div class="kz"><svg class="on" viewBox="0 0 1183 532" width="591"><image href="fig/H26-12-1.png" width="1183" height="532"/>
+</details><details class="rep"><summary>この問題の違和感を報告</summary><form data-id="H26-08"><textarea maxlength="500" rows="3" placeholder="問題文・図・解説のどこが、どう気になったか" aria-label="H26-08 の報告"></textarea><button type="submit">送る</button><span class="st" role="status"></span></form></details></section><section class="q" id="H26-12"><h2>No.12<span class="tag">水準</span></h2><p class="stem">図12は，水準点Aから固定点(1)，(2)及び(3)を経由する水準点Bまでの路線を示したものである。この路線で公共測量における水準測量を行い，表12に示す観測結果を得た。再測する観測区間はどれか。次の中から選べ。<br>ただし，往復観測値の較差の許容範囲は，Sを観測距離（片道，km単位）としたとき，2.5 mm√Sとする。なお，関数の数値が必要な場合は，巻末の関数表を使用すること。</p><div class="fig"><img src="fig/H26-12-1.png" width="591" alt="H26-12 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>A～(1)</li><li>(1)～(2)</li><li>(2)～(3)</li><li>(3)～B</li><li>再測の必要はない</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>2</b></p><div class="kz"><svg class="on" viewBox="0 0 1183 532" width="591"><image href="fig/H26-12-1.png" width="1183" height="532"/>
 <line x1="362" y1="59" x2="500" y2="59" stroke="#c33f27" stroke-width="8"/>
 <text x="1068" y="283" font-size="26" class="r">較差</text>
 <text x="1068" y="338" font-size="26" class="r">1.4 mm</text>
@@ -171,7 +175,7 @@ footer a{color:var(--muted)}
 <div class="f">A～(1)　2.5 × √0.5 ≒ 2.5 × 0.707 ≒ 1.77 mm ＞ 1.4 mm<br>(1)～(2)　2.5 × √0.25 ＝ 2.5 × 0.5 ＝ 1.25 mm ＜ 1.4 mm　→　超えている<br>(2)～(3)　2.5 × √0.25 ＝ 2.5 × 0.5 ＝ 1.25 mm ＞ 0.9 mm<br>(3)～B　2.5 × √1 ＝ 2.5 mm ＞ 1.6 mm</div>
 <p>許容範囲を超えた (1)～(2) を再測します。</p>
 <div class="pt">√0.5 は、0.7² ＝ 0.49 から 0.7 くらいと分かれば足ります（2.5 × 0.7 ＝ 1.75）。較差がいちばん大きいのは (3)～B の 1.6 mm ですが、距離が長いので許容範囲も大きくなります。</div>
-</details></section><section class="q" id="H26-15"><h2>No.15<span class="tag">地形</span></h2><p class="stem">トータルステーションを用いた縮尺1/1,000の地形図作成において，傾斜が一定な直線道路上にある点Aの標高を測定したところ81.6 mであった。一方，同じ直線道路上の点Bの標高は77.6 mであり，点Aから点Bの水平距離は60 mであった。<br>このとき，点Aから点Bを結ぶ直線道路とこれを横断する標高80 mの等高線との交点は，地形図上で点Aから何cmの地点か。最も近いものを次の中から選べ。</p><ol class="ch"><li>1.2 cm</li><li>2.4 cm</li><li>3.6 cm</li><li>4.8 cm</li><li>6.0 cm</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>2</b></p><div class="kz"><svg class="new" viewBox="0 0 480 190" width="480"><line class="ln" x1="50" y1="50" x2="410" y2="122"/>
+</details><details class="rep"><summary>この問題の違和感を報告</summary><form data-id="H26-12"><textarea maxlength="500" rows="3" placeholder="問題文・図・解説のどこが、どう気になったか" aria-label="H26-12 の報告"></textarea><button type="submit">送る</button><span class="st" role="status"></span></form></details></section><section class="q" id="H26-15"><h2>No.15<span class="tag">地形</span></h2><p class="stem">トータルステーションを用いた縮尺1/1,000の地形図作成において，傾斜が一定な直線道路上にある点Aの標高を測定したところ81.6 mであった。一方，同じ直線道路上の点Bの標高は77.6 mであり，点Aから点Bの水平距離は60 mであった。<br>このとき，点Aから点Bを結ぶ直線道路とこれを横断する標高80 mの等高線との交点は，地形図上で点Aから何cmの地点か。最も近いものを次の中から選べ。</p><ol class="ch"><li>1.2 cm</li><li>2.4 cm</li><li>3.6 cm</li><li>4.8 cm</li><li>6.0 cm</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>2</b></p><div class="kz"><svg class="new" viewBox="0 0 480 190" width="480"><line class="ln" x1="50" y1="50" x2="410" y2="122"/>
 <line class="dh" x1="50" y1="50" x2="410" y2="50"/>
 <line class="bl" x1="50" y1="50" x2="194" y2="50"/>
 <line class="rl" x1="194" y1="50" x2="194" y2="78.8"/>
@@ -198,7 +202,7 @@ footer a{color:var(--muted)}
 <div class="f">A と B の標高差 ＝ 81.6 − 77.6 ＝ 4.0 m<br>A と等高線の標高差 ＝ 81.6 − 80 ＝ 1.6 m<br>A から等高線まで ＝ 60 × 1.6 ÷ 4.0 ＝ 24 m</div>
 <p>縮尺 1/1,000 では、実際の 1 m が地図上の 1 mm なので、24 m は 24 mm ＝ 2.4 cm。</p>
 <div class="pt">B からの距離を答えると 60 − 24 ＝ 36 m で 3.6 cm（選択肢 3）です。「点 A から」なので注意します。</div>
-</details></section><section class="q" id="H26-19"><h2>No.19<span class="tag">写真</span></h2><p class="stem">画面距離7 cm，撮像面での素子寸法6 μmのデジタル航空カメラを用いた，数値空中写真の撮影計画を作成した。このときの撮影基準面での地上画素寸法を18 cmとした場合，撮影高度は幾らか。最も近いものを次の中から選べ。<br>ただし，撮影基準面の標高は0 mとする。</p><ol class="ch"><li>1,500 m</li><li>1,700 m</li><li>1,900 m</li><li>2,100 m</li><li>2,300 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>4</b></p><div class="kz"><svg class="new" viewBox="0 0 400 245" width="400"><line class="ln" x1="125" y1="24" x2="215" y2="24"/>
+</details><details class="rep"><summary>この問題の違和感を報告</summary><form data-id="H26-15"><textarea maxlength="500" rows="3" placeholder="問題文・図・解説のどこが、どう気になったか" aria-label="H26-15 の報告"></textarea><button type="submit">送る</button><span class="st" role="status"></span></form></details></section><section class="q" id="H26-19"><h2>No.19<span class="tag">写真</span></h2><p class="stem">画面距離7 cm，撮像面での素子寸法6 μmのデジタル航空カメラを用いた，数値空中写真の撮影計画を作成した。このときの撮影基準面での地上画素寸法を18 cmとした場合，撮影高度は幾らか。最も近いものを次の中から選べ。<br>ただし，撮影基準面の標高は0 mとする。</p><ol class="ch"><li>1,500 m</li><li>1,700 m</li><li>1,900 m</li><li>2,100 m</li><li>2,300 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>4</b></p><div class="kz"><svg class="new" viewBox="0 0 400 245" width="400"><line class="ln" x1="125" y1="24" x2="215" y2="24"/>
 <line class="rl" x1="160" y1="24" x2="180" y2="24"/>
 <circle cx="170" cy="64" r="3" fill="currentColor"/>
 <line class="dh" x1="160" y1="24" x2="207" y2="212"/>
@@ -224,7 +228,7 @@ footer a{color:var(--muted)}
 <div class="f">6 μm ＝ 0.000006 m、7 cm ＝ 0.07 m、18 cm ＝ 0.18 m<br><i>H</i> ＝ 0.07 × 0.18 ÷ 0.000006 ＝ 0.07 × 30,000 ＝ 2,100 m</div>
 <p>撮影基準面の標高は 0 m なので、これがそのまま撮影高度です。</p>
 <div class="pt">18 cm は 6 μm の 30,000 倍（180,000 μm ÷ 6 μm）なので、<i>H</i> ＝ 7 cm × 30,000 ＝ 210,000 cm ＝ 2,100 m とすると桁をまちがえにくい。</div>
-</details></section><section class="q" id="H26-20"><h2>No.20<span class="tag">写真</span></h2><p class="stem">画面距離12 cm，撮像面での素子寸法12 μmのデジタル航空カメラを用いて，海面からの撮影高度2,500 mで鉛直空中写真の撮影を行ったところ，一枚の数値空中写真の主点付近に画面の短辺と平行に橋が写っていた。この橋は標高100 mの地点に水平に架けられており，画面上で長さを計測したところ1,250画素であった。<br>この橋の実長は幾らか。最も近いものを次の中から選べ。</p><ol class="ch"><li>300 m</li><li>313 m</li><li>325 m</li><li>338 m</li><li>350 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>1</b></p><div class="kz"><svg class="new" viewBox="0 0 360 262" width="360"><line class="ln" x1="160" y1="20" x2="200" y2="20"/>
+</details><details class="rep"><summary>この問題の違和感を報告</summary><form data-id="H26-19"><textarea maxlength="500" rows="3" placeholder="問題文・図・解説のどこが、どう気になったか" aria-label="H26-19 の報告"></textarea><button type="submit">送る</button><span class="st" role="status"></span></form></details></section><section class="q" id="H26-20"><h2>No.20<span class="tag">写真</span></h2><p class="stem">画面距離12 cm，撮像面での素子寸法12 μmのデジタル航空カメラを用いて，海面からの撮影高度2,500 mで鉛直空中写真の撮影を行ったところ，一枚の数値空中写真の主点付近に画面の短辺と平行に橋が写っていた。この橋は標高100 mの地点に水平に架けられており，画面上で長さを計測したところ1,250画素であった。<br>この橋の実長は幾らか。最も近いものを次の中から選べ。</p><ol class="ch"><li>300 m</li><li>313 m</li><li>325 m</li><li>338 m</li><li>350 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>1</b></p><div class="kz"><svg class="new" viewBox="0 0 360 262" width="360"><line class="ln" x1="160" y1="20" x2="200" y2="20"/>
 <line class="bl" x1="165" y1="20" x2="195" y2="20"/>
 <circle cx="180" cy="50" r="3" fill="currentColor"/>
 <line class="dh" x1="165" y1="20" x2="250" y2="190"/>
@@ -253,7 +257,7 @@ footer a{color:var(--muted)}
 <p>写真の縮尺は「画面距離 ÷ 写したものからカメラまでの高さ」です。橋は標高 100 m にあるので、高さは 2,500 − 100 ＝ 2,400 m。</p>
 <div class="f">写真上の長さ ＝ 1,250 画素 × 12 μm ＝ 15,000 μm ＝ 15 mm<br>写真の縮尺 ＝ 0.12 m ÷ 2,400 m ＝ 1/20,000<br>実際の長さ ＝ 15 mm × 20,000 ＝ 300,000 mm ＝ 300 m</div>
 <div class="pt">海面からの撮影高度 2,500 m をそのまま使うと 312.5 m（選択肢 2）、標高 100 m を引かずに足すと 2,600 m で 325 m（選択肢 3）。橋の標高は引きます。</div>
-</details></section><section class="q" id="H26-21"><h2>No.21<span class="tag">地図</span></h2><p class="stem">図21は，国土地理院刊行の電子地形図25000（縮尺を変更，一部改変）の一部である。この図内に示す消防署の経緯度は幾らか。最も近いものを次の中から選べ。<br>ただし，表21に示す数値は，図内に示す三角点の経緯度及び標高を表す。</p><div class="fig"><img src="fig/H26-21-1.png" width="497" alt="H26-21 の図・表（原本）" loading="lazy"></div><div class="fig"><img src="fig/H26-21-2.png" width="468" alt="H26-21 の図・表（原本）" loading="lazy"></div><p class="src">図の出典：国土地理院「電子地形図25000」（測量士補試験の問題に掲載されたもの）</p><ol class="ch"><li>東経140°06′03″　北緯36°05′30″</li><li>東経140°06′07″　北緯36°05′26″</li><li>東経140°06′24″　北緯36°05′32″</li><li>東経140°06′28″　北緯36°05′35″</li><li>東経140°06′55″　北緯36°05′34″</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>2</b></p><div class="kz"><svg class="on" viewBox="0 0 995 674" width="497"><image href="fig/H26-21-1.png" width="995" height="674"/>
+</details><details class="rep"><summary>この問題の違和感を報告</summary><form data-id="H26-20"><textarea maxlength="500" rows="3" placeholder="問題文・図・解説のどこが、どう気になったか" aria-label="H26-20 の報告"></textarea><button type="submit">送る</button><span class="st" role="status"></span></form></details></section><section class="q" id="H26-21"><h2>No.21<span class="tag">地図</span></h2><p class="stem">図21は，国土地理院刊行の電子地形図25000（縮尺を変更，一部改変）の一部である。この図内に示す消防署の経緯度は幾らか。最も近いものを次の中から選べ。<br>ただし，表21に示す数値は，図内に示す三角点の経緯度及び標高を表す。</p><div class="fig"><img src="fig/H26-21-1.png" width="497" alt="H26-21 の図・表（原本）" loading="lazy"></div><div class="fig"><img src="fig/H26-21-2.png" width="468" alt="H26-21 の図・表（原本）" loading="lazy"></div><p class="src">図の出典：国土地理院「電子地形図25000」（測量士補試験の問題に掲載されたもの）</p><ol class="ch"><li>東経140°06′03″　北緯36°05′30″</li><li>東経140°06′07″　北緯36°05′26″</li><li>東経140°06′24″　北緯36°05′32″</li><li>東経140°06′28″　北緯36°05′35″</li><li>東経140°06′55″　北緯36°05′34″</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>2</b></p><div class="kz"><svg class="on" viewBox="0 0 995 674" width="497"><image href="fig/H26-21-1.png" width="995" height="674"/>
 <path d="M64.5 324 L64.5 355 L396 355 M436 355 L872.8 355" fill="none" stroke="#c33f27" stroke-width="4" stroke-dasharray="12 8"/>
 <line x1="64" y1="324" x2="138" y2="324" stroke="#0b6e9e" stroke-width="6"/>
 <line x1="64.5" y1="172" x2="64.5" y2="206" stroke="#0b6e9e" stroke-width="6"/><line x1="64.5" y1="238" x2="64.5" y2="324" stroke="#0b6e9e" stroke-width="6"/>
@@ -296,7 +300,7 @@ footer a{color:var(--muted)}
 <div class="f">経度　62″ × 12.5 ÷ 102.7 ≒ 8″　→　06′00″ ＋ 8″ ＝ 06′08″<br>緯度　13″ × 22.1 ÷ 26.1 ≒ 11″　→　05′36″ − 11″ ＝ 05′25″</div>
 <p>最も近いのは、東経 140°06′07″、北緯 36°05′26″（選択肢 2）です。</p>
 <div class="pt">横は 102.7 mm で約 60″ なので、1 mm がおよそ 0.6″。①から 12.5 mm しか離れていないので経度は 06′08″ くらいで、24″ 以上の 3・4・5 は消えます。1 と 2 は緯度で決めます。縦は①と②の間の 8 割以上も下がっているので、半分より上の 30″ の 1 ではなく 26″ の 2 です。</div>
-<p class="src">図の出典：国土地理院「電子地形図25000」（測量士補試験の問題に掲載されたもの）。赤・青の線と文字は当サイトが書き足しました</p></details></section><section class="q" id="H26-26"><h2>No.26<span class="tag">応用</span></h2><p class="stem">表26は，ある公共測量における縦断測量の観測手簿の一部である。観測は，器高式による直接水準測量で行っており，BM1，BM2を既知点として観測値との閉合差を補正して標高及び器械高を決定している。表中の［ア］～［ウ］に当てはまる値はそれぞれ何か。次の中から正しい組合せを選べ。</p><div class="fig"><img src="fig/H26-26-1.png" width="602" alt="H26-26 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>ア=81.381／イ=0／ウ=80.540</li><li>ア=81.381／イ=＋1／ウ=80.540</li><li>ア=81.381／イ=＋1／ウ=80.541</li><li>ア=81.382／イ=0／ウ=80.541</li><li>ア=81.382／イ=＋1／ウ=80.541</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>1</b></p><div class="kz"><svg class="on" viewBox="0 0 1204 899" width="602"><image href="fig/H26-26-1.png" width="1204" height="899"/>
+<p class="src">図の出典：国土地理院「電子地形図25000」（測量士補試験の問題に掲載されたもの）。赤・青の線と文字は当サイトが書き足しました</p></details><details class="rep"><summary>この問題の違和感を報告</summary><form data-id="H26-21"><textarea maxlength="500" rows="3" placeholder="問題文・図・解説のどこが、どう気になったか" aria-label="H26-21 の報告"></textarea><button type="submit">送る</button><span class="st" role="status"></span></form></details></section><section class="q" id="H26-26"><h2>No.26<span class="tag">応用</span></h2><p class="stem">表26は，ある公共測量における縦断測量の観測手簿の一部である。観測は，器高式による直接水準測量で行っており，BM1，BM2を既知点として観測値との閉合差を補正して標高及び器械高を決定している。表中の［ア］～［ウ］に当てはまる値はそれぞれ何か。次の中から正しい組合せを選べ。</p><div class="fig"><img src="fig/H26-26-1.png" width="602" alt="H26-26 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>ア=81.381／イ=0／ウ=80.540</li><li>ア=81.381／イ=＋1／ウ=80.540</li><li>ア=81.381／イ=＋1／ウ=80.541</li><li>ア=81.382／イ=0／ウ=80.541</li><li>ア=81.382／イ=＋1／ウ=80.541</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>1</b></p><div class="kz"><svg class="on" viewBox="0 0 1204 899" width="602"><image href="fig/H26-26-1.png" width="1204" height="899"/>
 <rect x="598" y="176" width="100" height="42" fill="none" stroke="#c33f27" stroke-width="4"/>
 <rect x="756" y="231" width="90" height="42" fill="none" stroke="#c33f27" stroke-width="4"/>
 <rect x="756" y="287" width="90" height="42" fill="none" stroke="#c33f27" stroke-width="4"/>
@@ -351,7 +355,7 @@ footer a{color:var(--muted)}
 <div class="f">補正する前の標高 ＝ 81.583 − 1.043 ＝ 80.540<br>イ ＝ 80.540 − 80.540 ＝ 0 mm</div>
 <p>ア＝81.381、イ＝0、ウ＝80.540 で、選択肢 1 です。</p>
 <div class="pt">No.2 の行でも ア ＝ 79.943 ＋ 1.438 ＝ 81.381 と確かめられます。ア が 81.381 なら ウ は 80.540 に決まり、補正する前と同じなので イ は 0 です。</div>
-</details></section><section class="q" id="H26-27"><h2>No.27<span class="tag">応用</span></h2><p class="stem">図27は，境界点A，B，C，Dで囲まれた土地を表したものであり，直線ADは道路との境界線となっている。この道路が拡幅されることになり，新たな道路境界線PQが引かれることとなった。直線ADと直線PQが平行であり，拡幅の幅が3.0 mである場合，点P，B，C，Qで囲まれた土地の面積は幾らか。最も近いものを次の中から選べ。<br>なお，点A，B，C，Dの平面直角座標系における座標値は，表27のとおりとする。関数の数値が必要な場合は，巻末の関数表を使用すること。</p><div class="fig"><img src="fig/H26-27-1.png" width="442" alt="H26-27 の図・表（原本）" loading="lazy"></div><div class="fig"><img src="fig/H26-27-2.png" width="288" alt="H26-27 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>1,115.50 m²</li><li>1,219.50 m²</li><li>1,368.00 m²</li><li>1,462.00 m²</li><li>1,507.50 m²</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>2</b></p><div class="kz"><svg class="on" viewBox="0 0 884 609" width="442"><image href="fig/H26-27-1.png" width="884" height="609"/>
+</details><details class="rep"><summary>この問題の違和感を報告</summary><form data-id="H26-26"><textarea maxlength="500" rows="3" placeholder="問題文・図・解説のどこが、どう気になったか" aria-label="H26-26 の報告"></textarea><button type="submit">送る</button><span class="st" role="status"></span></form></details></section><section class="q" id="H26-27"><h2>No.27<span class="tag">応用</span></h2><p class="stem">図27は，境界点A，B，C，Dで囲まれた土地を表したものであり，直線ADは道路との境界線となっている。この道路が拡幅されることになり，新たな道路境界線PQが引かれることとなった。直線ADと直線PQが平行であり，拡幅の幅が3.0 mである場合，点P，B，C，Qで囲まれた土地の面積は幾らか。最も近いものを次の中から選べ。<br>なお，点A，B，C，Dの平面直角座標系における座標値は，表27のとおりとする。関数の数値が必要な場合は，巻末の関数表を使用すること。</p><div class="fig"><img src="fig/H26-27-1.png" width="442" alt="H26-27 の図・表（原本）" loading="lazy"></div><div class="fig"><img src="fig/H26-27-2.png" width="288" alt="H26-27 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>1,115.50 m²</li><li>1,219.50 m²</li><li>1,368.00 m²</li><li>1,462.00 m²</li><li>1,507.50 m²</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>2</b></p><div class="kz"><svg class="on" viewBox="0 0 884 609" width="442"><image href="fig/H26-27-1.png" width="884" height="609"/>
 <polygon points="112,383 112,27 851,238 713,384" fill="#0b6e9e" fill-opacity=".13"/>
 <text x="165" y="32" font-size="26" class="r">(17, −33)</text>
 <text x="745" y="190" font-size="26" class="r">(0, 30)</text>
@@ -366,7 +370,7 @@ footer a{color:var(--muted)}
 <p>座標から面積を出します。P を原点に移す（全部の X に 12、Y に 33 を足す）と数字が小さくなります。P→B→C→Q の順に、「X ×（次の点の Y − 前の点の Y）」を足すと、面積の 2 倍です。</p>
 <div class="f">P (0, 0)、B (29, 0)、C (12, 63)、Q (0, 51)<br>P　0 × (0 − 51) ＝ 0<br>B　29 × (63 − 0) ＝ 1,827<br>C　12 × (51 − 0) ＝ 612<br>Q　0 × (0 − 63) ＝ 0<br>面積 ＝ (1,827 ＋ 612) ÷ 2 ＝ 2,439 ÷ 2 ＝ 1,219.5 m²</div>
 <div class="pt">元の四角形 ABCD は 1,368 m²（選択肢 3）。そこから台形 APQD の (48 ＋ 51) × 3 ÷ 2 ＝ 148.5 m² を引いても 1,219.5 m² になります。</div>
-</details></section><section class="q" id="H26-28"><h2>No.28<span class="tag">応用</span></h2><p class="stem">表28は，ある河川の横断測量を行った結果の一部である。図28は横断面図で，この横断面における左岸及び右岸の距離標の標高は20.7 mである。また，各測点間の勾配は一定である。この横断面の河床部における平均河床高の標高をm単位で小数第1位まで求めたい。最も近いものを次のページの中から選べ。なお，河床部とは，左岸堤防表法尻から右岸堤防表法尻までの区間とする。</p><div class="fig"><img src="fig/H26-28-1.png" width="436" alt="H26-28 の図・表（原本）" loading="lazy"></div><div class="fig"><img src="fig/H26-28-2.png" width="484" alt="H26-28 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>14.3 m</li><li>14.5 m</li><li>14.9 m</li><li>15.4 m</li><li>15.8 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>3</b></p><div class="kz"><svg class="on" viewBox="0 0 969 557" width="484"><image href="fig/H26-28-2.png" width="969" height="557"/>
+</details><details class="rep"><summary>この問題の違和感を報告</summary><form data-id="H26-27"><textarea maxlength="500" rows="3" placeholder="問題文・図・解説のどこが、どう気になったか" aria-label="H26-27 の報告"></textarea><button type="submit">送る</button><span class="st" role="status"></span></form></details></section><section class="q" id="H26-28"><h2>No.28<span class="tag">応用</span></h2><p class="stem">表28は，ある河川の横断測量を行った結果の一部である。図28は横断面図で，この横断面における左岸及び右岸の距離標の標高は20.7 mである。また，各測点間の勾配は一定である。この横断面の河床部における平均河床高の標高をm単位で小数第1位まで求めたい。最も近いものを次のページの中から選べ。なお，河床部とは，左岸堤防表法尻から右岸堤防表法尻までの区間とする。</p><div class="fig"><img src="fig/H26-28-1.png" width="436" alt="H26-28 の図・表（原本）" loading="lazy"></div><div class="fig"><img src="fig/H26-28-2.png" width="484" alt="H26-28 の図・表（原本）" loading="lazy"></div><ol class="ch"><li>14.3 m</li><li>14.5 m</li><li>14.9 m</li><li>15.4 m</li><li>15.8 m</li></ol><details><summary>答えと解説</summary><p class="ans">答え <b>3</b></p><div class="kz"><svg class="on" viewBox="0 0 969 557" width="484"><image href="fig/H26-28-2.png" width="969" height="557"/>
 <line x1="208" y1="215" x2="208" y2="294" stroke="#c33f27" stroke-width="3" stroke-dasharray="8 6"/>
 <line x1="378" y1="215" x2="378" y2="370" stroke="#c33f27" stroke-width="3" stroke-dasharray="8 6"/>
 <line x1="597" y1="215" x2="597" y2="370" stroke="#c33f27" stroke-width="3" stroke-dasharray="8 6"/>
@@ -425,8 +429,31 @@ footer a{color:var(--muted)}
 <div class="f">測点 3～4　(2.0 ＋ 0.5) × 3 ÷ 2 ＝ 3.75<br>測点 4～5　0.5 × 2 ÷ 2 ＝ 0.5<br>測点 5～6　0.5 × 2 ÷ 2 ＝ 0.5<br>測点 6～7　(0.5 ＋ 2.0) × 3 ÷ 2 ＝ 3.75<br>面積の合計 ＝ 8.5 m²</div>
 <div class="f">平均の高さ ＝ 8.5 ÷ 10 ＝ 0.85 m<br>平均河床高 ＝ 14.0 ＋ 0.85 ＝ 14.85 m ≒ 14.9 m</div>
 <div class="pt">水の中の測点 4～6 だけでならすと 14.25 m（選択肢 1 の 14.3 m）になります。河床部は法尻から法尻までです。左右が同じ形なので、半分だけ（4.25 ÷ 5 ＝ 0.85）でも出せます。</div>
-</details></section><nav class="years"><a href="H23.html">H23</a><a href="H24.html">H24</a><a href="H25.html">H25</a><a href="H26.html" class=cur>H26</a><a href="H27.html">H27</a><a href="H28.html">H28</a><a href="H29.html">H29</a><a href="H30.html">H30</a><a href="R1.html">R1</a><a href="R2.html">R2</a><a href="R3.html">R3</a><a href="R4.html">R4</a><a href="R5.html">R5</a><a href="R6.html">R6</a><a href="R7.html">R7</a><a href="R8.html">R8</a></nav>
+</details><details class="rep"><summary>この問題の違和感を報告</summary><form data-id="H26-28"><textarea maxlength="500" rows="3" placeholder="問題文・図・解説のどこが、どう気になったか" aria-label="H26-28 の報告"></textarea><button type="submit">送る</button><span class="st" role="status"></span></form></details></section><nav class="years"><a href="H23.html">H23</a><a href="H24.html">H24</a><a href="H25.html">H25</a><a href="H26.html" class=cur>H26</a><a href="H27.html">H27</a><a href="H28.html">H28</a><a href="H29.html">H29</a><a href="H30.html">H30</a><a href="R1.html">R1</a><a href="R2.html">R2</a><a href="R3.html">R3</a><a href="R4.html">R4</a><a href="R5.html">R5</a><a href="R6.html">R6</a><a href="R7.html">R7</a><a href="R8.html">R8</a></nav>
 <footer>出典：国土地理院ウェブサイト（<a href="https://www.gsi.go.jp/LAW/SHIKEN/past.html" rel="noopener">https://www.gsi.go.jp/LAW/SHIKEN/past.html</a>）の測量士補試験の問題をもとに、当サイトが作成したものです（問題文と選択肢は原本から起こし、図・表は原本の画像を切り出して載せています。解き方・解説は当サイトが書いたもので、国土地理院が作成・公表したものではありません）。</footer>
 </main>
+<script>
+// 「答えと解説」を開いたことを、問ごとに 1 回だけ数える（計測のタグは公開時に入る）
+document.querySelectorAll('section.q').forEach(q => {
+  const d = q.querySelector('details:not(.rep)');
+  d.addEventListener('toggle', () => {
+    if (!d.open || d.dataset.sent) return;
+    d.dataset.sent = '1';
+    try { if (typeof window.gtag === 'function') window.gtag('event', 'sokuryo_keisan_open', { question_label: 'sokuryo-keisan:' + q.id, year: q.id.split('-')[0] }); } catch {}
+  });
+});
+document.querySelectorAll('.rep form').forEach(f => f.addEventListener('submit', async e => {
+  e.preventDefault();
+  const t = f.querySelector('textarea'), b = f.querySelector('button'), st = f.querySelector('.st'), c = t.value.trim();
+  if (!c) { st.textContent = '内容を書いてください'; return; }
+  b.disabled = true; st.textContent = '送信中…';
+  try {
+    await fetch('https://script.google.com/macros/s/AKfycbykTsPoM-VFHtSWZUmS-TTqZyi7gtJd637B94mw5i_rDgeNtd6_XCRLLTQQ7Z6Fj_x9/exec', { method: 'POST', mode: 'no-cors',
+      body: new URLSearchParams({ questionId: 'sokuryo-keisan:' + f.dataset.id, comment: c.slice(0, 500) }) });
+    t.value = ''; st.textContent = '報告しました。ありがとうございます。';
+  } catch { st.textContent = '送信できませんでした。通信状態を確認して、もう一度お試しください。'; }
+  b.disabled = false;
+}));
+</script>
 </body>
 </html>

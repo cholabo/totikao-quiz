@@ -17,7 +17,7 @@
   <meta name="theme-color" content="#eff3f4" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0f171c" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
-</head>
+<script src="/sync.js?v=1.2"></script></head>
 <body>
   <main class="quiz-page">
     <div id="quiz-container">
@@ -64,6 +64,20 @@
       </div>
     </div>
 
+    <!-- 違和感報告。送り先と集計は調査士と同じ（ID の頭に sokuryo: を付けて区別する） -->
+    <section id="feedback-area" class="feedback-area" aria-label="問題の違和感を報告">
+      <button id="feedback-open-btn" type="button" class="feedback-open-btn">問題内容の違和感を報告</button>
+      <form id="feedback-form" class="feedback-form hidden">
+        <label for="feedback-comment">コメント（任意）</label>
+        <textarea id="feedback-comment" maxlength="500" rows="3" placeholder="どこが気になったか、書きたい場合だけ入力してください"></textarea>
+        <div class="feedback-actions">
+          <button id="feedback-submit-btn" type="submit">違和感ありとして送信</button>
+          <button id="feedback-cancel-btn" type="button" class="secondary-btn">キャンセル</button>
+        </div>
+      </form>
+      <p id="feedback-status" class="feedback-status" aria-live="polite"></p>
+    </section>
+
     <div id="progress-info"></div>
 
     <footer class="page-credit">
@@ -94,6 +108,6 @@
       </details>
     </template>
   </main>
-  <script src="sokuryo.js?v=1.2"></script>
+  <script src="sokuryo.js?v=1.4"></script>
 </body>
 </html>

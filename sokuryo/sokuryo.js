@@ -457,6 +457,9 @@ if (document.getElementById("quiz-container")) {
       $("q-figure-img").removeAttribute("src");
     }
 
+    shownAt = performance.now();
+    sessionIndex += 1;
+    resetFeedback();
     hideVerdict();
     hideExplanation();
     $("choices").classList.remove("hidden");
@@ -655,6 +658,76 @@ if (document.getElementById("quiz-container")) {
     });
   }
 
+  // ===== 違和感報告（調査士 script.js と同じ送り先。ID は sokuryo:肢番号） =====
+  const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbykTsPoM-VFHtSWZUmS-TTqZyi7gtJd637B94mw5i_rDgeNtd6_XCRLLTQQ7Z6Fj_x9/exec";
+  const feedbackSent = new Set();
+
+  function resetFeedback() {
+    const sent = currentQuestion && feedbackSent.has(currentQuestion.label);
+    $("feedback-form").classList.add("hidden");
+    $("feedback-open-btn").classList.toggle("hidden", Boolean(sent));
+    $("feedback-submit-btn").disabled = false;
+    $("feedback-comment").value = "";
+    $("feedback-status").textContent = sent ? "この問題は報告済みです。" : "";
+  }
+
+  async function submitFeedback(event) {
+    event.preventDefault();
+    if (!currentQuestion) return;
+    const label = currentQuestion.label;
+    $("feedback-submit-btn").disabled = true;
+    $("feedback-status").textContent = "送信中…";
+    try {
+      await fetch(FEEDBACK_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        body: new URLSearchParams({
+          questionId: ("sokuryo:" + label).slice(0, 80),
+          comment: $("feedback-comment").value.trim().slice(0, 500)
+        })
+      });
+      feedbackSent.add(label);
+      if (currentQuestion && currentQuestion.label === label) {
+        $("feedback-form").classList.add("hidden");
+        $("feedback-open-btn").classList.add("hidden");
+        $("feedback-status").textContent = "報告しました。ありがとうございます。";
+      }
+    } catch {
+      if (currentQuestion && currentQuestion.label === label) {
+        $("feedback-status").textContent = "送信できませんでした。通信状態を確認して、もう一度お試しください。";
+        $("feedback-submit-btn").disabled = false;
+      }
+    }
+  }
+
+  // ===== 回答の集計（GA4）。中身は調査士の quiz_answer と同じ。
+  // 肢番号が調査士と重なるので、イベント名を分け、番号の頭に sokuryo: を付ける。計測のタグは公開時に入る（手元では何もしない） =====
+  let shownAt = 0;
+  let sessionIndex = 0;
+
+  function sendAnswerEvent(q, result, selected, previous, next) {
+    try {
+      if (typeof window.gtag !== "function") return;
+      const ms = Math.round(performance.now() - shownAt);
+      window.gtag("event", "sokuryo_answer", {
+        question_label: "sokuryo:" + q.label,
+        year: String(q.year || ""),
+        question_no: String(q.questionNo || ""),
+        choice: String(q.choice || ""),
+        answer_result: result,
+        selected_answer: selected,
+        quiz_mode: mode,
+        attempt_number: Number(next.attempts) || 1,
+        is_first_attempt: previous.attempts ? 0 : 1,
+        review_hits: Math.max(0, Number(next.hits) || 0),
+        response_time_ms: Math.min(Math.max(0, ms), 600000),
+        session_question_index: sessionIndex
+      });
+    } catch {
+      // 集計の失敗は、解答と記録に影響させない
+    }
+  }
+
   // ===== 解答 =====
   function verdictMessage(result, previous, next) {
     const later = "次は明日以降に出題されます";
@@ -680,6 +753,7 @@ if (document.getElementById("quiz-container")) {
     const result = selected === currentQuestion.answer ? "correct" : "wrong";
     const previous = getQuestionState(currentQuestion);
     const next = setQuestionResult(currentQuestion, result);
+    sendAnswerEvent(currentQuestion, result, selected, previous, next);
     afterAnswer();
     showVerdict(result, result === "correct" ? "◯" : "✕", verdictMessage(result, previous, next));
     if (result === "wrong") {
@@ -696,7 +770,9 @@ if (document.getElementById("quiz-container")) {
     if (!currentQuestion || isAnswerLocked) return;
     isAnswerLocked = true;
     setAnswerControlsDisabled(true);
-    setQuestionResult(currentQuestion, "unknown");
+    const previous = getQuestionState(currentQuestion);
+    const next = setQuestionResult(currentQuestion, "unknown");
+    sendAnswerEvent(currentQuestion, "unknown", "unknown", previous, next);
     afterAnswer();
     showVerdict("unknown", currentQuestion.answer,
       mode === "review" ? "復習に入れました　次は明日以降に出題されます" : "復習に入れました　明日以降の復習に出題されます");
@@ -748,6 +824,13 @@ if (document.getElementById("quiz-container")) {
   $("next-btn-bottom").addEventListener("click", () => { window.scrollTo(0, 0); goNext(); });
   $("prev-btn").addEventListener("click", goPrev);
   $("exp-toggle").addEventListener("click", openExplanation);
+  $("feedback-open-btn").addEventListener("click", () => {
+    $("feedback-open-btn").classList.add("hidden");
+    $("feedback-form").classList.remove("hidden");
+    $("feedback-comment").focus();
+  });
+  $("feedback-cancel-btn").addEventListener("click", resetFeedback);
+  $("feedback-form").addEventListener("submit", submitFeedback);
   $("home-btn").addEventListener("click", () => { window.location.href = "index.html"; });
   $("list-btn").addEventListener("click", () => { window.location.href = "question-list.html"; });
   $("q-figure-img").addEventListener("click", openZoom);
