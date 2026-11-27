@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C34PHRSJN4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-C34PHRSJN4");
+  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>質問 AI（テスト版）｜ちょらぼ</title>
+<!-- テスター用の質問画面。正本は experiments/kijutsu_ai/qa_kijutsu/web/tutor.html。公開するときに app/ へ写す。
+     送り先: 下の ENDPOINT_DEFAULT（deploy のあとで入れる）。手元では localStorage.setItem("tutor.endpoint", "http://localhost:8789") -->
+<style>
+:root { --bg:#eff3f4; --surface:#fff; --ink:#1e2c34; --muted:#61747f; --line:#d5e0e5; --soft:#f3f7f9; --primary:#0b6e9e; --primary-deep:#08557a; --on-primary:#fff; --seal:#ce4a2f; --seal-soft:#fbeae6; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0b1116; --surface:#121b21; --ink:#c8d6dd; --muted:#7b8f9a; --line:#21303a; --soft:#16222a; --primary:#4e9ec7; --primary-deep:#6bb3d6; --on-primary:#08131a; --seal:#c4603f; --seal-soft:#281812; } }
+:root[data-theme="dark"] { --bg:#0b1116; --surface:#121b21; --ink:#c8d6dd; --muted:#7b8f9a; --line:#21303a; --soft:#16222a; --primary:#4e9ec7; --primary-deep:#6bb3d6; --on-primary:#08131a; --seal:#c4603f; --seal-soft:#281812; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic UI",Meiryo,sans-serif; font-size:16px; line-height:1.8; }
+.wrap { max-width:720px; margin:0 auto; padding:16px 16px 180px; }
+h1 { font-size:20px; margin:8px 0 4px; }
+h1 small { font-size:12px; font-weight:500; color:var(--seal); border:1px solid var(--seal); border-radius:4px; padding:1px 6px; margin-left:6px; vertical-align:middle; }
+.lead { color:var(--muted); font-size:14px; margin:0 0 12px; }
+.card { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin:10px 0; }
+label { font-size:13px; color:var(--muted); display:block; margin-bottom:2px; }
+select, input[type=text], textarea { width:100%; font:inherit; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
+textarea { resize:vertical; min-height:64px; }
+button { font:inherit; cursor:pointer; border-radius:8px; border:1px solid var(--line); background:var(--soft); color:var(--ink); padding:6px 12px; }
+button.primary { background:var(--primary); color:var(--on-primary); border-color:transparent; font-weight:700; padding:8px 18px; }
+button:disabled { opacity:.5; cursor:default; }
+.msg { margin:12px 0; }
+.msg.q { background:var(--soft); border-radius:10px; padding:8px 12px; white-space:pre-wrap; }
+.msg.a { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 14px; overflow-wrap:anywhere; }
+.msg.a p { margin:0 0 .7em; } .msg.a ul, .msg.a ol { margin:0 0 .7em; padding-left:1.4em; } .msg.a h4 { margin:.8em 0 .3em; font-size:16px; }
+.msg.a .id { color:var(--muted); font-size:.85em; }
+.msg.a table { border-collapse:collapse; display:block; overflow-x:auto; margin:0 0 .7em; } .msg.a td, .msg.a th { border:1px solid var(--line); padding:2px 8px; font-size:14px; }
+.tools { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:8px; font-size:13px; }
+.tools button { font-size:13px; padding:3px 10px; }
+.tools .on { border-color:var(--primary); color:var(--primary); }
+.note { font-size:12px; color:var(--muted); }
+.err { color:var(--seal); background:var(--seal-soft); border-radius:8px; padding:8px 12px; margin:10px 0; font-size:14px; }
+.bar { position:fixed; left:0; right:0; bottom:0; background:var(--surface); border-top:1px solid var(--line); }
+.bar .in { max-width:720px; margin:0 auto; padding:10px 16px calc(10px + env(safe-area-inset-bottom)); }
+.row { display:flex; gap:8px; align-items:center; justify-content:space-between; margin-top:6px; }
+.photo-box textarea { min-height:220px; font-family:ui-monospace,Consolas,monospace; font-size:14px; line-height:1.6; }
+.photo-box .hint { font-size:12px; color:var(--seal); margin:4px 0 0; }
+details.card summary { cursor:pointer; font-size:14px; } details.card ol { font-size:14px; padding-left:1.4em; margin:.6em 0 0; }
+#testerBox p { margin:0 0 .5em; font-size:14px; } #testerBox label { display:flex; gap:6px; align-items:flex-start; color:var(--ink); font-size:14px; margin:.4em 0; } #testerBox a { color:var(--primary); }
+.hide { display:none; }
+.busy::after { content:"…"; animation:b 1s steps(3) infinite; } @keyframes b { 50% { opacity:.3; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="note"><a href="./" style="color:var(--primary)">← ちょらぼのトップへ</a></p>
+  <h1>質問 AI<small>テスト版</small></h1>
+  <p class="lead">土地家屋調査士試験の勉強の質問に、条文・先例・過去問を根拠に答えます。記述の過去問は、問題を選ぶとその問の資料を見て答えます。答えの [　] は根拠の番号です。1 つの問・1 つの論点の質問が得意で、広い範囲をまとめる質問はまだ苦手です。択一の肢の質問は、今までどおり解説の画面の質問欄からどうぞ。</p>
+
+  <div class="card hide" id="testerBox"></div>
+
+  <details class="card hide" id="termsBox">
+    <summary>テスターの約束ごと（2026-11-27 版）</summary>
+    <ol>
+      <li>これはテスト版です。答えは誤ることがあります。大事な所は、条文・模範解答で確かめてください。</li>
+      <li>無料です。期間は決めていません。まずは 2026 年内を目安に、用意した予算の範囲で続けます。予告なく止めたり、中身を変えたりすることがあります。</li>
+      <li>質問と答え、写真から読み取った文字は記録し、管理人が読んで改善に使います。写真そのものは保存しません。</li>
+      <li>答えを作るために、質問の文と写真は、外部の AI サービスに送られます。名前・住所など、個人が分かることは書かない・写さないでください。</li>
+      <li>申し込みにはアカウントのアンケートへの回答が要ります。テストの終わりにも、短いアンケートへの回答をお願いします。</li>
+      <li>1 日に使える回数に上限があります（残りは画面に出ます）。使われていない席は、順番待ちの方に回すことがあります。</li>
+      <li>実際の土地・建物の案件の相談には使えません。試験の勉強のための道具です。</li>
+    </ol>
+  </details>
+
+  <div class="card hide" id="codeBox">
+    <label for="code">招待コード</label>
+    <div style="display:flex;gap:8px"><input type="text" id="code" autocomplete="off" inputmode="latin"><button id="codeSave">保存</button></div>
+  </div>
+
+  <div class="card">
+    <label for="page">見ている問題（任意）</label>
+    <select id="page"><option value="">選ばない（勉強のしかた・論点の質問）</option></select>
+  </div>
+
+  <div id="log" aria-live="polite"></div>
+  <div id="err" class="err hide"></div>
+  <p class="note">「写真で計算を見てもらう」は、記述の問を選んでから、手書きの計算メモ（座標・面積・辺長）の写真を選びます。写真そのものは保存しません。</p>
+  <p class="note">テスト版です。誤りがあるかもしれません。おかしな答えは「誤りを報告」で教えてください。質問と答えは、改善のために記録します。</p>
+</div>
+
+<div class="bar"><div class="in">
+  <textarea id="q" maxlength="400" placeholder="例: 何から始めればいいですか／R7 の土地で、なぜ地積更正が要るのですか"></textarea>
+  <div class="row">
+    <span class="note" id="status"></span>
+    <span><input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" class="hide"><button id="photoBtn" title="手書きの計算メモの写真から、どこでずれたかを見ます">写真で計算を見てもらう</button> <button id="reset" class="hide">新しい質問にする</button> <button id="send" class="primary">質問する</button></span>
+  </div>
+</div></div>
+
+<script>
+(() => {
+  const ENDPOINT_DEFAULT = "https://cholabo-tutor.cholabo.workers.dev";   // 11/27 公開
+  const LS = (() => { try { return window.localStorage; } catch (e) { return null; } })();
+  const get = k => { try { return LS && LS.getItem(k); } catch (e) { return null; } };
+  const set = (k, v) => { try { LS && LS.setItem(k, v); } catch (e) { /* 保存できなくても動く */ } };
+  const P = new URLSearchParams(location.search);
+  const ENDPOINT = (get("tutor.endpoint") || ENDPOINT_DEFAULT).replace(/\/$/, "");
+  const $ = id => document.getElementById(id);
+
+  // 記述の 42 問（平成17〜令和7、第21問 土地・第22問 建物）
+  const sel = $("page");
+  const years = []; for (let y = 7; y >= 1; y--) years.push(["R" + y, "令和" + y + "年度"]); for (let y = 30; y >= 17; y--) years.push(["H" + y, "平成" + y + "年度"]);
+  for (const [k, name] of years) for (const [n, kind] of [[21, "土地"], [22, "建物"]]) {
+    const o = document.createElement("option"); o.value = "記述 " + k + "-" + n; o.textContent = "記述 " + name + " 第" + n + "問（" + kind + "）"; sel.appendChild(o);
+  }
+  if (P.get("page")) { const v = P.get("page"); if ([...sel.options].some(o => o.value === v)) sel.value = v; }
+
+  // 招待コード（URL の ?code= か、入力して保存）
+  if (P.get("code")) set("tutor.code", P.get("code").trim());
+  $("code").value = get("tutor.code") || "";
+  // 招待コードの欄は、サーバが「招待が要る」と返したときだけ出す（今はテスターの先着を使う）
+  $("codeSave").onclick = () => { set("tutor.code", $("code").value.trim()); if ($("code").value.trim()) $("codeBox").classList.add("hide"); };
+
+  const uid = () => { let u = get("tutor.uid") || get("qa.uid"); if (!u) { u = Array.from(crypto.getRandomValues(new Uint8Array(12)), b => b.toString(16).padStart(2, "0")).join(""); } set("tutor.uid", u); return u; };
+  const auth = () => { const t = get("acct.token"); return t ? { authorization: "Bearer " + t } : {}; };
+
+  // 答えの表示: HTML は使わず、太字・見出し・箇条・表だけ組む
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/`([^`]+)`/g, "$1").replace(/\[([^\[\]\n]{1,80})\]/g, '<span class="id">[$1]</span>');
+  function render(text) {
+    const out = []; let list = null, table = null, para = [];
+    const flush = () => { if (para.length) { out.push("<p>" + para.join("<br>") + "</p>"); para = []; } if (list) { out.push("</" + list + ">"); list = null; } if (table) { out.push("</table>"); table = null; } };
+    for (const raw of String(text).split("\n")) {
+      const line = raw.trimEnd(); let m;
+      if (!line.trim()) { flush(); continue; }
+      if ((m = line.match(/^#{1,6}\s+(.*)$/))) { flush(); out.push("<h4>" + inline(m[1]) + "</h4>"); continue; }
+      if (/^\s*\|.*\|\s*$/.test(line)) {
+        if (/^\s*\|[\s:|-]+\|\s*$/.test(line)) continue;
+        if (!table) { flush(); out.push("<table>"); table = true; }
+        out.push("<tr>" + line.trim().slice(1, -1).split("|").map(c => "<td>" + inline(c.trim()) + "</td>").join("") + "</tr>"); continue;
+      }
+      if ((m = line.match(/^\s*(?:[-*・]|(\d+)[.)])\s+(.*)$/))) {
+        const kind = m[1] ? "ol" : "ul";
+        if (list !== kind) { flush(); out.push("<" + kind + ">"); list = kind; }
+        out.push("<li>" + inline(m[2]) + "</li>"); continue;
+      }
+      if (list || table) flush();
+      para.push(inline(line));
+    }
+    flush(); return out.join("");
+  }
+
+  let prev = [], lastQ = "", busy = false;
+  const log = $("log"), err = $("err"), status = $("status");
+  const showErr = t => { err.textContent = t; err.classList.toggle("hide", !t); };
+  if (!ENDPOINT) { showErr("いまは準備中です。"); $("send").disabled = true; }
+
+  // ---- テスターの申し込み（ログイン → アンケート → 約束ごとに同意 → 先着） ----
+  const TERMS_VER = "2026-11-27";   // Worker の TERMS_VER と同じ値に
+  const tbox = $("testerBox");
+  let canUse = true;
+  function setUse(ok) { canUse = ok; $("send").disabled = !ok || !ENDPOINT; $("photoBtn").disabled = !ok || !ENDPOINT; $("q").disabled = !ok; }
+  function showTester(t) {
+    if (!t || t.mode !== "tester") { tbox.classList.add("hide"); $("termsBox").classList.add("hide"); setUse(true); return; }
+    tbox.classList.remove("hide"); $("termsBox").classList.remove("hide"); tbox.innerHTML = "";
+    const P = (txt) => { const e = document.createElement("p"); e.textContent = txt; tbox.appendChild(e); return e; };
+    const link = (txt, href) => { const e = document.createElement("p"); const a = document.createElement("a"); a.href = href; a.textContent = txt; e.appendChild(a); tbox.appendChild(e); };
+    if (!t.login) { setUse(false); P("テスト版は、ログインしてテスターに申し込んだ方が使えます（先着 " + t.max + " 人）。"); link("ログインの画面へ", "account.html"); return; }
+    if (t.applied && t.active) { setUse(true); P("テスターとして使えます。気づいたことは、答えの下の「誤りを報告」から教えてください。"); tbox.classList.add("hide"); return; }
+    if (t.applied) { setUse(false); P("申し込みを受け付けました。いまは順番待ちです（あと " + t.waiting + " 人目）。空きが出たら、この画面で使えるようになります。"); return; }
+    setUse(false);
+    P("テスターを募集しています（先着 " + t.max + " 人。" + (t.seats_left > 0 ? "残り " + t.seats_left + " 人" : "いまは満席で、申し込むと順番待ちになります") + "）。");
+    if (!t.profile_ok) { P("申し込みの前に、アカウントの画面でアンケート（受験の予定・回数・勉強のしかた）に答えてください。"); link("アカウントの画面へ", "account.html"); return; }
+    const lab = document.createElement("label"); const cb = document.createElement("input"); cb.type = "checkbox";
+    lab.appendChild(cb); lab.appendChild(document.createTextNode("下の「テスターの約束ごと」を読み、同意します。")); tbox.appendChild(lab);
+    const b = document.createElement("button"); b.className = "primary"; b.textContent = "テスターに申し込む"; tbox.appendChild(b);
+    $("termsBox").open = true;
+    b.onclick = async () => {
+      if (!cb.checked) { showErr("約束ごとを読んで、同意の欄に印を付けてください。"); return; }
+      b.disabled = true; showErr("");
+      try { const r = await post("/tester/apply", { agree: true, ver: TERMS_VER }); if (!r.ok) { showErr(r.j.message || "申し込めませんでした。"); b.disabled = false; } else showTester(Object.assign({ mode: "tester", login: true, profile_ok: true }, r.j)); }
+      catch (e) { showErr("通信できませんでした。"); b.disabled = false; }
+    };
+  }
+  async function loadTester() {
+    if (!ENDPOINT) return;
+    try { const res = await fetch(ENDPOINT + "/tester", { headers: auth(), cache: "no-store" }); showTester(await res.json()); } catch (e) { /* 読めなければそのまま（質問したときにサーバが断る） */ }
+  }
+  loadTester();
+
+  async function post(path, body) {
+    const res = await fetch(ENDPOINT + path, { method: "POST", headers: Object.assign({ "content-type": "application/json" }, auth()), body: JSON.stringify(body) });
+    let j = {}; try { j = await res.json(); } catch (e) { /* 本文なし */ }
+    return { ok: res.ok, status: res.status, j };
+  }
+
+  async function ask(question, deep) {
+    if (busy || !ENDPOINT) return;
+    question = question.trim(); if (question.length < 2) return;
+    busy = true; showErr(""); $("send").disabled = true;
+    if (!deep) { const d = document.createElement("div"); d.className = "msg q"; d.textContent = question; log.appendChild(d); }
+    const a = document.createElement("div"); a.className = "msg a"; a.innerHTML = '<span class="note busy">' + (deep ? "くわしく調べています" : "調べています") + "</span>"; log.appendChild(a);
+    a.scrollIntoView({ block: "nearest" });
+    try {
+      const r = await post("/ask", { question, page: sel.value, uid: uid(), prev, code: get("tutor.code") || "", deep: !!deep });
+      if (!r.ok) {
+        a.remove();
+        if (r.j.error === "beta") $("codeBox").classList.remove("hide");
+        if (r.j.error === "login" || r.j.error === "tester") loadTester();
+        showErr(r.j.message || "うまく送れませんでした。少し待ってからもう一度お試しください。");
+      } else {
+        lastQ = question; prev.push(r.j.id);
+        a.innerHTML = render(r.j.answer);
+        const t = document.createElement("div"); t.className = "tools";
+        const mk = (label, fn) => { const b = document.createElement("button"); b.textContent = label; b.onclick = () => fn(b); t.appendChild(b); return b; };
+        const vote = v => b => { post("/feedback", { id: r.j.id, vote: v }).catch(() => {}); t.querySelectorAll("button").forEach(x => x.classList.remove("on")); b.classList.add("on"); };
+        mk("役に立った", vote(1)); mk("いまいち", vote(-1));
+        if (!r.j.route || !r.j.route.heavy) mk("もっと詳しく", b => { b.disabled = true; ask(question, true); });
+        mk("誤りを報告", b => { const s = prompt("どこがおかしいか、分かる範囲で教えてください。"); if (s && s.trim()) { post("/feedback", { id: r.j.id, vote: -1, report: s.trim() }).catch(() => {}); b.textContent = "報告しました"; b.disabled = true; } });
+        a.appendChild(t);
+        status.textContent = "今日の残り " + r.j.remaining + " 回" + (r.j.turn >= r.j.max_turns ? "／続きの質問はここまで" : "");
+        $("reset").classList.remove("hide");
+        if (!deep) $("q").value = "";
+      }
+    } catch (e) { a.remove(); showErr("通信できませんでした。電波の良いところでもう一度お試しください。"); }
+    busy = false; $("send").disabled = !canUse;
+  }
+
+  // ---- 写真（手書きの計算メモ）: 読み取り → 本人が確かめる → どこでずれたか ----
+  // 送る前に長辺 1600px の JPEG に縮める（通信と費用を抑える。写真そのものは記録されない）
+  function shrink(file) {
+    return new Promise((ok, ng) => {
+      const img = new Image(), url = URL.createObjectURL(file);
+      img.onload = () => {
+        const k = Math.min(1, 1600 / Math.max(img.width, img.height));
+        const c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+        ok(c.toDataURL("image/jpeg", 0.85));
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); ng(new Error("image")); };
+      img.src = url;
+    });
+  }
+  function addTools(a, id, heavy, again) {
+    const t = document.createElement("div"); t.className = "tools";
+    const mk = (label, fn) => { const b = document.createElement("button"); b.textContent = label; b.onclick = () => fn(b); t.appendChild(b); return b; };
+    const vote = v => b => { post("/feedback", { id, vote: v }).catch(() => {}); t.querySelectorAll("button").forEach(x => x.classList.remove("on")); b.classList.add("on"); };
+    mk("役に立った", vote(1)); mk("いまいち", vote(-1));
+    if (!heavy && again) mk("もっと詳しく", b => { b.disabled = true; again(); });
+    mk("誤りを報告", b => { const s = prompt("どこがおかしいか、分かる範囲で教えてください。"); if (s && s.trim()) { post("/feedback", { id, vote: -1, report: s.trim() }).catch(() => {}); b.textContent = "報告しました"; b.disabled = true; } });
+    a.appendChild(t);
+  }
+  async function photoJudge(lines, deep) {
+    if (busy) return; busy = true; showErr("");
+    const a = document.createElement("div"); a.className = "msg a"; a.innerHTML = '<span class="note busy">' + (deep ? "くわしく比べています" : "計算の手順と比べています") + "</span>"; log.appendChild(a); a.scrollIntoView({ block: "nearest" });
+    try {
+      const r = await post("/photo", { step: "judge", page: sel.value, uid: uid(), code: get("tutor.code") || "", lines, deep: !!deep });
+      if (!r.ok) { a.remove(); showErr(r.j.message || "うまく送れませんでした。少し待ってからもう一度お試しください。"); }
+      else { a.innerHTML = render(r.j.answer); addTools(a, r.j.id, r.j.route && r.j.route.heavy, () => photoJudge(lines, true)); status.textContent = "今日の残り " + r.j.remaining + " 回"; $("reset").classList.remove("hide"); }
+    } catch (e) { a.remove(); showErr("通信できませんでした。電波の良いところでもう一度お試しください。"); }
+    busy = false;
+  }
+  async function photoRead(file) {
+    if (busy || !ENDPOINT) return;
+    if (!sel.value) { showErr("先に「見ている問題」で、記述のどの問かを選んでください。"); return; }
+    busy = true; showErr(""); $("photoBtn").disabled = true;
+    const box = document.createElement("div"); box.className = "msg a photo-box"; box.innerHTML = '<span class="note busy">写真を読み取っています</span>'; log.appendChild(box); box.scrollIntoView({ block: "nearest" });
+    try {
+      const image = await shrink(file);
+      const r = await post("/photo", { step: "read", page: sel.value, uid: uid(), code: get("tutor.code") || "", image });
+      if (!r.ok) { box.remove(); if (r.j.error === "beta") $("codeBox").classList.remove("hide"); showErr(r.j.message || "写真を送れませんでした。もう一度お試しください。"); }
+      else {
+        box.innerHTML = "";
+        const p = document.createElement("p"); p.textContent = "写真から読み取った式です。読み違いがあれば直してから、下のボタンを押してください（1 行に 1 つ）。"; box.appendChild(p);
+        const ta = document.createElement("textarea"); ta.value = r.j.lines.map(l => l.text).join("\n"); box.appendChild(ta);
+        const un = r.j.lines.map((l, i) => l.unsure ? (i + 1) + " 行目: " + l.unsure : "").filter(Boolean);
+        if (un.length) { const hint = document.createElement("p"); hint.className = "hint"; hint.textContent = "読みに自信が無い所 → " + un.join("／"); box.appendChild(hint); }
+        const t = document.createElement("div"); t.className = "tools";
+        const go = document.createElement("button"); go.className = "primary"; go.textContent = "この内容で見てもらう";
+        go.onclick = () => { const lines = ta.value.split("\n").map(x => x.trim()).filter(Boolean); if (!lines.length) return; go.disabled = true; ta.readOnly = true; photoJudge(lines, false); };
+        const no = document.createElement("button"); no.textContent = "やめる"; no.onclick = () => box.remove();
+        t.appendChild(go); t.appendChild(no); box.appendChild(t);
+        const left = document.createElement("span"); left.className = "note"; left.textContent = "写真は今日あと " + r.j.photos_left + " 枚"; t.appendChild(left);
+      }
+    } catch (e) { box.remove(); showErr("写真を読み込めませんでした。別の写真でお試しください。"); }
+    busy = false; $("photoBtn").disabled = !canUse;
+  }
+  $("photoBtn").onclick = () => { if (!sel.value) { showErr("先に「見ている問題」で、記述のどの問かを選んでください。"); return; } $("photoFile").value = ""; $("photoFile").click(); };
+  $("photoFile").onchange = e => { const f = e.target.files && e.target.files[0]; if (f) photoRead(f); };
+  if (!ENDPOINT) $("photoBtn").disabled = true;
+
+  $("send").onclick = () => ask($("q").value, false);
+  $("q").addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) ask($("q").value, false); });
+  $("reset").onclick = () => { prev = []; lastQ = ""; log.innerHTML = ""; status.textContent = ""; $("reset").classList.add("hide"); showErr(""); };
+  sel.onchange = () => { if (prev.length) $("reset").click(); };
+})();
+</script>
+</body>
+</html>
