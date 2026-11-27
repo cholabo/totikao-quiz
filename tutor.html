@@ -48,7 +48,15 @@ button:disabled { opacity:.5; cursor:default; }
 .photo-box textarea { min-height:220px; font-family:ui-monospace,Consolas,monospace; font-size:14px; line-height:1.6; }
 .photo-box .hint { font-size:12px; color:var(--seal); margin:4px 0 0; }
 details.card summary { cursor:pointer; font-size:14px; } details.card ol { font-size:14px; padding-left:1.4em; margin:.6em 0 0; }
+#testerBox { border:2px solid var(--primary); }
+#testerBox .t-head { font-size:16px; font-weight:700; }
+#testerBox ol.steps { margin:.2em 0 0; padding-left:1.5em; font-size:15px; } #testerBox ol.steps li { margin:.5em 0; color:var(--muted); } #testerBox ol.steps li.now { color:var(--ink); } #testerBox ol.steps li.done { color:var(--correct, #1f7a44); }
+#testerBox ol.steps li.now > b { background:var(--seal-soft); color:var(--seal); padding:1px 6px; border-radius:4px; }
+#testerBox a.go { display:inline-block; margin:.3em 0 0 .2em; padding:5px 12px; border-radius:8px; background:var(--primary); color:var(--on-primary); font-weight:700; text-decoration:none; font-size:14px; }
+#testerBox ol.steps li > a.go, #testerBox ol.steps li > div { display:block; width:fit-content; margin-top:.4em; }
+#testerBox .t-warn { margin:.6em 0 0; padding:8px 12px; border-radius:8px; background:var(--seal-soft); color:var(--seal); font-weight:700; font-size:14px; }
 #testerBox p { margin:0 0 .5em; font-size:14px; } #testerBox label { display:flex; gap:6px; align-items:flex-start; color:var(--ink); font-size:14px; margin:.4em 0; } #testerBox a { color:var(--primary); }
+.pick { display:flex; flex-wrap:wrap; gap:6px; } .pick select { flex:1 1 9em; width:auto; min-width:0; } .pick #kind { flex:1 1 100%; }
 .hide { display:none; }
 .busy::after { content:"…"; animation:b 1s steps(3) infinite; } @keyframes b { 50% { opacity:.3; } }
 </style>
@@ -57,7 +65,7 @@ details.card summary { cursor:pointer; font-size:14px; } details.card ol { font-
 <div class="wrap">
   <p class="note"><a href="./" style="color:var(--primary)">← ちょらぼのトップへ</a></p>
   <h1>質問 AI<small>テスト版</small></h1>
-  <p class="lead">土地家屋調査士試験の勉強の質問に、条文・先例・過去問を根拠に答えます。記述の過去問は、問題を選ぶとその問の資料を見て答えます。答えの [　] は根拠の番号です。1 つの問・1 つの論点の質問が得意で、広い範囲をまとめる質問はまだ苦手です。択一の肢の質問は、今までどおり解説の画面の質問欄からどうぞ。</p>
+  <p class="lead">土地家屋調査士試験の勉強の質問に、条文・先例・過去問を根拠に答えます。不動産登記法や民法の論点、択一・記述の過去問、勉強のしかた、どれでも聞けます。答えの [　] は根拠の番号です。1 つの問・1 つの論点の質問が得意で、広い範囲をまとめる質問はまだ苦手です。</p>
 
   <div class="card hide" id="testerBox"></div>
 
@@ -80,8 +88,18 @@ details.card summary { cursor:pointer; font-size:14px; } details.card ol { font-
   </div>
 
   <div class="card">
-    <label for="page">見ている問題（任意）</label>
-    <select id="page"><option value="">選ばない（勉強のしかた・論点の質問）</option></select>
+    <label for="kind">どの問題について聞きますか（選ばなくても質問できます）</label>
+    <div class="pick">
+      <select id="kind">
+        <option value="">選ばない（不登法全般・民法・勉強のしかた など）</option>
+        <option value="記述">記述の過去問</option>
+        <option value="択一">択一の過去問</option>
+      </select>
+      <select id="py" class="hide" aria-label="年度"></select>
+      <select id="pq" class="hide" aria-label="問"></select>
+      <select id="pa" class="hide" aria-label="肢"></select>
+    </div>
+    <p class="note hide" id="pickNote"></p>
   </div>
 
   <div id="log" aria-live="polite"></div>
@@ -109,13 +127,28 @@ details.card summary { cursor:pointer; font-size:14px; } details.card ol { font-
   const $ = id => document.getElementById(id);
 
   // 記述の 42 問（平成17〜令和7、第21問 土地・第22問 建物）
-  const sel = $("page");
-  const years = []; for (let y = 7; y >= 1; y--) years.push(["R" + y, "令和" + y + "年度"]); for (let y = 30; y >= 17; y--) years.push(["H" + y, "平成" + y + "年度"]);
-  for (const [k, name] of years) for (const [n, kind] of [[21, "土地"], [22, "建物"]]) {
-    const o = document.createElement("option"); o.value = "記述 " + k + "-" + n; o.textContent = "記述 " + name + " 第" + n + "問（" + kind + "）"; sel.appendChild(o);
+  // 種類 → 年度 → 問（→ 肢）。送る値は「記述 R7-21」「択一 R6-4-エ」。選ばなければ空
+  const kindS = $("kind"), yS = $("py"), qS = $("pq"), aS = $("pa");
+  const opt = (selEl, v, t) => { const o = document.createElement("option"); o.value = v; o.textContent = t; selEl.appendChild(o); };
+  const yearList = from => { const a = []; for (let y = from; y >= 1; y--) a.push(["R" + y, "令和" + y + "年度"]); for (let y = 30; y >= 17; y--) a.push(["H" + y, "平成" + y + "年度"]); return a; };
+  function fillPick() {
+    const k = kindS.value;
+    for (const e of [yS, qS, aS]) { e.innerHTML = ""; e.classList.toggle("hide", !k); }
+    aS.classList.toggle("hide", k !== "択一");
+    const note = $("pickNote"); note.classList.toggle("hide", !k);
+    if (!k) return;
+    for (const [v, t] of yearList(k === "記述" ? 7 : 8)) opt(yS, v, t);   // 記述の資料は令和7年度まで、択一は令和8年度まで
+    if (k === "記述") { opt(qS, "21", "第21問（土地）"); opt(qS, "22", "第22問（建物）"); note.textContent = "記述は、選んだ問の問題文・模範解答・計算の手順を見て答えます。写真で計算を見てもらうときも、ここで問を選びます。"; }
+    else { for (let n = 1; n <= 20; n++) opt(qS, String(n), "第" + n + "問"); for (const c of ["ア", "イ", "ウ", "エ", "オ", "1", "2", "3", "4", "5"]) opt(aS, c, "肢 " + c); note.textContent = "択一は、問と肢（ア〜オ か 1〜5。問題に合う方）を選びます。選ばずに「R6 の第4問のエ」と文に書いても通じます。"; }
   }
-  if (P.get("page")) { const v = P.get("page"); if ([...sel.options].some(o => o.value === v)) sel.value = v; }
-
+  const pageValue = () => !kindS.value ? "" : kindS.value === "記述" ? "記述 " + yS.value + "-" + qS.value : "択一 " + yS.value + "-" + qS.value + "-" + aS.value;
+  const sel = { get value() { return pageValue(); } };
+  const isKijutsu = () => kindS.value === "記述";
+  kindS.onchange = () => { fillPick(); pickChanged(); };
+  for (const e of [yS, qS, aS]) e.onchange = () => pickChanged();
+  // URL の ?page=記述 R7-21 ／ ?page=択一 R6-4-エ
+  { const m = String(P.get("page") || "").match(/^(記述|択一) ([HR]\d{1,2})-(\d{1,2})(?:-([ア-オ1-5]))?$/);
+    if (m) { kindS.value = m[1]; fillPick(); yS.value = m[2]; qS.value = m[3]; if (m[4]) aS.value = m[4]; } }
   // 招待コード（URL の ?code= か、入力して保存）
   if (P.get("code")) set("tutor.code", P.get("code").trim());
   $("code").value = get("tutor.code") || "";
@@ -164,23 +197,38 @@ details.card summary { cursor:pointer; font-size:14px; } details.card ol { font-
   function showTester(t) {
     if (!t || t.mode !== "tester") { tbox.classList.add("hide"); $("termsBox").classList.add("hide"); setUse(true); return; }
     tbox.classList.remove("hide"); $("termsBox").classList.remove("hide"); tbox.innerHTML = "";
-    const P = (txt) => { const e = document.createElement("p"); e.textContent = txt; tbox.appendChild(e); return e; };
-    const link = (txt, href) => { const e = document.createElement("p"); const a = document.createElement("a"); a.href = href; a.textContent = txt; e.appendChild(a); tbox.appendChild(e); };
-    if (!t.login) { setUse(false); P("テスト版は、ログインしてテスターに申し込んだ方が使えます（先着 " + t.max + " 人）。"); link("ログインの画面へ", "account.html"); return; }
-    if (t.applied && t.active) { setUse(true); P("テスターとして使えます。気づいたことは、答えの下の「誤りを報告」から教えてください。"); tbox.classList.add("hide"); return; }
-    if (t.applied) { setUse(false); P("申し込みを受け付けました。いまは順番待ちです（あと " + t.waiting + " 人目）。空きが出たら、この画面で使えるようになります。"); return; }
+    const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt) e.textContent = txt; return e; };
+    if (t.applied && t.active) { setUse(true); tbox.classList.add("hide"); return; }
     setUse(false);
-    P("テスターを募集しています（先着 " + t.max + " 人。" + (t.seats_left > 0 ? "残り " + t.seats_left + " 人" : "いまは満席で、申し込むと順番待ちになります") + "）。");
-    if (!t.profile_ok) { P("申し込みの前に、アカウントの画面でアンケート（受験の予定・回数・勉強のしかた）に答えてください。"); link("アカウントの画面へ", "account.html"); return; }
-    const lab = document.createElement("label"); const cb = document.createElement("input"); cb.type = "checkbox";
-    lab.appendChild(cb); lab.appendChild(document.createTextNode("下の「テスターの約束ごと」を読み、同意します。")); tbox.appendChild(lab);
-    const b = document.createElement("button"); b.className = "primary"; b.textContent = "テスターに申し込む"; tbox.appendChild(b);
-    $("termsBox").open = true;
+    if (t.applied) { tbox.appendChild(el("p", "", "申し込みを受け付けました。いまは順番待ちです（あと " + t.waiting + " 人目）。空きが出たら、この画面で使えるようになります。")); return; }
+    // 手順を 3 つ並べ、済んだものに印を付ける。今やることを目立たせる
+    const done1 = !!t.login, done2 = done1 && !!t.profile_ok;
+    tbox.appendChild(el("p", "t-head", "テスターの申し込み（先着 " + t.max + " 人・" + (t.login ? (t.seats_left > 0 ? "残り " + t.seats_left + " 人" : "いまは満席。申し込むと順番待ち") : "無料") + "）"));
+    tbox.appendChild(el("p", "", "使うには、次の 3 つが要ります。"));
+    const ol = el("ol", "steps"); tbox.appendChild(ol);
+    const step = (done, now, title, body) => { const li = el("li", done ? "done" : now ? "now" : ""); li.appendChild(el("b", "", (done ? "✓ " : "") + title)); if (body) li.appendChild(body); ol.appendChild(li); return li; };
+    const go = (txt, href) => { const a = el("a", "go", txt); a.href = href; return a; };
+    step(done1, !done1, "ログインする", done1 ? null : go("ログインの画面へ", "account.html"));
+    step(done2, done1 && !done2, "アカウントの画面でアンケートに答える（3 問・1 分）", done2 || !done1 ? null : go("アンケートに答える", "account.html"));
+    const box3 = el("div");
+    const lab = el("label"); const cb = el("input"); cb.type = "checkbox"; lab.appendChild(cb); lab.appendChild(document.createTextNode("下の「テスターの約束ごと」を読み、同意します。"));
+    const b = el("button", "primary", "テスターに申し込む");
+    const msg = el("p", "t-warn hide");
+    box3.appendChild(lab); box3.appendChild(b); box3.appendChild(msg);
+    step(false, done2, "約束ごとに同意して申し込む", box3);
+    if (done2) $("termsBox").open = true;
+    const warn = (txt, linkTxt) => { msg.textContent = txt + " "; if (linkTxt) msg.appendChild(go(linkTxt, "account.html")); msg.classList.remove("hide"); msg.scrollIntoView({ block: "nearest" }); };
     b.onclick = async () => {
-      if (!cb.checked) { showErr("約束ごとを読んで、同意の欄に印を付けてください。"); return; }
-      b.disabled = true; showErr("");
-      try { const r = await post("/tester/apply", { agree: true, ver: TERMS_VER }); if (!r.ok) { showErr(r.j.message || "申し込めませんでした。"); b.disabled = false; } else showTester(Object.assign({ mode: "tester", login: true, profile_ok: true }, r.j)); }
-      catch (e) { showErr("通信できませんでした。"); b.disabled = false; }
+      msg.classList.add("hide");
+      if (!t.login) { warn("先にログインが要ります。ログインして、アンケートに答えてから、この画面に戻ってもう一度「テスターに申し込む」を押してください。", "ログインの画面へ"); return; }
+      if (!t.profile_ok) { warn("先に、アカウントの画面でアンケートに答えてください。答えたら、この画面に戻ってもう一度「テスターに申し込む」を押してください。", "アンケートに答える"); return; }
+      if (!cb.checked) { warn("約束ごとを読んで、同意の欄に印を付けてください。"); return; }
+      b.disabled = true;
+      try {
+        const r = await post("/tester/apply", { agree: true, ver: TERMS_VER });
+        if (r.ok) showTester(Object.assign({ mode: "tester", login: true, profile_ok: true }, r.j));
+        else { b.disabled = false; if (r.j.error === "profile") warn("先に、アカウントの画面でアンケートに答えてください。答えたら、この画面に戻ってもう一度「テスターに申し込む」を押してください。", "アンケートに答える"); else if (r.j.error === "login") warn("ログインが切れています。ログインし直してから、もう一度お願いします。", "ログインの画面へ"); else warn(r.j.message || "申し込めませんでした。少し待ってからもう一度お試しください。"); }
+      } catch (e) { b.disabled = false; warn("通信できませんでした。電波の良いところでもう一度お試しください。"); }
     };
   }
   async function loadTester() {
@@ -188,6 +236,9 @@ details.card summary { cursor:pointer; font-size:14px; } details.card ol { font-
     try { const res = await fetch(ENDPOINT + "/tester", { headers: auth(), cache: "no-store" }); showTester(await res.json()); } catch (e) { /* 読めなければそのまま（質問したときにサーバが断る） */ }
   }
   loadTester();
+  // アカウントの画面から戻ってきたときに、状態を読み直す（アンケートに答えたあと、そのまま申し込めるように）
+  window.addEventListener("pageshow", e => { if (e.persisted) loadTester(); });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && !canUse) loadTester(); });
 
   async function post(path, body) {
     const res = await fetch(ENDPOINT + path, { method: "POST", headers: Object.assign({ "content-type": "application/json" }, auth()), body: JSON.stringify(body) });
@@ -263,7 +314,7 @@ details.card summary { cursor:pointer; font-size:14px; } details.card ol { font-
   }
   async function photoRead(file) {
     if (busy || !ENDPOINT) return;
-    if (!sel.value) { showErr("先に「見ている問題」で、記述のどの問かを選んでください。"); return; }
+    if (!isKijutsu()) { showErr("先に上の欄で「記述の過去問」を選び、年度と問を選んでください。"); return; }
     busy = true; showErr(""); $("photoBtn").disabled = true;
     const box = document.createElement("div"); box.className = "msg a photo-box"; box.innerHTML = '<span class="note busy">写真を読み取っています</span>'; log.appendChild(box); box.scrollIntoView({ block: "nearest" });
     try {
@@ -286,14 +337,14 @@ details.card summary { cursor:pointer; font-size:14px; } details.card ol { font-
     } catch (e) { box.remove(); showErr("写真を読み込めませんでした。別の写真でお試しください。"); }
     busy = false; $("photoBtn").disabled = !canUse;
   }
-  $("photoBtn").onclick = () => { if (!sel.value) { showErr("先に「見ている問題」で、記述のどの問かを選んでください。"); return; } $("photoFile").value = ""; $("photoFile").click(); };
+  $("photoBtn").onclick = () => { if (!isKijutsu()) { showErr("先に上の欄で「記述の過去問」を選び、年度と問を選んでください。"); return; } $("photoFile").value = ""; $("photoFile").click(); };
   $("photoFile").onchange = e => { const f = e.target.files && e.target.files[0]; if (f) photoRead(f); };
   if (!ENDPOINT) $("photoBtn").disabled = true;
 
   $("send").onclick = () => ask($("q").value, false);
   $("q").addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) ask($("q").value, false); });
   $("reset").onclick = () => { prev = []; lastQ = ""; log.innerHTML = ""; status.textContent = ""; $("reset").classList.add("hide"); showErr(""); };
-  sel.onchange = () => { if (prev.length) $("reset").click(); };
+  function pickChanged() { if (prev.length) $("reset").click(); }
 })();
 </script>
 </body>
