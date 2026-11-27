@@ -2,7 +2,7 @@
 // ページ本体は「まずネットワーク、だめならキャッシュ」。更新がすぐ届く。
 // 問題データ・解説・資料は「まずキャッシュ、裏で更新」。2回目以降は即表示になる。
 // CACHE_VERSION を上げると古いキャッシュを捨てて入れ替わる。
-const CACHE_VERSION = "v114-20261125b";
+const CACHE_VERSION = "v115-20261127a";
 const SHELL_CACHE = `shell-${CACHE_VERSION}`;
 const DATA_CACHE = `data-${CACHE_VERSION}`;
 const FONT_CACHE = "fonts-v1";   // 書体は版に紐づけず、取れたものを残す
@@ -35,7 +35,7 @@ const SHELL_FILES = [
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./data/topics.json",
-  "./questions.json?v=20261022a"
+  "./questions.json?v=20261127a"
 ];
 
 self.addEventListener("install", event => {
